@@ -4,9 +4,29 @@
 
 Install: copy this folder into `.cursor/skills/apple-ultra-skills/` (or merge skill subfolders into `.cursor/skills/`).
 
-Validate: `python3 scripts/validate-skills.py` (24 skills, trigger descriptions, link integrity).
+Validate: `python3 scripts/validate-skills.py` (25 skills, trigger descriptions, link integrity).
 
-**Version:** 1.1.0 · **Skills:** 24 (includes `ultra-teach` onboarding)
+**Version:** 1.2.0 · **Skills:** 25 (includes `ultra-teach` onboarding + meta `SKILL.md`)
+
+---
+
+## Supercharged by Agent-Reach
+
+Apple Ultra Skills pairs with [Agent-Reach](https://github.com/Panniantong/Agent-Reach) for real-time internet access:
+
+```bash
+pip install agent-reach && agent-reach install
+```
+
+Once installed, your AI agent can research while it builds — checking
+live docs, scanning GitHub issues, reading Reddit solutions, and pulling
+YouTube transcripts without a single paid API key.
+
+The combination: Ultra Skills knows **HOW** to build anything.
+Agent-Reach knows **WHAT** is true right now.
+Together: the most capable AI coding agent setup available, completely free.
+
+See [SKILL.md](SKILL.md) Section 12 and [references/agent-patterns.md](references/agent-patterns.md) for the research protocol.
 
 ---
 
@@ -15,6 +35,8 @@ Validate: `python3 scripts/validate-skills.py` (24 skills, trigger descriptions,
 ```
 apple-ultra-skills/
 ├── README.md                 ← you are here
+├── SKILL.md                  ← meta skill (Agent-Reach Ultra-Mode, Section 12)
+├── references/               ← agent-patterns.md channel reference
 ├── _shared/                  ← fill in before use (BRAND, VISUAL, STACK, …)
 ├── apple-hub/                ← skill router — start here
 ├── design/                   ← documented layer (skills live as siblings below)
