@@ -93,6 +93,35 @@ Dispatch `generalPurpose` subagent with [agents/ship-reviewer-prompt.md](./agent
 
 ---
 
+## Systematic debugging (bugfix / CI-fail PRs)
+
+Borrowed from `obra/superpowers@systematic-debugging` (162K installs). **Before approving any fix PR:**
+
+**Iron law:** `NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST`
+
+### Phase 1 — Root cause (mandatory before fix review)
+
+1. **Read error messages completely** — stack trace line numbers, not summaries
+2. **Reproduce** — exact steps; if not reproducible, gather data don't guess
+3. **Check recent changes** — `git log --oneline -10`, diff against main
+4. **Multi-component systems** — log at each boundary (client → API → DB → webhook) before proposing fix
+
+### Phase 2 — Hypothesis
+
+State: *"Root cause is X because evidence Y."* No fix without this sentence.
+
+### Phase 3 — Minimal fix
+
+Fix addresses root cause only — not symptom patches. Pair with **ultra-tdd** regression test.
+
+### Phase 4 — Verify
+
+`npm run verify` green + new regression test fails on reverted fix.
+
+**Block SHIP if:** PR changes code without root cause statement or without regression test on bugfix.
+
+---
+
 ## Phase 0 — PR discovery
 
 ### 0.1 Gather context
@@ -263,6 +292,16 @@ verify · migrations · tests · API auth · plan gates · booking · scope
 | `ultra-plan-gating` | Entitlement changes |
 | `ultra-payments` | Payment flow changes |
 | `apple-hub` | Unsure which specialist to invoke |
+| `ultra-tdd` | Missing tests on logic changes — Beyoncé Rule |
+
+## skills.sh companions (tier C)
+
+| Companion | Installs | When |
+|-----------|----------|------|
+| `obra/superpowers@systematic-debugging` | 162K | Bugfix PRs — synthesized above |
+| `vercel-labs/agent-skills@vercel-react-best-practices` | 507K | React/Next PR parallel checklist |
+
+See [registry/companions.json](../registry/companions.json) · scout: [SKILLS-SCOUT-09](../competitive-research/SKILLS-SCOUT-09-ultra-pr-ship-review.md)
 
 ---
 

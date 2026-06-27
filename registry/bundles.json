@@ -8,6 +8,11 @@
         "ultra-web-quality",
         "apple-design-head",
         "ultra-brand-voice"
+      ],
+      "companions": [
+        "shadcn/ui@shadcn",
+        "vercel-labs/agent-skills@web-design-guidelines",
+        "addyosmani/web-quality-skills@accessibility"
       ]
     },
     "ship-ready": {
@@ -17,6 +22,11 @@
         "ultra-pr-ship-review",
         "ultra-security-review",
         "ultra-content-review"
+      ],
+      "companions": [
+        "obra/superpowers@test-driven-development",
+        "obra/superpowers@systematic-debugging",
+        "currents-dev/playwright-best-practices-skill@playwright-best-practices"
       ]
     },
     "executive": {
@@ -32,7 +42,11 @@
     },
     "full": {
       "description": "Complete Apple Ultra Skills pack",
-      "skills": ["*"]
+      "skills": ["*"],
+      "companions": [
+        "vercel-labs/skills@find-skills",
+        "vercel-labs/agent-skills@vercel-react-best-practices"
+      ]
     }
   }
 }

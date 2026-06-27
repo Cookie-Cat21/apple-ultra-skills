@@ -2,7 +2,7 @@
 
 **Apple-quality craft × startup discipline × engineering rigor** — a Cursor skill plugin with 25 specialized personas, shared context templates, and a design-layer component discovery workflow.
 
-**Version:** 1.3.0 · **Skills:** 26 (includes `ultra-teach`, `ultra-tdd`, `ultra-web-quality`)
+**Version:** 1.4.0 · **Skills:** 28 (includes `ultra-skill-discovery`, `ultra-teach`, `ultra-tdd`, `ultra-web-quality`)
 
 ---
 
@@ -164,6 +164,7 @@ Copy/content chain: `ultra-brand-voice` → `ultra-content-review` → `apple-de
 | Skill | Role | Use when… |
 |-------|------|-----------|
 | **apple-hub** | Skill router | "Which skill should I use?" |
+| **ultra-skill-discovery** | skills.sh curator | "Find a skill for X", skills.sh search |
 | **ultra-teach** | Project onboarding | First setup — writes `.ultra.md` |
 | dag-task-runner | Task orchestrator | Parallel subagent DAG execution |
 

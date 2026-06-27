@@ -1,0 +1,124 @@
+{
+  "version": "1.0",
+  "description": "Intent keywords → npx skills find queries → ultra specialist + companions",
+  "protocol": [
+    "1. Match user intent to row below",
+    "2. Run: npx skills find \"<query>\"",
+    "3. Rank results: companions.json preferred_owners + min_installs_trusted",
+    "4. Route to ultra_skill unless external skill is strictly better AND user wants install",
+    "5. Never recommend duplicate — if synthesized (tier S), use ultra only"
+  ],
+  "matrix": [
+    {
+      "intents": ["find skill", "find a skill", "skills.sh", "which skill", "is there a skill"],
+      "queries": ["find skills", "skill hub"],
+      "ultra_skill": "ultra-skill-discovery",
+      "fallback_chain": ["apple-hub"]
+    },
+    {
+      "intents": ["design", "ui", "ux", "frontend", "polish", "apple design"],
+      "queries": ["design", "frontend design", "web design guidelines"],
+      "ultra_skill": "apple-design-head",
+      "companions": ["anthropics/skills@frontend-design", "vercel-labs/agent-skills@web-design-guidelines"]
+    },
+    {
+      "intents": ["tokens", "typography", "color palette", "dark mode", "design system"],
+      "queries": ["tailwind design system", "design tokens"],
+      "ultra_skill": "ultra-visual-system",
+      "companions": ["wshobson/agents@tailwind-design-system"]
+    },
+    {
+      "intents": ["shadcn", "component", "ui block", "registry", "install component"],
+      "queries": ["shadcn", "ui components"],
+      "ultra_skill": "ultra-component-discovery",
+      "companions": ["shadcn/ui@shadcn"]
+    },
+    {
+      "intents": ["lighthouse", "core web vitals", "page speed", "seo audit", "web quality", "CWV", "INP", "LCP"],
+      "queries": ["web quality", "accessibility", "seo", "performance"],
+      "ultra_skill": "ultra-web-quality",
+      "companions": ["addyosmani/web-quality-skills@accessibility", "addyosmani/web-quality-skills@seo"]
+    },
+    {
+      "intents": ["copy", "copywriting", "brand voice", "messaging", "CTA"],
+      "queries": ["copywriting", "marketing"],
+      "ultra_skill": "ultra-brand-voice",
+      "companions": ["coreyhaines31/marketingskills@copywriting"]
+    },
+    {
+      "intents": ["TDD", "test first", "write tests", "red green refactor", "playwright", "e2e"],
+      "queries": ["test-driven", "playwright", "TDD"],
+      "ultra_skill": "ultra-tdd",
+      "companions": ["obra/superpowers@test-driven-development", "currents-dev/playwright-best-practices-skill@playwright-best-practices"]
+    },
+    {
+      "intents": ["security", "OWASP", "threat model", "secrets", "auth audit"],
+      "queries": ["OWASP", "web security"],
+      "ultra_skill": "ultra-security-review",
+      "companions": ["hoodini/ai-agents-skills@owasp-security"]
+    },
+    {
+      "intents": ["architecture", "schema", "tech debt", "ADR", "refactor structure"],
+      "queries": ["architecture", "typescript", "improve codebase"],
+      "ultra_skill": "ultra-cto",
+      "companions": ["mattpocock/skills@improve-codebase-architecture"]
+    },
+    {
+      "intents": ["PR ready", "merge", "ship", "code review", "pre-merge", "CI failed"],
+      "queries": ["code review", "PR review"],
+      "ultra_skill": "ultra-pr-ship-review",
+      "companions": ["obra/superpowers@systematic-debugging"]
+    },
+    {
+      "intents": ["stripe", "payments", "checkout", "webhook", "billing"],
+      "queries": ["stripe", "payments"],
+      "ultra_skill": "ultra-payments",
+      "companions": ["stripe/ai@stripe-best-practices"]
+    },
+    {
+      "intents": ["booking", "scheduling", "slots", "availability", "calendar", "appointments"],
+      "queries": ["booking", "calendar", "scheduling"],
+      "ultra_skill": "ultra-scheduling-engine",
+      "companions": []
+    },
+    {
+      "intents": ["react", "nextjs", "app router", "RSC", "server components"],
+      "queries": ["react", "nextjs", "react best practices"],
+      "ultra_skill": "ultra-cto",
+      "references": ["references/next-app-router.md", "references/react-18-patterns.md"],
+      "companions": ["vercel-labs/agent-skills@vercel-react-best-practices", "wshobson/agents@nextjs-app-router-patterns"]
+    },
+    {
+      "intents": ["tailwind", "tailwind v4", "css first config"],
+      "queries": ["tailwind"],
+      "ultra_skill": "ultra-visual-system",
+      "references": ["references/tailwind-v4.md"],
+      "companions": ["heygen-com/hyperframes@tailwind"]
+    },
+    {
+      "intents": ["strategy", "CEO", "pivot", "vision", "roadmap", "CPO", "pricing", "CFO"],
+      "queries": ["product strategy", "roadmap planning", "unit economics"],
+      "ultra_skill": "apple-hub",
+      "route_to": ["ultra-ceo", "ultra-cpo", "ultra-cfo"]
+    },
+    {
+      "intents": ["growth", "GTM", "launch", "sales", "outreach"],
+      "queries": ["growth marketing", "outreach"],
+      "ultra_skill": "apple-hub",
+      "route_to": ["ultra-head-of-growth", "ultra-head-of-sales"]
+    },
+    {
+      "intents": ["parallel agents", "DAG", "orchestrate", "mcp", "workflow"],
+      "queries": ["workflow orchestrator", "mcp"],
+      "ultra_skill": "dag-task-runner",
+      "companions": ["anthropics/skills@mcp-builder", "charon-fan/agent-playbook@workflow-orchestrator"]
+    },
+    {
+      "intents": ["deploy", "vercel", "CI/CD", "preview deployment"],
+      "queries": ["vercel deploy", "devops deploy"],
+      "ultra_skill": "ultra-cto",
+      "references": ["references/devops.md"],
+      "companions": ["vercel/vercel-plugin@deployments-cicd"]
+    }
+  ]
+}

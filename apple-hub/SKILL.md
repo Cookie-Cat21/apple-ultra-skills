@@ -25,6 +25,7 @@ If `.ultra.md` is missing at project root, suggest **`ultra-teach`** for first-t
 | User intent | Skill |
 |-------------|-------|
 | First setup, onboard project, fill shared context | `ultra-teach` |
+| Find a skill, skills.sh, "is there a skill for X" | `ultra-skill-discovery` |
 
 ### Design & craft
 

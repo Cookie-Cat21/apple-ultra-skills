@@ -19,9 +19,18 @@ chains:
 
 # Ultra Web Quality — Performance · A11y · SEO · Best Practices
 
-You are the **web quality engineer** for this product. Run a scored audit across four lanes before public pages ship. Borrowed from tech-leads-club `web-quality-audit`, scoped to this stack and paired with Apple Ultra review protocol.
+You are the **web quality engineer** for this product. Run a scored audit across four lanes before public pages ship. Synthesizes **addyosmani/web-quality-skills** lane depth + tech-leads-club `web-quality-audit` orchestration, scoped to this stack.
 
 **Output:** 0–100 score per lane · P0–P3 findings · SHIP / ITERATE / REJECT per lane and overall.
+
+**Lane specialists (synthesized from addyosmani — do not duplicate install if using Ultra):**
+
+| Lane | addyosmani source | Ultra adds |
+|------|-------------------|------------|
+| A11y | `web-quality-skills@accessibility` (32K) | RULES.md cross-ref, lint-design-rules.mjs CI |
+| SEO | `web-quality-skills@seo` (29K) | Product route awareness, booking page patterns |
+| Perf | CWV best practices | STACK.md build commands, bundle paths |
+| Best practices | Security headers + deps | ultra-security-review handoff |
 
 ---
 
@@ -84,28 +93,36 @@ Record: LCP, INP, CLS, Lighthouse scores, lint rule IDs.
 
 ## Lane 2 — Accessibility (30%)
 
-| ID | Check | P0 if |
-|----|-------|-------|
-| A1 | All images have alt | Informative img missing alt |
-| A2 | Color contrast ≥4.5:1 (text) | Fails WCAG AA |
-| A3 | Keyboard: all actions reachable | div-onClick without button |
-| A4 | Focus visible on interactives | outline:none globally |
-| A5 | Forms: labels linked, errors associated | placeholder-only labels |
-| A6 | lang on html, logical heading order | Skipped h-levels |
+**Detection stack:** axe-core (DevTools or CI), Lighthouse accessibility category, `lint-design-rules.mjs` RULE-061–080.
 
-Cross-check **apple-design-head/RULES.md** RULE-061–080.
+| ID | Check | axe / tool | P0 if |
+|----|-------|------------|-------|
+| A1 | All images have alt | `image-alt` | Informative img missing alt |
+| A2 | Color contrast ≥4.5:1 (text) | `color-contrast` | Fails WCAG AA |
+| A3 | Keyboard: all actions reachable | manual tab + `button-name` | div-onClick without button |
+| A4 | Focus visible on interactives | `focus-order-semantics` | outline:none globally |
+| A5 | Forms: labels linked, errors associated | `label`, `aria-describedby` | placeholder-only labels |
+| A6 | lang on html, logical heading order | `html-has-lang`, heading audit | Skipped h-levels |
+| A7 | Touch targets ≥44×44px | `target-size` (WCAG 2.5.5) | Mobile tap failures |
+| A8 | Reduced motion respected | CSS `@media (prefers-reduced-motion)` | Animation >200ms without reduced variant |
+
+Cross-check **apple-design-head/RULES.md** RULE-061–080. For component fixes after audit → chain `ibelick/ui-skills@fixing-accessibility` (14K).
 
 ---
 
 ## Lane 3 — SEO (20%)
 
-| ID | Check | P0 if |
-|----|-------|-------|
-| S1 | Unique title + meta description per page | Duplicate/missing on indexable pages |
-| S2 | Single h1, logical hierarchy | Multiple h1 or empty h1 |
-| S3 | robots.txt + sitemap valid | Important paths blocked |
-| S4 | Canonical URLs | Duplicate content risk |
-| S5 | JSON-LD where applicable | Rich result opportunity missed on key pages |
+**Synthesized from addyosmani/web-quality-skills@seo** — technical SEO only; copy/positioning → `ultra-brand-voice`.
+
+| ID | Check | Detection | P0 if |
+|----|-------|-----------|-------|
+| S1 | Unique title + meta description per page | Lighthouse SEO, view-source | Duplicate/missing on indexable pages |
+| S2 | Single h1, logical hierarchy | Heading audit | Multiple h1 or empty h1 |
+| S3 | robots.txt + sitemap valid | Fetch `/robots.txt`, `/sitemap.xml` | Important paths blocked |
+| S4 | Canonical URLs | `<link rel="canonical">` | Duplicate content risk |
+| S5 | JSON-LD where applicable | Rich Results Test | Rich result opportunity missed on key pages |
+| S6 | Open Graph + Twitter cards | Meta tag scan | Social share preview broken |
+| S7 | Core Web Vitals as ranking signal | Lighthouse perf + CWV field data | LCP >4s on landing pages |
 
 ---
 
@@ -195,3 +212,18 @@ Chain to **apple-design-head** for visual craft after technical SHIP.
 | ultra-visual-system | Token-level contrast fixes |
 | ultra-pr-ship-review | Merge gate for full stack PR |
 | ultra-tdd | Perf regression tests (bundle size, route tests) |
+
+## skills.sh companions (tier C)
+
+| Companion | Installs | When |
+|-----------|----------|------|
+| `addyosmani/web-quality-skills@accessibility` | 32K | Lane depth — synthesized above |
+| `addyosmani/web-quality-skills@seo` | 29K | Lane depth — synthesized above |
+| `ibelick/ui-skills@fixing-accessibility` | 14K | Post-audit component fixes |
+
+```bash
+# Only if user wants standalone lane skill alongside Ultra
+npx skills add addyosmani/web-quality-skills@accessibility -y
+```
+
+See [registry/companions.json](../registry/companions.json) · scout: [SKILLS-SCOUT-04](../competitive-research/SKILLS-SCOUT-04-ultra-web-quality.md)
