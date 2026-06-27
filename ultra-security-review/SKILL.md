@@ -234,6 +234,21 @@ See [RUBRIC.md](./RUBRIC.md) for ledger S1–S12.
 
 ---
 
+## Common excuses
+
+| Common excuse | Why it's wrong | What to do instead |
+|---------------|----------------|-------------------|
+| "We'll add auth before launch" | Attackers scan staging and old routes | Fail closed now; no unauthenticated mutations |
+| "Security review is for big features" | One cron route can exfiltrate all data | Run security review on any auth/cron/webhook change |
+| "Framework handles XSS" | React doesn't sanitize `dangerouslySetInnerHTML` | Audit every HTML injection path |
+| "Secrets are only in .env locally" | .env gets committed or logged | Scan git history; rotate if found |
+| "P0 can ship with mitigation planned" | Mitigations slip; incidents happen | REJECT until P0 closed or explicitly accepted by owner |
+| "Threat model is overkill" | 5 minutes prevents design flaws no control fixes | STRIDE-lite on new external surfaces |
+| "Rate limit later" | Brute force succeeds before "later" | Rate-limit auth and webhook endpoints now |
+| "LLM output is safe text" | Model output can contain SQL/scripts | Treat as untrusted input at every sink |
+
+---
+
 ## Do not
 
 - Ship with P0 open on auth, payments, or committed secrets

@@ -12,6 +12,7 @@
     "ship-ready": {
       "description": "Pre-merge engineering and security gates",
       "skills": [
+        "ultra-tdd",
         "ultra-pr-ship-review",
         "ultra-security-review",
         "ultra-content-review"

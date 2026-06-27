@@ -211,6 +211,21 @@ Manual: call route without auth → 401; wrong plan → 402.
 
 ---
 
+## Common excuses
+
+| Common excuse | Why it's wrong | What to do instead |
+|---------------|----------------|-------------------|
+| "I'll add auth after the endpoint works" | Unauthenticated endpoints get discovered and exploited | Wire `requireApiBusiness` / scopes before handler logic |
+| "Internal route doesn't need validation" | Internal routes become external via SSRF or misconfig | Zod-validate every input; same schema as external |
+| "401 vs 403 doesn't matter" | Clients and monitors depend on correct semantics | 401 = no/invalid creds; 403 = creds ok, not allowed |
+| "I'll use 500 for plan limits" | Clients can't distinguish errors from outages | Return 402 with consistent error shape |
+| "Logging the header helps debug" | Authorization headers contain secrets | Log route + businessId only; never log tokens |
+| "Cron can use session cookie" | Cron has no session; creates auth bypass paths | `CRON_SECRET` Bearer on all cron mutations |
+| "API key on dashboard route is fine" | Keys leak via browser; wrong trust boundary | Session auth on dashboard; scoped keys on `/api/v1/` |
+| "Validation is overkill for this field" | Invalid input becomes SQL/logic bugs | Zod schema matching DB constraints |
+
+---
+
 ## Do not
 
 - Invent new auth schemes — use existing helpers

@@ -207,6 +207,21 @@ Manual: create booking on `/book/[slug]` → confirm hold → complete → verif
 
 ---
 
+## Common excuses
+
+| Common excuse | Why it's wrong | What to do instead |
+|---------------|----------------|-------------------|
+| "Client sends the slot time" | Double-booking and timezone bugs | Server validates with `isRequestedSlotAvailable` |
+| "UTC is fine for everyone" | Users see wrong local times | Store UTC; display in business timezone |
+| "Hold mechanism is overkill" | Race conditions lose revenue and trust | TTL hold before payment; release on timeout |
+| "We can skip verify for small change" | Scheduling regressions are P0 for product | Run `npm run verify` on every scheduling PR |
+| "Hardcode competitor flow" | Loses your product differentiators | Preserve deals, embed, multi-pay patterns |
+| "PII in share URL is convenient" | URLs leak via referrers and logs | Opaque tokens; no email/phone in query strings |
+| "lib can import components" | Circular deps and untestable logic | Keep booking logic in `src/lib/` only |
+| "Remove holds to simplify" | Product decision with revenue impact | Explicit CPO sign-off before removing holds |
+
+---
+
 ## Do not
 
 - Fork global competitor patterns; preserve your product deals, embed, client tokens, multi-pay

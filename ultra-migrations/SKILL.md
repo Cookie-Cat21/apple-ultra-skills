@@ -204,6 +204,21 @@ Compare: `\d table_name` or your ORM introspect if drift suspected.
 
 ---
 
+## Common excuses
+
+| Common excuse | Why it's wrong | What to do instead |
+|---------------|----------------|-------------------|
+| "I'll edit the migration file that failed locally" | Production may have applied it; drift is irreversible | Add new `00NN_` migration; never rewrite applied files |
+| "schema.ts can wait until after ship" | App and DB diverge; runtime errors in prod | Ship SQL + schema.ts in same PR |
+| "Backfill can run manually later" | Manual steps get skipped; data stays wrong | Idempotent backfill in migration or scripted job with tests |
+| "DROP COLUMN is fine in one step" | Locks table; breaks rollback | Expand-contract: deprecate → stop writes → backfill → drop |
+| "It's just a nullable column" | Nullable without default breaks existing queries | Default or backfill before NOT NULL |
+| "Archive folder migrations are handy" | Revives deleted history; breaks migrate order | Never restore `_archive/` without explicit approval |
+| "Raw SQL in app is faster" | Bypasses ORM invariants; untestable | Keep schema.ts as source of truth |
+| "I'll run migrate in prod only" | Local drift causes surprise failures | `npm run db:migrate` locally before PR |
+
+---
+
 ## Do not
 
 - Edit ``your migrations directory/` (see _shared/STACK.md)0001_...` through latest applied files — add new migration

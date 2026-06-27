@@ -210,6 +210,21 @@ Manual: downgrade test business to Starter → 402 on gated API → entitlement 
 
 ---
 
+## Common excuses
+
+| Common excuse | Why it's wrong | What to do instead |
+|---------------|----------------|-------------------|
+| "UI gate is enough" | API calls bypass disabled buttons | `requireEntitlement` on every API route |
+| "Hardcode plan check inline" | Drift across routes; untestable | `canUseFeature` / `requireEntitlement` helpers |
+| "Show max bookings in UI" | Exposes internal limits; confuses users | Use marketing labels from BRAND.md |
+| "Trial users get everything" | Revenue leak; support burden | Explicit trial feature map in PRODUCT.md |
+| "402 is rude — use 403" | Clients can't trigger upgrade flows | 402 for plan limits; document in API |
+| "Skip plan.test.ts for small feature" | Entitlement bugs are silent revenue loss | Update tests for every new PlanFeature |
+| "Feature flag replaces gating" | Flags without API gate = bypass | Flag + entitlement on server |
+| "Expired trial keeps working" | Billing integrity failure | Cron or middleware enforces trial → expired |
+
+---
+
 ## Do not
 
 - Gate UI only without API enforcement

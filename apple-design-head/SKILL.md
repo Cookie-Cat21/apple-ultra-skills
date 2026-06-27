@@ -74,6 +74,19 @@ See [examples/.ultra.md.example](../examples/.ultra.md.example) for schema.
 
 ---
 
+## Rule enforcement (Round 0–2)
+
+Before weighted scoring, scan [RULES.md](./RULES.md) (**160 deterministic anti-pattern rules**). Each violation becomes a finding:
+
+`RULE-XXX | Location | Severity | Fix`
+
+- **Critical** rules → P0 (ship blocker)
+- **High** → P1 · **Medium** → P2 · **Low/Cosmetic** → P3
+
+Walk categories in order: spacing → color → ai-slop → accessibility → motion → copy → layout → dark-mode. Quote the rule ID in every finding.
+
+---
+
 ## Pre-Round 0 — AI slop gate (all modes except ship-gate re-check)
 
 **5-second disqualifier** (borrowed from CRISP): Before scoring craft, ask: *Would someone immediately say AI made this?*

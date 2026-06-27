@@ -66,6 +66,7 @@ If `.ultra.md` is missing at project root, suggest **`ultra-teach`** for first-t
 | Third-party API integrations | `ultra-integrations` |
 | Security audit, secrets, compliance | `ultra-security-review` |
 | PR ready to merge? | `ultra-pr-ship-review` |
+| Write tests first, TDD, red-green-refactor | `ultra-tdd` |
 
 ### Infrastructure
 
