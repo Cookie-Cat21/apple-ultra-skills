@@ -1,229 +1,231 @@
-# Kira — Kapruka Agent Challenge Overnight Master Prompt
+# Kira — Kapruka Agent Challenge · Apple Ultra Overnight Prompt
 
-**Paste everything below the line into a new Cursor Cloud Agent (24-hour) session.**
+**Repo:** https://github.com/Cookie-Cat21/Kira  
+**Challenge:** https://www.kapruka.com/contactUs/agentChallenge.html · **Deadline:** 30 June 2026  
+**Skills pack:** https://github.com/Cookie-Cat21/apple-ultra-skills
 
-**Deadline:** 30 June 2026 EOD · **~3 days left**  
-**Prize:** Apple M4 Mac Mini · **Judge:** Kapruka engineering team  
-**Official rubric:** https://www.kapruka.com/contactUs/agentChallenge.html
+Paste everything below `---` into a **Cursor Cloud Agent (24h)** session with the **Kira** repo open.
 
 ---
 
-## ⬇️ PASTE FROM HERE ⬇️
+## ⬇️ PASTE FROM HERE
 
-You are building **Kira** — my Kapruka Agent Challenge entry. Win condition: score highest on Kapruka's published 100-point rubric. You have up to 24 hours. Work autonomously. Commit and push after each phase. Deploy to production after every major phase so the live URL always works.
-
-### Repo & demo (FILL THESE IN BEFORE STARTING)
+You are improving **Kira** — Ovindu's Kapruka Agent Challenge entry. The agent and website exist; your job is to bring them to **Apple Ultra quality** and maximize the official 100-point rubric. Work autonomously. Commit, push, deploy after every phase.
 
 ```
-GITHUB_REPO:        <e.g. Cookie-Cat21/kira OR local path — agent: find Kira repo with mcp.kapruka.com>
-LIVE_DEMO_URL:      <your public Vercel URL — must stay up for judges>
-KIRA_PERSONALITY:   Warm Sri Lankan gift-shopping concierge. Fluent in English, Sinhala, and Tanglish. Never robotic.
+GITHUB_REPO:     https://github.com/Cookie-Cat21/Kira
+LIVE_DEMO_URL:   <FILL IN — Vercel production URL judges will open>
+BRANCH:          main (or create cursor/ultra-polish-overnight)
 ```
 
-If repo is not in GitHub, clone from wherever it lives first. Search my machine for `mcp.kapruka.com` or `kapruka_create_order` if needed.
+### What Kira already has (do NOT rebuild from scratch)
 
-### Install Apple Ultra Skills (mandatory — use for every review gate)
+Read these first — they are the source of truth:
+- `MASTERPLAN.md` — v2 shipped epics, judge demo script, self-score ~93/100
+- `KIRA_E2E_FINDINGS.md` — P1 bugs S1/S2 still need decisions
+- `KIRA_WEBSITE_REPLACEMENT_ANALYSIS.md` — shop vs chat gaps
+- `LIQUID-GLASS-REVIEW-VERIFICATION.md` — 21 P0/P1 on glass kit branch
+- `scripts/judge-dry-run.mjs` — 10-step automated judge path
+- `scripts/test-personas.mjs` — 100 persona E2E suite
+
+**Two surfaces — review separately:**
+| Surface | Route | Ultra skills |
+|---------|-------|--------------|
+| **Challenge entry** | `/` (`KiraExperience`) | apple-design-head, ultra-web-quality, ultra-brand-voice |
+| **Website replacement** | `/shop`, `/product/[id]` | apple-design-head, ultra-visual-system, ultra-component-discovery |
+| **Agent brain** | `app/api/chat/route.ts`, `lib/` | ultra-cto, ultra-tdd, ultra-security-review |
+| **Ship** | all | ultra-pr-ship-review |
+
+### Step 0 — Wire Apple Ultra into Kira (do this first)
 
 ```bash
+# In Kira repo root
 curl -fsSL https://raw.githubusercontent.com/Cookie-Cat21/apple-ultra-skills/main/scripts/install.sh | sh
-# OR if already cloned:
+# OR
 npx skills add Cookie-Cat21/apple-ultra-skills -y
 ```
 
-Skills live in `.cursor/skills/` or project skills folder. **Invoke by name** at each phase below.
+Run **`ultra-teach`** — create `.ultra.md` at Kira root with:
 
-### Kapruka MCP (mandatory — the whole challenge runs on this)
+```markdown
+## Product
+Kira — Sri Lanka's AI shopping companion for Kapruka Agent Challenge 2026.
+Primary action: conversational gift shopping → guest checkout pay link.
+Stage: submission polish.
 
-```json
-// .cursor/mcp.json or project MCP config
-{
-  "mcpServers": {
-    "kapruka": {
-      "url": "https://mcp.kapruka.com/mcp"
-    }
-  }
-}
+## Users
+Sri Lankan gift shoppers + diaspora sending gifts home. Judges on mobile.
+
+## Design — Creative North Star
+"The thoughtful cousin who knows Kapruka by heart" — warm, Tanglish, never corporate.
+
+## Named Rules
+- Full-screen chat is the hero — not a widget.
+- Product cards always show image + LKR price + add action.
+- Sinhala/Tamil modes must not destroy replies with catalog Unicode (fix S2).
+- Shop (/shop) must match chat craft — same tokens, no second-class UI.
+- Never hallucinate products — streaming anti-hallucination must work (fix S1).
+
+## Benchmarks
+Positive: Kaan-level checkout reliability, Kapruka mobile UX
+Anti: generic AI gradient SaaS, wall-of-text product lists
+
+## Stack
+Verify: npm run lint && npm run build
+Tests: node scripts/run-tests.mjs (62), node scripts/test-personas.mjs (100)
+Judge: node scripts/judge-dry-run.mjs
+MCP: https://mcp.kapruka.com/mcp
+Model: Groq llama-3.3-70b-versatile
+
+## Known P1 (from KIRA_E2E_FINDINGS.md)
+- S1: Hallucination stop-hook bypassed during streaming
+- S2: EN language guard destroys replies with Sinhala product names
+
+## Paths
+Chat UI: app/components/KiraExperience.tsx
+Chat API: app/api/chat/route.ts
+Shop: app/shop/, app/components/store/
+MCP parsing: lib/mcp-parsing.ts
+Prompt: lib/kira-prompt.ts
 ```
 
-**Tools you MUST use end-to-end:**
-`kapruka_search_products` · `kapruka_get_product` · `kapruka_list_categories` · `kapruka_list_delivery_cities` · `kapruka_check_delivery` · `kapruka_create_order` · `kapruka_track_order`
+Copy or symlink `_shared/` templates from apple-ultra-skills and fill with Kira values.
 
-**Rate limits (do not get us disqualified):**
-- 60 req/min per IP
-- 30 `kapruka_create_order` / hour per IP — use test orders sparingly; mock in dev
-
----
-
-## WINNING STRATEGY (optimize for rubric, not features)
-
-Kapruka scores out of 100:
-
-| Category | Points | How Kira wins |
-|----------|--------|---------------|
-| Experience & polish | **30** | Full-screen immersive chat, zero jank, mobile-first, fast |
-| Visual richness | **20** | Product image cards, carousels, cart UI — NOT walls of text |
-| Personality | **15** | Kira voice: warm, witty, culturally Sri Lankan |
-| Usefulness | **15** | Gift discovery → decision → cart in <5 turns |
-| End-to-end checkout | **15** | Search → cart → delivery → pay link — every judge path works |
-| Creativity | **5** | Surprise: Sinhala/Tanglish + gift concierge angle |
-
-**Bonus differentiators (almost nobody has these — prioritize):**
-1. 🇱🇰 **Sinhala language support** — UI + agent replies
-2. 💬 **Tanglish** — natural code-switching ("mama gift ekak hadanna oni")
-3. 🛒 **Multi-item cart**
-4. 📅 **Delivery date constraints** with `kapruka_check_delivery`
-5. 🎁 **Gift messaging** in checkout flow
-
-Study competitor pattern: [Kaan gift concierge](https://medium.com/@kalanarandil/how-i-built-kaan-a-smart-gift-concierge-for-kapruka-866ebdb767ab) uses deterministic state machine + MCP. Kira should match reliability but beat on **visual polish + Sinhala**.
+Kapruka MCP — ensure `.cursor/mcp.json`:
+```json
+{ "mcpServers": { "kapruka": { "url": "https://mcp.kapruka.com/mcp" } } }
+```
 
 ---
 
-## PHASE 0 — Bootstrap (first 30 min)
+## Rubric — optimize for these points
 
-1. Run **`ultra-teach`** — create `.ultra.md` for Kira with:
-   - Product: Kira — Kapruka AI shopping agent for Agent Challenge
-   - Users: Sri Lankan gift shoppers, diaspora sending gifts home
-   - Creative North Star: "The thoughtful cousin who knows Kapruka by heart"
-   - Named Rules: full-screen chat only; product cards always show image+price; Sinhala toggle visible
-   - Benchmarks: positive = Kaan-level checkout reliability; anti = generic ChatGPT widget
-   - Stack: fill from actual repo (likely Next.js + AI SDK + Kapruka MCP)
+| Category | Pts | Kira focus |
+|----------|-----|------------|
+| Experience & polish | **30** | `/` full-screen, mobile Safari, no jank, skeletons |
+| Visual richness | **20** | ProductCard, ProductQuickView, CommerceRail — images not text |
+| Personality | **15** | Repair-gift few-shots, Tanglish, CEO personality |
+| Usefulness | **15** | Reorder, rush/sale fast-paths, gift discovery |
+| End-to-end | **15** | judge-dry-run.mjs 10/10 green |
+| Creativity | **5** | Sinhala welcome prompts, gift concierge angle |
 
-2. Run **`apple-hub`** — confirm skill routing plan for this sprint
-
-3. **Audit live demo** — open LIVE_DEMO_URL, run 3 judge journeys (record failures):
-   - Journey A: "Birthday gift for amma in Colombo under 5000 LKR"
-   - Journey B: Full checkout to pay link (use test data)
-   - Journey C: Sinhala or Tanglish request
-   - Journey D: Track order (if supported)
-
-4. Write `CHALLENGE-AUDIT.md` at repo root: rubric self-score /100 + P0 blocker list
+**Bonus:** multi-cart ✅ · delivery dates ✅ · gift message ✅ · Sinhala/Tanglish ✅ · reorder ✅
 
 ---
 
-## PHASE 1 — Design & UX blitz (hours 1–4)
+## PHASE 1 — Fix P1 bugs (hours 0–4) · ultra-cto + ultra-tdd
 
-Invoke **`ultra-web-quality`** — Lighthouse/CWV/a11y/SEO on LIVE_DEMO_URL  
-Invoke **`apple-design-head`** — full review; fix all RULE Critical/High from RULES.md  
-Invoke **`ultra-visual-system`** — token pass on chat UI, product cards, dark mode  
-Invoke **`ultra-component-discovery`** — upgrade product cards/carousels if current UI is weak
+From `KIRA_E2E_FINDINGS.md` — these lose judge trust if unfixed:
 
-**P0 design targets:**
-- Full-screen chat (not corner widget) — rubric requirement
-- Product results = image cards with price, stock, add-to-cart — min 3 visible without scrolling on mobile
-- Loading/skeleton states for MCP search (no blank flash)
-- `prefers-reduced-motion` respected
-- Touch targets ≥44px
+1. **S1** `app/api/chat/route.ts` — buffer first sentence before streaming OR run hallucination check pre-stream
+2. **S2** Language guard — strip offending runs, don't replace entire reply when Kapruka product names contain Sinhala
+3. Port `SENTINEL_RE` fallback detection to `scripts/evaluate.mjs` (core test suite)
+4. Run: `node scripts/run-tests.mjs` → 62/62 · `node scripts/test-personas.mjs` → target 95%+ genuine pass
 
-Commit: `feat(design): rubric P0 visual pass` → deploy → verify LIVE_DEMO_URL
+Commit: `fix(agent): S1 S2 streaming and language guard` → deploy
 
 ---
 
-## PHASE 2 — Agent brain & checkout reliability (hours 4–10)
+## PHASE 2 — Apple design review on chat (hours 4–8) · apple-design-head
 
-Invoke **`ultra-cto`** — review agent architecture (state machine vs pure LLM chaos)  
-Reference: deterministic checkout steps like Kaan:
-1. Discover → 2. Cart → 3. City → 4. Delivery date (`kapruka_check_delivery`) → 5. Recipient → 6. Sender → 7. Gift message → 8. Review → 9. `kapruka_create_order` → 10. Pay link
+Invoke **`apple-design-head`** on `app/components/`:
+- KiraExperience.tsx, ProductCard, ProductQuickView, CheckoutModal, CommerceRail
+- Run: `node scripts/lint-design-rules.mjs --path app/components/` (copy script from apple-ultra-skills if needed)
+- Fix all RULE Critical/High from apple-design-head/RULES.md
+- Targets: 44px touch targets, contrast, motion reduced, no AI-slop gradients on booking path
 
-**Must implement/fix:**
-- [ ] Multi-item cart (bonus points)
-- [ ] `kapruka_check_delivery` before order — cakes/flowers perishable warning
-- [ ] Gift message field in checkout
-- [ ] Graceful MCP error handling (rate limit, out of stock, city not found)
-- [ ] Conversation memory: rejected products not re-suggested
-- [ ] Sinhala + Tanglish: detect language, reply in kind; optional UI language toggle
+Invoke **`ultra-web-quality`** on LIVE_DEMO_URL:
+- Lighthouse mobile: LCP <2.5s, CLS <0.1
+- axe-core on chat flow
 
-Invoke **`ultra-brand-voice`** — write Kira system prompt: personality, sample greetings in EN/SI/Tanglish, banned phrases (no "As an AI language model")
-
-Commit: `feat(agent): checkout state machine + sinhala` → deploy → run Journey A–D again
+Commit: `feat(ui): apple-design-head P0/P1 fixes` → deploy
 
 ---
 
-## PHASE 3 — Engineering hardening (hours 10–16)
+## PHASE 3 — Shop website polish (hours 8–12) · ultra-visual-system
 
-Invoke **`ultra-tdd`** — add tests for:
-- Cart add/remove/update
-- Checkout state transitions
-- MCP response parsing (fixture JSON)
-- Delivery date validation
+The `/shop` replacement site must not look worse than chat — judges may browse both.
 
-Invoke **`ultra-security-review`** — no secrets in client; validate all user input before MCP calls; rate-limit your own API routes
+Invoke **`ultra-visual-system`** — audit `app/globals.css`, store tokens, dark mode  
+Invoke **`apple-design-head`** on `app/components/store/`  
+Invoke **`ultra-component-discovery`** — only if StoreProductCard needs upgrade
 
-Invoke **`ultra-pr-ship-review`** — full PR before merge to main:
-- `npm run build` passes
-- No `console.error` on happy path in prod
-- Environment vars documented in README
+If `liquid-glass-kit` branch has unmerged fixes, evaluate P0s from `plans/009-liquid-glass-kit-review-findings.md` — do not merge broken glass effects to main.
 
-Use **`obra systematic debugging`** pattern from ultra-pr-ship-review if anything breaks: root cause before fix.
-
-Commit: `test: checkout + MCP fixtures` → deploy
+Commit: `feat(shop): visual system alignment with chat` → deploy
 
 ---
 
-## PHASE 4 — Polish sprint for maximum rubric points (hours 16–20)
+## PHASE 4 — Personality & judge path (hours 12–16) · ultra-brand-voice
 
-Invoke **`apple-design-head`** again — target 90+ score  
-Invoke **`ultra-content-review`** — microcopy on buttons, errors, empty states  
-Invoke **`ultra-head-of-growth`** — 30-second demo script for judges
+Invoke **`ultra-brand-voice`** — audit `lib/kira-prompt.ts`:
+- Sinhala starter prompts on hero (MASTERPLAN judge script step 2)
+- "Wife is angry" repair-gift path must fire deterministically (test 57)
 
-**High-impact polish checklist:**
-- [ ] Welcome screen with 3 suggested prompts ("Gift for wedding", "Flowers to Kandy tomorrow", "මට තෑග්ගක් ඕනේ")
-- [ ] Product carousel swipe on mobile
-- [ ] Cart badge with item count always visible
-- [ ] Order summary before pay link with edit option
-- [ ] Success state with pay link button + track order hint
-- [ ] Favicon, OG image, page title "Kira — Kapruka Shopping Agent"
-- [ ] Page works on mobile Safari (judges will use phones)
+Run judge script until green:
+```bash
+npm run dev   # or test against production
+node scripts/judge-dry-run.mjs
+npx playwright test
+```
 
-Commit: `feat(polish): judge-ready demo` → deploy → final Lighthouse run
+Record output in `CHALLENGE-AUDIT.md` with rubric self-score.
 
 ---
 
-## PHASE 5 — Submission prep (hours 20–24)
+## PHASE 5 — Ship gate (hours 16–20) · ultra-pr-ship-review
 
-1. **`ultra-pr-ship-review`** final gate — SHIP verdict required
-2. **`ultra-ceo`** — one paragraph: why Kira wins vs other entries
-3. Update README with:
-   - Live demo URL (big, top of README)
-   - 30-second judge instructions
-   - MCP tools used
-   - Sinhala/Tanglish feature callout
-4. Create `SUBMISSION.md`:
-   - Demo URL
-   - Test accounts / sample prompts for judges
-   - Known limitations (honest)
-   - Self-score against rubric table
-5. **Smoke test LIVE_DEMO_URL from incognito** — if broken, fix before stopping
-6. Do NOT spam `kapruka_create_order` in testing
+```bash
+npm run lint && npm run build
+node scripts/run-tests.mjs
+node scripts/test-personas.mjs --concurrency 1
+node scripts/judge-dry-run.mjs
+```
 
----
+Invoke **`ultra-pr-ship-review`** — require SHIP verdict:
+- No secrets in diff
+- GROQ_API_KEY server-only
+- Rate limit respect on kapruka_create_order (max 30/hr in testing)
 
-## RULES OF ENGAGEMENT
-
-- **Ship working code every phase.** Judges need a live URL — broken deploy = 0 points.
-- **Use Apple Ultra skills by name** at each phase — don't skip gates.
-- **Prioritize rubric points over clever tech.** 30 pts experience > 5 pts creativity.
-- **Sinhala is the secret weapon.** Even partial Sinhala UI beats 95% of entries.
-- **No feature creep.** If it doesn't move the rubric, cut it.
-- **Commit messages:** conventional, descriptive.
-- **If stuck on MCP:** read https://mcp.kapruka.com/ and github.com/kapruka/mcp — do not hallucinate tool params.
+Update `MASTERPLAN.md` submission checklist — live URL verified.
 
 ---
 
-## DEFINITION OF DONE
+## PHASE 6 — Submission (hours 20–24)
 
-- [ ] LIVE_DEMO_URL loads full-screen chat in <3s on mobile
-- [ ] Judge Journey A–D all pass without hand-holding
-- [ ] Self-score ≥85/100 on Kapruka rubric in CHALLENGE-AUDIT.md
-- [ ] Sinhala OR Tanglish works in at least 3 conversation turns
-- [ ] Multi-item cart + gift message + delivery date check implemented
-- [ ] README + SUBMISSION.md ready for Kapruka form
-- [ ] All changes on `main` (or `release/challenge`) and deployed
+1. Incognito mobile test of LIVE_DEMO_URL — full journey A→pay link
+2. README.md — demo URL at top, 30-sec judge instructions
+3. Create `SUBMISSION.md` — self-score table, demo script, sample prompts
+4. Output final summary for Ovindu
 
-**When done, output:**
-1. Final LIVE_DEMO_URL
-2. Rubric self-score table
-3. Top 5 things improved overnight
-4. Top 3 risks before judging
-5. Exact text to paste into Kapruka submission form
+### Judge journeys (all must pass)
+
+| # | Prompt | Pass criteria |
+|---|--------|---------------|
+| A | "Birthday gift for amma in Colombo under 5000 LKR" | Products + cards |
+| B | Sinhala: "මට තෑග්ගක් ඕනේ" | Unicode reply, products |
+| C | "Wife is angry, send flowers" | Advice before search |
+| D | Full checkout → pay link | kapruka_create_order |
+| E | "Order again" | Reorder from session |
+| F | "Track KP-XXXXX" | OrderTracker |
+
+---
+
+## Rules
+
+- **Apple Ultra skills by name** at each phase — this is the quality standard Ovindu built the pack for.
+- **Deploy after every phase** — judges need live URL.
+- **Don't rewrite Kira** — fix P1s, polish, align shop to chat.
+- **3 days left** — cut scope that doesn't move rubric points.
+
+## Done when
+
+- [ ] judge-dry-run.mjs 10/10 on production URL
+- [ ] S1 + S2 fixed
+- [ ] apple-design-head: 0 Critical on chat components
+- [ ] CHALLENGE-AUDIT.md self-score ≥90/100
+- [ ] LIVE_DEMO_URL works in mobile incognito
+
+Output: final URL, rubric table, top 5 changes, Kapruka submission blurb.
 
 ## ⬆️ END PROMPT ⬆️
