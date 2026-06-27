@@ -108,7 +108,9 @@ def validate_skills(root: Path) -> list[str]:
             continue
 
         expected = path.parent.name
-        if name != expected:
+        if path.parent == root and name == "apple-ultra-skills":
+            pass  # pack-level meta skill at repository root
+        elif name != expected:
             errors.append(f"{path}: name '{name}' != folder '{expected}'")
 
         if not description:

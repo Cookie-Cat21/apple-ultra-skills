@@ -74,6 +74,25 @@ If `.ultra.md` is missing at project root, suggest **`ultra-teach`** for first-t
 | User intent | Skill |
 |-------------|-------|
 | Multi-step parallel work | `dag-task-runner` |
+| Live docs, GitHub issues, Reddit/YouTube research | Agent-Reach — see [SKILL.md](../SKILL.md) Section 12 |
+
+## Agent-Reach (research layer)
+
+Before non-trivial implementation, use **Agent-Reach** for research-then-build:
+
+```bash
+pip install agent-reach && agent-reach install
+agent-reach doctor   # channel health check
+```
+
+| Need | Command |
+|------|---------|
+| Official docs | `agent-reach web [url]` |
+| Community solutions | `agent-reach reddit "query"` |
+| Repo issues/README | `agent-reach github owner/repo` |
+| Global search | `agent-reach search "query"` |
+
+Full channel reference: [references/agent-patterns.md](../references/agent-patterns.md)
 
 ## Common chains
 

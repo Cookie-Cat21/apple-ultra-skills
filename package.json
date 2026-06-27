@@ -1,13 +1,10 @@
 {
   "name": "apple-ultra-skills",
-  "displayName": "Apple Ultra Skills",
+  "version": "1.2.0",
   "description": "Apple-quality design craft, executive personas, engineering specialists, and scored ship-review protocols for product teams. Pairs with Agent-Reach (pip install agent-reach) for zero-cost real-time internet research across web, YouTube, Twitter, Reddit, GitHub, and RSS.",
-  "version": "1.3.0",
-  "author": {
-    "name": "Cookie-Cat21"
-  },
-  "homepage": "https://github.com/Cookie-Cat21/apple-ultra-skills",
   "license": "MIT",
+  "author": "Cookie-Cat21",
+  "homepage": "https://github.com/Cookie-Cat21/apple-ultra-skills",
   "keywords": [
     "skills",
     "design",
@@ -23,11 +20,14 @@
     "research",
     "real-time"
   ],
-  "skills": "./",
-  "exclude": [
-    "competitive-research",
-    "examples",
-    "registry",
-    "scripts"
+  "files": [
+    "SKILL.md",
+    "references",
+    "_shared",
+    "apple-hub",
+    "apple-design-head",
+    "ultra-*",
+    "dag-task-runner",
+    ".cursor-plugin"
   ]
 }

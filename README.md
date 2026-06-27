@@ -47,11 +47,33 @@ node scripts/lint-design-rules.mjs --path src/
 
 ---
 
+## Supercharged by Agent-Reach
+
+Apple Ultra Skills pairs with [Agent-Reach](https://github.com/Panniantong/Agent-Reach) for real-time internet access:
+
+```bash
+pip install agent-reach && agent-reach install
+```
+
+Once installed, your AI agent can research while it builds — checking
+live docs, scanning GitHub issues, reading Reddit solutions, and pulling
+YouTube transcripts without a single paid API key.
+
+The combination: Ultra Skills knows **HOW** to build anything.
+Agent-Reach knows **WHAT** is true right now.
+Together: the most capable AI coding agent setup available, completely free.
+
+See [SKILL.md](SKILL.md) Section 12 and [references/agent-patterns.md](references/agent-patterns.md) for the research protocol.
+
+---
+
 ## Plugin structure
 
 ```
 apple-ultra-skills/
 ├── README.md                 ← you are here
+├── SKILL.md                  ← meta skill (Agent-Reach Ultra-Mode, Section 12)
+├── references/               ← agent-patterns.md channel reference
 ├── _shared/                  ← fill in before use (BRAND, VISUAL, STACK, …)
 ├── apple-hub/                ← skill router — start here
 ├── apple-design-head/
