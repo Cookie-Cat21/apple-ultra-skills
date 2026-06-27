@@ -134,7 +134,7 @@ npm run verify                     # full suite from STACK.md
 - Implementation file committed before test file in git history
 - Test passes on first run without ever failing (test proves nothing)
 - `test.skip` or `it.only` left in committed code
-- Mocking `requireApiBusiness` to always return success
+- Mocking `requireAuth` to always return success
 - No test for error/401/402/403 paths on new routes
 
 ---

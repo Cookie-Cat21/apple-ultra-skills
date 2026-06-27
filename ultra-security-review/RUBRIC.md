@@ -14,8 +14,8 @@ Companion to `SKILL.md`. Scored ledger for deep security audits.
 |----|-----------|---|---|---|
 | S1 | Cron protection | No auth | Weak/shared secret in code | Bearer `CRON_SECRET`; 401 on mismatch |
 | S2 | Cron secret unset | Accepts all if empty | Warns only | 503 when unset in production paths |
-| S3 | Dashboard session | Missing on route | Some routes open | `requireApiBusiness()` everywhere |
-| S4 | v1 API keys | No key required | Key but no scope | `requireApiKey(req, scope)` per operation |
+| S3 | Dashboard session | Missing on route | Some routes open | `requireAuth({ req, ownerOnly: false })` everywhere |
+| S4 | v1 API keys | No key required | Key but no scope | `requireScopedKey({ req, scope })` per operation |
 | S5 | Scope enforcement | Any key works | Partial scopes | Write vs read scopes enforced |
 | S6 | IDOR — businessId | User A accesses B | Partial checks | All queries scoped to session business |
 | S7 | Owner-only actions | Staff can billing/delete | Inconsistent | `requireOwner()` where required |
@@ -85,7 +85,7 @@ Companion to `SKILL.md`. Scored ledger for deep security audits.
 ```bash
 # Unauthenticated route handlers (manual triage)
 rg 'export async function (GET|POST|PUT|PATCH|DELETE)' --glob 'src/app/api/**/*.ts' -A3 \
-  | rg -v 'requireApi|CRON_SECRET|requireBusiness|requireOwner|requireApiKey'
+  | rg -v 'requireAuth|CRON_SECRET|requireBusiness|requireOwner|requireScopedKey'
 
 # Missing cron check
 for f in src/app/api/cron/*/route.ts; do
@@ -119,8 +119,8 @@ rg 'searchParams\.get\(.(email|phone)' --glob 'src/**'
 
 ## Pre-merge security checklist (copy into PR review)
 
-- [ ] All new `/api/dashboard/*` call `requireApiBusiness()`
-- [ ] All new `/api/v1/*` call `requireApiKey` with correct scope
+- [ ] All new `/api/dashboard/*` call `requireAuth({ req, ownerOnly: false })`
+- [ ] All new `/api/v1/*` call `requireScopedKey` with correct scope
 - [ ] All new `/api/cron/*` validate `Bearer ${CRON_SECRET}`
 - [ ] payment gateway changes verify hash before mutation
 - [ ] No `console.log` of request bodies with PII

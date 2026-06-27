@@ -79,8 +79,8 @@ See [references/blockers.md](./references/blockers.md) for full catalog.
 |----|-----------|---|---|---|
 | A1 | Route auth present | Missing on privileged route | Partial | Correct require* per prefix |
 | A2 | Cron Bearer | Open cron | Wrong header | `CRON_SECRET` pattern |
-| A3 | Dashboard session | No requireApiBusiness | Inconsistent | Matches PATHS.md |
-| A4 | API key scope | Missing scope | Wrong scope | requireApiKey + scope |
+| A3 | Dashboard session | No requireAuth | Inconsistent | Matches PATHS.md |
+| A4 | API key scope | Missing scope | Wrong scope | requireScopedKey + scope |
 | A5 | Zod validation | Manual parse | Partial schema | Full Zod on POST/PATCH |
 | A6 | Error responses | Stack traces leaked | Generic 500 | Safe user messages |
 | A7 | Rate limiting | N/A abused endpoint | Partial | Appropriate limits |

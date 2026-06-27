@@ -67,10 +67,10 @@ Trigger when the user mentions:
 |---|--------|-----|
 | 1 | Integration setup docs | Canonical contracts |
 | 2 | `src/app/api/v1/**` | Scoped endpoints |
-| 3 | `src/lib/api-key-auth.ts` | Scope enforcement |
+| 3 | `src/lib/scoped-keys.ts` | Scope enforcement |
 | 4 | Dashboard integration setup routes | Tenant configuration |
 | 5 | Schema/migrations for integration config | Persistence |
-| 6 | `rg "requireApiKey|scope" src/app/api/v1/` | Auth coverage |
+| 6 | `rg "requireScopedKey|scope" src/app/api/v1/` | Auth coverage |
 
 **Scope design principles:**
 
@@ -87,7 +87,7 @@ Trigger when the user mentions:
 
 | ID | Invariant |
 |----|-----------|
-| I1 | `requireApiKey` with correct scope on every v1 integration route |
+| I1 | `requireScopedKey` with correct scope on every v1 integration route |
 | I2 | Write scopes required for all mutating integration actions |
 | I3 | Profile/context responses exclude secrets, webhook URLs, full CRM exports |
 | I4 | Integration creates use same validation as public APIs (no bypass) |

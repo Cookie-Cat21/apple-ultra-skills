@@ -26,7 +26,7 @@ Read before scoring:
 - [_shared/PRODUCT.md](../_shared/PRODUCT.md) — booking terms to preserve
 - `_shared/STACK.md` — always-on invariants
 
-Code anchors: ``your schema file` (see _shared/STACK.md)`, ``your scheduling module` (see _shared/PATHS.md)`, `src/lib/api-auth.ts`, `src/lib/api-key-auth.ts`, ``your routing middleware` (see _shared/PATHS.md)`.
+Code anchors: ``your schema file` (see _shared/STACK.md)`, ``your scheduling module` (see _shared/PATHS.md)`, `src/lib/auth.ts`, `src/lib/scoped-keys.ts`, ``your routing middleware` (see _shared/PATHS.md)`.
 
 ---
 
@@ -83,8 +83,8 @@ Trigger when the user says:
 | Prefix | Auth |
 |--------|------|
 | `/api/cron/*` | `Bearer $CRON_SECRET` |
-| `/api/dashboard/*` | `requireApiBusiness()` |
-| `/api/v1/*` | `requireApiKey(req, scope)` |
+| `/api/dashboard/*` | `requireAuth({ req, ownerOnly: false })` |
+| `/api/v1/*` | `requireScopedKey({ req, scope })` |
 | Server pages | `requireBusiness()` / `requireOwner()` |
 
 ---
@@ -98,7 +98,7 @@ Trigger when the user says:
 | Check | Pass | Fail |
 |-------|------|------|
 | Lib purity | No component imports in `src/lib/` | UI leaked into domain |
-| Cursor boundary | No `@cursor/sdk` in `src/app/` or root deps | Dev tooling in bundle |
+| Agent SDK boundary | No your framework's SDK package in `src/app/` or root deps | Dev tooling in bundle |
 | Import alias | `@/` used consistently | Deep relative chaos |
 | Diff size | Minimal, matches neighbors | Drive-by refactors |
 
@@ -255,7 +255,7 @@ Trigger when the user says:
 ## Do not
 
 - Import components into `src/lib/`
-- Add `@cursor/sdk` to production bundle
+- Add your framework's SDK package to production bundle
 - Edit migrations already applied in production
 - Expose PII in booking URLs or logs
 - Ship cron routes without Bearer `CRON_SECRET`
@@ -280,7 +280,7 @@ Trigger when the user says:
 | # | Prompt | Expected |
 |---|--------|----------|
 | 1 | "Fix slot-taken race with server holds" | SHIP/ITERATE; idempotency + TZ; P0 if client-only |
-| 2 | "POST /api/dashboard/export without auth" | **REJECT** — P0; requireApiBusiness |
+| 2 | "POST /api/dashboard/export without auth" | **REJECT** — P0; requireAuth |
 | 3 | "Edit applied migrations/0005 instead of new file" | **REJECT** — P0 migration policy |
 
 **References:** [RUBRIC.md](./RUBRIC.md) · `AGENTS.md or CONTRIBUTING.md` · `_shared/STACK.md`

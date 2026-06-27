@@ -2,11 +2,11 @@
 
 name: ultra-api-auth
 description: >
-  API route auth expert for session APIs, cron Bearer tokens, API keys with scopes, and Zod validation. Use when adding or securing API routes, debugging 401/402/403. Triggers: API auth, requireApiBusiness, requireApiKey, CRON_SECRET, 401, secure this endpoint.
+  API route auth expert for session APIs, cron Bearer tokens, API keys with scopes, and Zod validation. Use when adding or securing API routes, debugging 401/402/403. Triggers: API auth, requireAuth, requireScopedKey, CRON_SECRET, 401, secure this endpoint.
 paths:
   - src/app/api/**
-  - src/lib/api-auth.ts
-  - src/lib/api-key-auth.ts
+  - src/lib/auth.ts
+  - src/lib/scoped-keys.ts
   - src/lib/platform-admin.ts
 metadata:
   pack: apple-ultra
@@ -36,7 +36,7 @@ Read before advising or implementing:
 Trigger when the user mentions:
 
 - New API route, 401, 403, 402 plan required
-- `requireApiBusiness`, `requireApiKey`, `CRON_SECRET`
+- `requireAuth`, `requireScopedKey`, `CRON_SECRET`
 - Dashboard API, `/api/v1/`, cron job route
 - API key scopes (`bookings:write`, `voice:read`)
 - Webhook signature verification on inbound routes
@@ -66,8 +66,8 @@ Trigger when the user mentions:
 | # | File | Why |
 |---|------|-----|
 | 1 | Sibling route in same folder | Copy auth + error pattern |
-| 2 | `src/lib/api-auth.ts` | `requireApiBusiness`, session + optional API key |
-| 3 | `src/lib/api-key-auth.ts` | `requireApiKey`, `requireAnyApiKey`, scopes |
+| 2 | `src/lib/auth.ts` | `requireAuth`, session + optional scoped key |
+| 3 | `src/lib/scoped-keys.ts` | `requireScopedKey`, `requireAnyScopedKey`, scopes |
 | 4 | `src/lib/platform-admin.ts` | Admin route checks |
 | 5 | `src/lib/business-active.ts` | Inactive business → 403 |
 | 6 | `src/lib/validation` or colocated Zod schema | Body validation |
@@ -78,15 +78,15 @@ Trigger when the user mentions:
 | Prefix | Auth |
 |--------|------|
 | `/api/cron/*` | `Authorization: Bearer $CRON_SECRET` |
-| `/api/dashboard/*` | `requireApiBusiness()` |
-| `/api/v1/*` | `requireApiKey(req, scope)` |
+| `/api/dashboard/*` | `requireAuth({ req, ownerOnly: false })` |
+| `/api/v1/*` | `requireScopedKey({ req, scope })` |
 | Admin | Platform admin (`platform-admin.ts`) |
 | Public webhooks | Signature verify (payment gateway, Meta, Twilio) — no session |
 
 **Grep:**
 
 ```bash
-rg "requireApiBusiness|requireApiKey|CRON_SECRET" src/app/api/ --glob '**/route.ts' | head -30
+rg "requireAuth|requireScopedKey|CRON_SECRET" src/app/api/ --glob '**/route.ts' | head -30
 ```
 
 ---
@@ -96,8 +96,8 @@ rg "requireApiBusiness|requireApiKey|CRON_SECRET" src/app/api/ --glob '**/route.
 | ID | Invariant |
 |----|-----------|
 | A1 | Cron routes reject missing/wrong `CRON_SECRET` (401) |
-| A2 | Dashboard routes use `requireApiBusiness`; owner-only when needed |
-| A3 | v1 routes use `requireApiKey` with **minimal** scope per endpoint |
+| A2 | Dashboard routes use `requireAuth`; owner-only when needed |
+| A3 | v1 routes use `requireScopedKey` with **minimal** scope per endpoint |
 | A4 | Request bodies validated with Zod before DB writes |
 | A5 | `PlanRequiredError` → HTTP 402 with clear message |
 | A6 | Inactive business → 403 via `getBusinessActiveStatus` |
@@ -115,12 +115,12 @@ Follow App Router convention: `src/app/api/[segment]/route.ts`
 
 ```typescript
 // Dashboard example
-const auth = await requireApiBusiness({ req, ownerOnly: false });
+const auth = await requireAuth({ req, ownerOnly: false });
 if (!auth.ok) return auth.response;
 const { businessId } = auth.context;
 
 // v1 example
-const key = await requireApiKey(req, "bookings:read");
+const key = await requireScopedKey({ req, scope: "bookings:read" });
 if (!key.ok) return key.response;
 
 // Cron example
@@ -215,7 +215,7 @@ Manual: call route without auth → 401; wrong plan → 402.
 
 | Common excuse | Why it's wrong | What to do instead |
 |---------------|----------------|-------------------|
-| "I'll add auth after the endpoint works" | Unauthenticated endpoints get discovered and exploited | Wire `requireApiBusiness` / scopes before handler logic |
+| "I'll add auth after the endpoint works" | Unauthenticated endpoints get discovered and exploited | Wire `requireAuth` / scopes before handler logic |
 | "Internal route doesn't need validation" | Internal routes become external via SSRF or misconfig | Zod-validate every input; same schema as external |
 | "401 vs 403 doesn't matter" | Clients and monitors depend on correct semantics | 401 = no/invalid creds; 403 = creds ok, not allowed |
 | "I'll use 500 for plan limits" | Clients can't distinguish errors from outages | Return 402 with consistent error shape |
@@ -233,4 +233,4 @@ Manual: call route without auth → 401; wrong plan → 402.
 - Return 500 for plan limits — use 402
 - Log `Authorization` headers
 - Skip validation "for internal routes"
-- Add `@cursor/sdk` to API routes
+- Add your framework's SDK package to API routes

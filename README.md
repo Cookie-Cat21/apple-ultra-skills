@@ -8,19 +8,21 @@
 
 ## Install
 
-### One-liner (recommended)
-
-```bash
-npx skills add Cookie-Cat21/apple-ultra-skills
-```
-
-### Bootstrap script
+### Bootstrap script (recommended)
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Cookie-Cat21/apple-ultra-skills/main/scripts/install.sh | sh
 ```
 
 Detects Cursor (`.cursor/skills/`), Claude (`.claude/skills/`), and Agents (`.agents/skills/`). Falls back to git clone + sync if `npx` unavailable.
+
+### Via skills CLI (once listed on skills.sh)
+
+```bash
+npx skills add Cookie-Cat21/apple-ultra-skills
+```
+
+Not yet registered — use bootstrap script above.
 
 ### Sync from a local clone
 
@@ -164,7 +166,7 @@ Example entries use fictional **Acme Scheduling** — not any real product.
 
 ## Quick start
 
-1. `npx skills add Cookie-Cat21/apple-ultra-skills`
+1. `curl -fsSL https://raw.githubusercontent.com/Cookie-Cat21/apple-ultra-skills/main/scripts/install.sh | sh`
 2. Run **`ultra-teach`** to write `.ultra.md` and fill `_shared/*.md`
 3. Ask: **"Use apple-hub to route this"** or **"Apple design review the checkout"**
 4. For UI blocks: **"Use ultra-component-discovery to find a footer"**

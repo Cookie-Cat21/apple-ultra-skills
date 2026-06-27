@@ -235,7 +235,7 @@ Weights sum to **100%**. Score each round **0–100**, then compute weighted ove
 - Suggest staging-domain.com in any customer-facing strategy
 - Ignore concierge setup as the GTM wedge vs competitor A
 - Treat signup count as success — **first real booking** is the event
-- Add `@cursor/sdk` or production dependencies as "strategy"
+- Add your framework's SDK package or production dependencies as "strategy"
 - Give generic startup advice without local market / target customer / payment context
 
 ---

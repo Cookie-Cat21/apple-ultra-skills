@@ -1,5 +1,5 @@
 /**
- * Entry point. Reads a DAG JSON file, runs each task as a Cursor SDK local
+ * Entry point. Reads a DAG JSON file, runs each task as a local agent SDK
  * subagent in topological order, and writes live status into a `.canvas.tsx`.
  *
  * Two modes:
@@ -23,7 +23,7 @@
  *   --stream-publish-ms <ms> Throttle live stream publishes (default: 500ms).
  */
 
-import { Agent } from "@cursor/sdk";
+import { Agent } from "@agent/sdk";
 import { setMaxListeners } from "node:events";
 import { readFile } from "node:fs/promises";
 import { homedir } from "node:os";
