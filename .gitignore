@@ -1,0 +1,20 @@
+# Cloned competitor repos — reproduce via competitive-research/README.md
+competitive-research/crisp/
+competitive-research/apple-design-skill/
+competitive-research/HIGAgentSkills/
+competitive-research/awesome-cursor-skills/
+competitive-research/agent-skills/
+competitive-research/claude-skills/
+competitive-research/superpowers/
+competitive-research/awesome-agent-skill/
+
+# Python
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/

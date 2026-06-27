@@ -1,0 +1,29 @@
+{
+  "name": "apple-ultra-skills",
+  "displayName": "Apple Ultra Skills",
+  "description": "Apple-quality design craft, executive personas, engineering specialists, and scored ship-review protocols for product teams.",
+  "version": "1.1.0",
+  "author": {
+    "name": "Cookie-Cat21"
+  },
+  "homepage": "https://github.com/Cookie-Cat21/apple-ultra-skills",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "design",
+    "apple",
+    "hig",
+    "review",
+    "ship-gate",
+    "executive",
+    "booking",
+    "saas"
+  ],
+  "skills": "./",
+  "exclude": [
+    "competitive-research",
+    "examples",
+    "registry",
+    "scripts"
+  ]
+}
