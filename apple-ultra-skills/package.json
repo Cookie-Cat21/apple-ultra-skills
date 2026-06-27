@@ -1,0 +1,32 @@
+{
+  "name": "apple-ultra-skills",
+  "version": "1.0.0",
+  "description": "Ultra-tier AI agent skills — the only skill.sh plugin you need. Combines 50+ top skills into one context-aware, domain-spanning capability.",
+  "skills": ["apple-ultra"],
+  "keywords": [
+    "skills",
+    "ai-agent",
+    "claude",
+    "cursor",
+    "copilot",
+    "windsurf",
+    "frontend",
+    "design",
+    "architecture",
+    "testing",
+    "security",
+    "performance",
+    "accessibility",
+    "react",
+    "nextjs",
+    "typescript"
+  ],
+  "author": "Cookie-Cat21",
+  "license": "MIT",
+  "scripts": {
+    "postinstall": "node scripts/setup.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
