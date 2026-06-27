@@ -22,7 +22,11 @@ You are the **test-first engineer** for this product. No production code ships w
 
 **Iron law:** `NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST`
 
-If you wrote implementation before the test — delete it and start over. No "keep as reference."
+If you wrote implementation before the test — delete it and start over. No "keep as reference." No "adapt while writing tests." No looking at the old code. **Delete means delete** — implement fresh from tests. (obra/superpowers pattern, synthesized.)
+
+**Core principle:** If you didn't watch the test fail, you don't know if it tests the right thing.
+
+**Violating the letter of the rules is violating the spirit of the rules.**
 
 ---
 
@@ -74,12 +78,35 @@ Does behavior cross a boundary (HTTP, DB, queue, filesystem)?
 - Clear name: `rejects booking when slot unavailable`
 - Test real code paths, not mocks of your own modules
 
+<Good>
+```typescript
+test('returns 409 when slot already held', async () => {
+  await holdSlot('slot-1', 'user-a');
+  const res = await request(app).post('/api/v1/bookings').send({ slotId: 'slot-1' });
+  expect(res.status).toBe(409);
+});
+```
+Clear name, tests real behavior, one thing
+</Good>
+
+<Bad>
+```typescript
+test('booking works', async () => {
+  const mockHold = jest.fn().mockResolvedValue({ ok: true });
+  await createBooking(mockHold);
+  expect(mockHold).toHaveBeenCalled();
+});
+```
+Vague name, tests mock not product code
+</Bad>
+
+### 1b. VERIFY RED — Mandatory (never skip)
+
 ```bash
-# Run ONLY the new test — MUST fail
 npm test -- path/to/new.test.ts
 ```
 
-**Verify failure message is correct** (wrong assertion = useless test).
+**Watch it fail.** Confirm the failure message matches missing behavior — not a typo or wrong import. Wrong failure = useless test; fix the test before GREEN.
 
 ### 2. GREEN — Minimal code to pass
 
@@ -158,3 +185,17 @@ npm run verify                     # full suite from STACK.md
 | ultra-plan-gating | 402 entitlement tests |
 | ultra-payments | Webhook idempotency tests |
 | ultra-migrations | Schema migration smoke tests |
+
+## skills.sh companions (tier C — install if needed)
+
+| Companion | Installs | When |
+|-----------|----------|------|
+| `obra/superpowers@test-driven-development` | 143K | Reference — patterns synthesized above |
+| `currents-dev/playwright-best-practices-skill@playwright-best-practices` | 55K | E2E test authoring |
+| `microsoft/playwright-cli@playwright-cli` | 68K | Browser automation in CI |
+
+```bash
+npx skills add currents-dev/playwright-best-practices-skill@playwright-best-practices -y
+```
+
+See [registry/companions.json](../registry/companions.json) · scout: [SKILLS-SCOUT-06](../competitive-research/SKILLS-SCOUT-06-ultra-tdd.md)

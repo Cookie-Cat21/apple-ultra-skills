@@ -1,8 +1,9 @@
 {
   "pack": "apple-ultra",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "skills": [
     { "id": "apple-hub", "section": "hub", "triggers": ["route", "which skill", "apple ultra", "apple hub"] },
+    { "id": "ultra-skill-discovery", "section": "hub", "triggers": ["find skill", "skills.sh", "is there a skill", "discover skill", "skill for"] },
     { "id": "ultra-teach", "section": "hub", "triggers": ["onboard", "ultra teach", "set up skills", "fill shared context"] },
     { "id": "apple-design-head", "section": "design", "triggers": ["ship-ready", "design critique", "Apple polish", "UX audit", "accessibility"] },
     { "id": "ultra-web-quality", "section": "design", "triggers": ["web quality", "lighthouse", "core web vitals", "LCP", "SEO audit", "page speed"] },

@@ -1,0 +1,243 @@
+{
+  "pack": "apple-ultra",
+  "version": "1.4.0",
+  "description": "Curated skills.sh companions per Apple Ultra specialist. Tier: S=synthesized into Ultra, C=chain install, B=bundle recommend.",
+  "ranking": {
+    "min_installs_trusted": 1000,
+    "preferred_owners": [
+      "vercel-labs",
+      "anthropics",
+      "obra",
+      "addyosmani",
+      "stripe",
+      "microsoft",
+      "mattpocock",
+      "shadcn",
+      "currents-dev"
+    ]
+  },
+  "companions": {
+    "apple-hub": [
+      {
+        "skill": "vercel-labs/skills@find-skills",
+        "installs": 2200000,
+        "tier": "C",
+        "when": "User needs skills.sh search; Ultra routes then ranks results"
+      }
+    ],
+    "ultra-skill-discovery": [
+      {
+        "skill": "vercel-labs/skills@find-skills",
+        "installs": 2200000,
+        "tier": "C",
+        "when": "Always — discovery delegates to npx skills find"
+      }
+    ],
+    "apple-design-head": [
+      {
+        "skill": "anthropics/skills@frontend-design",
+        "installs": 597200,
+        "tier": "S",
+        "steal": "5-state components, distinctive UI anti-slop",
+        "when": "Pure UI generation before Apple craft review"
+      },
+      {
+        "skill": "vercel-labs/agent-skills@web-design-guidelines",
+        "installs": 419600,
+        "tier": "S",
+        "steal": "Live guideline fetch pattern",
+        "when": "Web UI review with current Vercel guidelines"
+      },
+      {
+        "skill": "leonxlnx/taste-skill@high-end-visual-design",
+        "installs": 153100,
+        "tier": "C",
+        "when": "High-end visual polish pass before design-head scoring"
+      }
+    ],
+    "ultra-visual-system": [
+      {
+        "skill": "wshobson/agents@tailwind-design-system",
+        "installs": 51100,
+        "tier": "S",
+        "steal": "Token scale validation",
+        "when": "Tailwind token audit"
+      },
+      {
+        "skill": "heygen-com/hyperframes@tailwind",
+        "installs": 70700,
+        "tier": "C",
+        "when": "Tailwind v4 migration"
+      }
+    ],
+    "ultra-component-discovery": [
+      {
+        "skill": "shadcn/ui@shadcn",
+        "installs": 208300,
+        "tier": "C",
+        "when": "User wants shadcn specifically — chain before ultra-component-discovery ranking"
+      }
+    ],
+    "ultra-web-quality": [
+      {
+        "skill": "addyosmani/web-quality-skills@accessibility",
+        "installs": 31900,
+        "tier": "S",
+        "steal": "Lane-specific a11y audit depth",
+        "when": "A11y lane score <85"
+      },
+      {
+        "skill": "addyosmani/web-quality-skills@seo",
+        "installs": 29100,
+        "tier": "S",
+        "steal": "SEO lane checklist",
+        "when": "SEO lane or marketing pages"
+      },
+      {
+        "skill": "ibelick/ui-skills@fixing-accessibility",
+        "installs": 13800,
+        "tier": "C",
+        "when": "Component-level a11y fixes after audit"
+      }
+    ],
+    "ultra-brand-voice": [
+      {
+        "skill": "coreyhaines31/marketingskills@copywriting",
+        "installs": 137100,
+        "tier": "S",
+        "steal": "Copy frames and CTA patterns",
+        "when": "Landing page copy audit"
+      }
+    ],
+    "ultra-content-review": [
+      {
+        "skill": "coreyhaines31/marketingskills@seo-audit",
+        "installs": 147100,
+        "tier": "C",
+        "when": "Content SEO — handoff to ultra-web-quality for technical SEO"
+      }
+    ],
+    "ultra-tdd": [
+      {
+        "skill": "obra/superpowers@test-driven-development",
+        "installs": 143400,
+        "tier": "S",
+        "steal": "Iron law, verify-RED-mandatory, good/bad test examples",
+        "when": "Reference — patterns synthesized into ultra-tdd"
+      },
+      {
+        "skill": "currents-dev/playwright-best-practices-skill@playwright-best-practices",
+        "installs": 54800,
+        "tier": "C",
+        "when": "E2E test authoring"
+      },
+      {
+        "skill": "microsoft/playwright-cli@playwright-cli",
+        "installs": 68200,
+        "tier": "C",
+        "when": "Browser automation in CI"
+      }
+    ],
+    "ultra-security-review": [
+      {
+        "skill": "hoodini/ai-agents-skills@owasp-security",
+        "installs": 2300,
+        "tier": "S",
+        "steal": "OWASP checklist cross-ref",
+        "when": "Threat model pass"
+      }
+    ],
+    "ultra-cto": [
+      {
+        "skill": "mattpocock/skills@improve-codebase-architecture",
+        "installs": 331300,
+        "tier": "S",
+        "steal": "Refactor decision tree",
+        "when": "Architecture refactor PRs"
+      },
+      {
+        "skill": "wshobson/agents@nextjs-app-router-patterns",
+        "installs": 22400,
+        "tier": "C",
+        "when": "App Router architecture review"
+      }
+    ],
+    "ultra-pr-ship-review": [
+      {
+        "skill": "obra/superpowers@systematic-debugging",
+        "installs": 162000,
+        "tier": "S",
+        "steal": "4-phase root cause before fix; no fixes without investigation",
+        "when": "PR fixes failing CI or bugfix PRs"
+      },
+      {
+        "skill": "vercel-labs/agent-skills@vercel-react-best-practices",
+        "installs": 506800,
+        "tier": "C",
+        "when": "React/Next PRs — parallel RSC checklist"
+      }
+    ],
+    "ultra-payments": [
+      {
+        "skill": "stripe/ai@stripe-best-practices",
+        "installs": 49800,
+        "tier": "C",
+        "when": "Stripe integration PRs"
+      },
+      {
+        "skill": "stripe/ai@upgrade-stripe",
+        "installs": 41600,
+        "tier": "C",
+        "when": "Stripe API version upgrades"
+      }
+    ],
+    "ultra-scheduling-engine": [
+      {
+        "skill": "googleworkspace/cli@calendar",
+        "installs": 34900,
+        "tier": "C",
+        "when": "Google Calendar sync integration only — Ultra owns slot/hold logic"
+      }
+    ],
+    "dag-task-runner": [
+      {
+        "skill": "obra/superpowers@brainstorming",
+        "installs": 246000,
+        "tier": "C",
+        "when": "Pre-DAG ideation — do not duplicate; chain before parallel dispatch"
+      },
+      {
+        "skill": "charon-fan/agent-playbook@workflow-orchestrator",
+        "installs": 706,
+        "tier": "C",
+        "when": "Multi-agent workflow patterns"
+      }
+    ]
+  },
+  "bundles": {
+    "design-pro": {
+      "description": "Apple Ultra design chain + top skills.sh companions",
+      "ultra_skills": ["ultra-component-discovery", "ultra-visual-system", "ultra-web-quality", "apple-design-head"],
+      "install_companions": [
+        "shadcn/ui@shadcn",
+        "vercel-labs/agent-skills@web-design-guidelines"
+      ]
+    },
+    "ship-ready-pro": {
+      "description": "Engineering gates + obra TDD + Playwright",
+      "ultra_skills": ["ultra-tdd", "ultra-pr-ship-review", "ultra-security-review"],
+      "install_companions": [
+        "obra/superpowers@test-driven-development",
+        "currents-dev/playwright-best-practices-skill@playwright-best-practices"
+      ]
+    },
+    "full-pro": {
+      "description": "Complete Ultra pack + discovery meta-skill",
+      "ultra_skills": ["*"],
+      "install_companions": [
+        "vercel-labs/skills@find-skills",
+        "vercel-labs/agent-skills@vercel-react-best-practices"
+      ]
+    }
+  }
+}
