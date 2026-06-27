@@ -1,0 +1,27 @@
+name: Validate Skills
+
+on:
+  push:
+    branches: [main, 'cursor/**']
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate skill pack structure
+        run: python3 scripts/validate-skills.py
+
+      - name: Lint design rules (pack fixtures)
+        run: node scripts/lint-design-rules.mjs --path examples/

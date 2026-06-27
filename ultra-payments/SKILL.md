@@ -215,6 +215,21 @@ Manual: sandbox checkout → webhook received → booking `confirmed` → no dup
 
 ---
 
+## Common excuses
+
+| Common excuse | Why it's wrong | What to do instead |
+|---------------|----------------|-------------------|
+| "return_url success means payment worked" | Users can forge return URLs; bookings go unpaid | Confirm via verified webhook or signed server poll |
+| "Webhook handler can process inline" | Timeouts cause duplicate charges on retry | Ack fast; enqueue idempotent job |
+| "I'll verify signature later" | Forged webhooks update booking state now | HMAC on raw body before any parsing |
+| "Same event_id check is enough" | Body-hash dedupe fails on provider retries | Dedupe on `(provider, event_id)` in durable store |
+| "Logging webhook body helps debug" | PII and secrets in logs | Log event_id + booking_id only |
+| "Sandbox passed so prod is fine" | Hash algo, currency, and URLs differ | Replay prod-format fixtures in CI |
+| "3DS is optional for our market" | Chargebacks and issuer declines spike | Send rich device data; handle challenge flow |
+| "We store last4 for convenience" | PCI scope expands | Tokenization only; never store PAN/CVV |
+
+---
+
 ## Do not
 
 - Log `merchantSecret`, `payment-gateway_*` env values, or full webhook payloads in production

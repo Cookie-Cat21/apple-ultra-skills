@@ -189,6 +189,21 @@ From [_shared/STACK.md](../_shared/STACK.md) — preserve unless intentional pro
 
 See [RUBRIC.md](./RUBRIC.md) sections B, T, D. Run `apple-design-head` for UI PRs and `ultra-security-review` for API/payment PRs in parallel.
 
+### 11. Engineering principles (before SHIP verdict)
+
+Apply these named gates from `ultra-cto` — block or warn when violated:
+
+| Principle | Gate | Block if |
+|-----------|------|----------|
+| **Hyrum's Law** | Observable API/UX contracts | Response shape, error codes, or timing side effects change without migration plan or version bump |
+| **Beyoncé Rule** | Test coverage for changed behavior | Logic/API/payment/auth path changed with no regression or integration test |
+| **Chesterton's Fence** | Deletion discipline | Code removed without comment explaining why it existed or ticket reference |
+
+**PR review questions:**
+- "What external caller depends on this behavior?" (Hyrum)
+- "What test fails if this regresses?" (Beyoncé)
+- "Why was this here before we removed it?" (Chesterton)
+
 ---
 
 ## Verdict rules
@@ -248,6 +263,21 @@ verify · migrations · tests · API auth · plan gates · booking · scope
 | `ultra-plan-gating` | Entitlement changes |
 | `ultra-payments` | Payment flow changes |
 | `apple-hub` | Unsure which specialist to invoke |
+
+---
+
+## Common excuses
+
+| Common excuse | Why it's wrong | What to do instead |
+|---------------|----------------|-------------------|
+| "Verify failed but change is small" | Small changes break auth and migrations | Fix verify or revert; B-001 is absolute |
+| "I'll run verify after merge" | Main stays red; blocks team | Verify green before approval |
+| "Tests can be added in follow-up PR" | Follow-ups rarely land before incident | ultra-tdd: failing test in same PR |
+| "Schema change is backward compatible" | Drift still breaks deploy order | B-002: schema.ts matches migration SQL |
+| "Security review is overkill for UI-only" | UI PRs often include API changes | Check diff for `src/app/api/` |
+| "Design approved so ship it" | Brand ≠ engineering gate | apple-design-head separate from this gate |
+| "Parallel reviews take too long" | Shipping blind is slower than reviewing | Dispatch ship-reviewer subagent for large PRs |
+| "Migration edit is faster than new file" | Production migrate history breaks | B-003: new migration only |
 
 ---
 

@@ -9,7 +9,7 @@ Companion to `SKILL.md`. Score **0 / 1 / 2** per item.
 | ID | Criterion | 0 | 1 | 2 |
 |----|-----------|---|---|---|
 | L1 | lib/components | Component in lib | Indirect leak | Clean lib boundary |
-| L2 | @cursor/sdk | In src/app or package.json | Risky import | Dev-only .cursor |
+| L2 | your framework's SDK package | In src/app or package.json | Risky import | Dev-only agent config |
 | L3 | @/ alias | Inconsistent | Mostly | 100% in new code |
 | L4 | Diff discipline | Drive-by refactor | Some noise | Minimal focused diff |
 
@@ -39,7 +39,7 @@ Companion to `SKILL.md`. Score **0 / 1 / 2** per item.
 | S1 | Secrets in logs | Logged | Risk | Env-only |
 | S2 | Cron auth | Open | Weak check | CRON_SECRET Bearer |
 | S3 | Webhook verify | None | Partial | Full signature/hash |
-| S4 | v1 API scope | Broad key | Partial scope | requireApiKey scoped |
+| S4 | v1 API scope | Broad key | Partial scope | requireScopedKey scoped |
 
 ## R4 Ship quality (15%)
 

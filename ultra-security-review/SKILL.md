@@ -8,8 +8,8 @@ metadata:
   version: "1.0"
 paths:
   - src/app/api/**
-  - src/lib/api-auth.ts
-  - src/lib/api-key-auth.ts
+  - src/lib/auth.ts
+  - src/lib/scoped-keys.ts
   - src/lib/payment-gateway*.ts
   - `your routing middleware` (see _shared/PATHS.md)---
 
@@ -62,8 +62,8 @@ Trigger when the user says:
 | Prefix | Auth pattern | File hint |
 |--------|--------------|-----------|
 | `/api/cron/*` | `Bearer $CRON_SECRET` | `src/app/api/cron/**` |
-| `/api/dashboard/*` | `requireApiBusiness()` | `src/lib/api-auth.ts` |
-| `/api/v1/*` | `requireApiKey(req, scope)` | `src/lib/api-key-auth.ts` |
+| `/api/dashboard/*` | `requireAuth({ req, ownerOnly: false })` | `src/lib/auth.ts` |
+| `/api/v1/*` | `requireScopedKey({ req, scope })` | `src/lib/scoped-keys.ts` |
 | Server pages | `requireBusiness()` / `requireOwner()` | `src/lib/auth` |
 | Webhooks inbound | Signature/hash verification | `payment-gateway`, `primary-messaging` routes |
 
@@ -102,8 +102,8 @@ rg '^[A-Z_]+=.' --glob '.env*' 2>/dev/null; git check-ignore -v .env.local 2>/de
 | ID | Inspect | Pass |
 |----|---------|------|
 | A1 | Cron routes | `Authorization: Bearer ${CRON_SECRET}` — 401 if missing/wrong |
-| A2 | Dashboard APIs | `requireApiBusiness()` on every mutating route |
-| A3 | v1 APIs | `requireApiKey` with correct scope per route |
+| A2 | Dashboard APIs | `requireAuth({ req, ownerOnly: false })` on every mutating route |
+| A3 | v1 APIs | `requireScopedKey` with correct scope per route |
 | A4 | Server actions/pages | Session business scoped — no IDOR via `businessId` param |
 | A5 | Admin routes | Platform admin gated separately |
 | A6 | Public booking | No session required — but no tenant admin data leaked |
@@ -119,7 +119,7 @@ rg '^[A-Z_]+=.' --glob '.env*' 2>/dev/null; git check-ignore -v .env.local 2>/de
 | API keys | Hashed at rest; prefix-only display | Plaintext keys in DB responses |
 | Logs | No secrets, full card data, or raw webhooks with PII | `console.log` of payloads |
 | Git | `.env*` ignored; no secrets in history | Committed credentials |
-| `@cursor/sdk` | Not in `src/app/` or production bundle | Dev tool in app bundle |
+| your framework's SDK package | Not in `src/app/` or production bundle | Dev tool in app bundle |
 
 **Minimum:** Grade **B**.
 
@@ -234,6 +234,21 @@ See [RUBRIC.md](./RUBRIC.md) for ledger S1–S12.
 
 ---
 
+## Common excuses
+
+| Common excuse | Why it's wrong | What to do instead |
+|---------------|----------------|-------------------|
+| "We'll add auth before launch" | Attackers scan staging and old routes | Fail closed now; no unauthenticated mutations |
+| "Security review is for big features" | One cron route can exfiltrate all data | Run security review on any auth/cron/webhook change |
+| "Framework handles XSS" | React doesn't sanitize `dangerouslySetInnerHTML` | Audit every HTML injection path |
+| "Secrets are only in .env locally" | .env gets committed or logged | Scan git history; rotate if found |
+| "P0 can ship with mitigation planned" | Mitigations slip; incidents happen | REJECT until P0 closed or explicitly accepted by owner |
+| "Threat model is overkill" | 5 minutes prevents design flaws no control fixes | STRIDE-lite on new external surfaces |
+| "Rate limit later" | Brute force succeeds before "later" | Rate-limit auth and webhook endpoints now |
+| "LLM output is safe text" | Model output can contain SQL/scripts | Treat as untrusted input at every sink |
+
+---
+
 ## Do not
 
 - Ship with P0 open on auth, payments, or committed secrets
@@ -241,4 +256,4 @@ See [RUBRIC.md](./RUBRIC.md) for ledger S1–S12.
 - Accept "we'll add auth later" on dashboard/cron mutations
 - Store API keys plaintext in responses
 - Put PII in booking share URLs
-- Add `@cursor/sdk` to production app code
+- Add your framework's SDK package to production app code

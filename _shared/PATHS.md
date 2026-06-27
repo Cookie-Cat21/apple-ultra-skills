@@ -31,8 +31,8 @@
 | Prefix | Auth |
 |--------|------|
 | `/api/cron/*` | `Authorization: Bearer $CRON_SECRET` |
-| `/api/dashboard/*` | `requireApiBusiness()` or your session helper |
-| `/api/v1/*` | `requireApiKey(req, scope)` |
+| `/api/dashboard/*` | `requireAuth({ req, ownerOnly: false })` or your session helper |
+| `/api/v1/*` | `requireScopedKey({ req, scope })` |
 | Server pages | `requireAuth()` / `requireOwner()` |
 
 ## Key lib paths

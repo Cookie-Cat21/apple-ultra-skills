@@ -1,13 +1,15 @@
 {
   "pack": "apple-ultra",
-  "version": "1.1.0",
+  "version": "1.3.0",
   "skills": [
     { "id": "apple-hub", "section": "hub", "triggers": ["route", "which skill", "apple ultra", "apple hub"] },
     { "id": "ultra-teach", "section": "hub", "triggers": ["onboard", "ultra teach", "set up skills", "fill shared context"] },
     { "id": "apple-design-head", "section": "design", "triggers": ["ship-ready", "design critique", "Apple polish", "UX audit", "accessibility"] },
+    { "id": "ultra-web-quality", "section": "design", "triggers": ["web quality", "lighthouse", "core web vitals", "LCP", "SEO audit", "page speed"] },
     { "id": "ultra-component-discovery", "section": "design", "triggers": ["find component", "shadcn", "21st.dev", "registry", "UI block"] },
     { "id": "ultra-visual-system", "section": "design", "triggers": ["design tokens", "visual audit", "tailwind tokens", "dark mode"] },
     { "id": "ultra-pr-ship-review", "section": "review", "triggers": ["PR ready", "merge review", "pre-merge", "npm run verify"] },
+    { "id": "ultra-tdd", "section": "engineering", "triggers": ["TDD", "write tests first", "red green refactor", "test coverage", "failing test"] },
     { "id": "ultra-security-review", "section": "review", "triggers": ["security review", "threat model", "OWASP", "secrets audit"] },
     { "id": "ultra-brand-voice", "section": "brand", "triggers": ["brand voice", "copy tone", "messaging", "CTA"] },
     { "id": "ultra-content-review", "section": "brand", "triggers": ["content review", "microcopy", "social copy"] },

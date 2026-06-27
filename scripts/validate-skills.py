@@ -12,6 +12,25 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SKIP_DIRS = {"competitive-research", "examples", "registry", "scripts", ".cursor-plugin"}
 
+# Engineering skills must include anti-rationalization tables (addyosmani pattern).
+ENGINEERING_RATIONALIZATION_SKILLS = {
+    "ultra-api-auth",
+    "ultra-migrations",
+    "ultra-payments",
+    "ultra-security-review",
+    "ultra-scheduling-engine",
+    "ultra-plan-gating",
+    "ultra-pr-ship-review",
+    "ultra-tdd",
+    "ultra-web-quality",
+}
+
+RATIONALIZATION_HEADINGS = ("## Common excuses", "## Common Rationalizations")
+RATIONALIZATION_TABLE_MARKERS = (
+    "| Common excuse |",
+    "| Rationalization |",
+)
+
 
 def parse_frontmatter(text: str) -> tuple[dict[str, str], str]:
     if not text.startswith("---"):
@@ -52,6 +71,21 @@ def collect_markdown_links(text: str) -> list[str]:
     return re.findall(r"(?<!!)\[[^\]]*\]\(([^)]+)\)", text)
 
 
+def has_rationalization_section(body: str) -> bool:
+    if not any(h in body for h in RATIONALIZATION_HEADINGS):
+        return False
+    if not any(m in body for m in RATIONALIZATION_TABLE_MARKERS):
+        return False
+    # Require at least 3 data rows in the excuses table
+    section = ""
+    for heading in RATIONALIZATION_HEADINGS:
+        if heading in body:
+            section = body.split(heading, 1)[1]
+            break
+    rows = [ln for ln in section.splitlines() if ln.startswith("|") and not ln.startswith("|---")]
+    return len(rows) >= 4  # header + 3 excuses minimum
+
+
 def validate_skills(root: Path) -> list[str]:
     errors: list[str] = []
     names: dict[str, list[Path]] = defaultdict(list)
@@ -65,7 +99,7 @@ def validate_skills(root: Path) -> list[str]:
             errors.append(f"{path}: missing frontmatter")
             continue
 
-        fm, _ = parse_frontmatter(text)
+        fm, body = parse_frontmatter(text)
         name = fm.get("name", "").strip()
         description = fm.get("description", "")
 
@@ -74,7 +108,9 @@ def validate_skills(root: Path) -> list[str]:
             continue
 
         expected = path.parent.name
-        if name != expected:
+        if path.parent == root and name == "apple-ultra-skills":
+            pass  # pack-level meta skill at repository root
+        elif name != expected:
             errors.append(f"{path}: name '{name}' != folder '{expected}'")
 
         if not description:
@@ -86,6 +122,12 @@ def validate_skills(root: Path) -> list[str]:
             errors.append(f"{path}: description too short ({len(description)} chars) — add trigger phrases")
 
         names[name].append(path)
+
+        if name in ENGINEERING_RATIONALIZATION_SKILLS and not has_rationalization_section(body):
+            errors.append(
+                f"{path}: missing anti-rationalization section "
+                f"(need '## Common excuses' table with ≥3 rows)"
+            )
 
         for link in collect_markdown_links(text):
             link = link.strip()

@@ -26,7 +26,7 @@ Read before scoring:
 - [_shared/PRODUCT.md](../_shared/PRODUCT.md) — booking terms to preserve
 - `_shared/STACK.md` — always-on invariants
 
-Code anchors: ``your schema file` (see _shared/STACK.md)`, ``your scheduling module` (see _shared/PATHS.md)`, `src/lib/api-auth.ts`, `src/lib/api-key-auth.ts`, ``your routing middleware` (see _shared/PATHS.md)`.
+Code anchors: ``your schema file` (see _shared/STACK.md)`, ``your scheduling module` (see _shared/PATHS.md)`, `src/lib/auth.ts`, `src/lib/scoped-keys.ts`, ``your routing middleware` (see _shared/PATHS.md)`.
 
 ---
 
@@ -83,8 +83,8 @@ Trigger when the user says:
 | Prefix | Auth |
 |--------|------|
 | `/api/cron/*` | `Bearer $CRON_SECRET` |
-| `/api/dashboard/*` | `requireApiBusiness()` |
-| `/api/v1/*` | `requireApiKey(req, scope)` |
+| `/api/dashboard/*` | `requireAuth({ req, ownerOnly: false })` |
+| `/api/v1/*` | `requireScopedKey({ req, scope })` |
 | Server pages | `requireBusiness()` / `requireOwner()` |
 
 ---
@@ -98,7 +98,7 @@ Trigger when the user says:
 | Check | Pass | Fail |
 |-------|------|------|
 | Lib purity | No component imports in `src/lib/` | UI leaked into domain |
-| Cursor boundary | No `@cursor/sdk` in `src/app/` or root deps | Dev tooling in bundle |
+| Agent SDK boundary | No your framework's SDK package in `src/app/` or root deps | Dev tooling in bundle |
 | Import alias | `@/` used consistently | Deep relative chaos |
 | Diff size | Minimal, matches neighbors | Drive-by refactors |
 
@@ -175,6 +175,37 @@ Trigger when the user says:
 
 **Scale:** A- (85+) ship · B iterate · D reject. See [RUBRIC.md](./RUBRIC.md).  
 **Weights:** R0 25% · R1 25% · R2 20% · R3 15% · R4 15%
+
+## Engineering principles
+
+Named rules enforced in architecture and PR review. Flag violations as P0/P1 with the principle name.
+
+### Hyrum's Law
+
+**Rule:** With enough users, every observable behavior of your implementation becomes a dependency — documented or not.
+
+| | |
+|---|---|
+| **Example (scheduling/payments/auth)** | A booking API returns `slot.available: true` even when a hold exists client-side. Mobile apps cache that field; changing semantics to mean "bookable without hold" breaks 3rd-party integrations. |
+| **PR review question** | "If we change this response shape or side effect, what external caller or cached client breaks?" |
+
+### Beyoncé Rule
+
+**Rule:** If you liked it, you should've put a test on it — untested behavior that breaks in production is the author's fault, not the user's.
+
+| | |
+|---|---|
+| **Example (scheduling/payments/auth)** | Webhook handler updates `payment_status` without a test for duplicate `payment_intent.succeeded` events — replay in prod double-credits the account. |
+| **PR review question** | "What test proves this path still works after refactor? What regression test covers the bug we fixed?" |
+
+### Chesterton's Fence
+
+**Rule:** Never remove code you don't understand — if you can't explain why it's there, find out before deleting it.
+
+| | |
+|---|---|
+| **Example (scheduling/payments/auth)** | Developer removes a 200ms `setTimeout` in slot-hold release thinking it's dead code — it was debouncing race with concurrent booking requests. |
+| **PR review question** | "What problem did the removed/changed code solve? Who added it and under what constraint?" |
 
 ## Severity definitions
 
@@ -255,7 +286,7 @@ Trigger when the user says:
 ## Do not
 
 - Import components into `src/lib/`
-- Add `@cursor/sdk` to production bundle
+- Add your framework's SDK package to production bundle
 - Edit migrations already applied in production
 - Expose PII in booking URLs or logs
 - Ship cron routes without Bearer `CRON_SECRET`
@@ -280,7 +311,7 @@ Trigger when the user says:
 | # | Prompt | Expected |
 |---|--------|----------|
 | 1 | "Fix slot-taken race with server holds" | SHIP/ITERATE; idempotency + TZ; P0 if client-only |
-| 2 | "POST /api/dashboard/export without auth" | **REJECT** — P0; requireApiBusiness |
+| 2 | "POST /api/dashboard/export without auth" | **REJECT** — P0; requireAuth |
 | 3 | "Edit applied migrations/0005 instead of new file" | **REJECT** — P0 migration policy |
 
 **References:** [RUBRIC.md](./RUBRIC.md) · `AGENTS.md or CONTRIBUTING.md` · `_shared/STACK.md`

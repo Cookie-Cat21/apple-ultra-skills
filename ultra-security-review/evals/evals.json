@@ -6,7 +6,7 @@
       "name": "api-route-auth-audit",
       "type": "functional",
       "prompt": "Security review — I added a new dashboard API route for deleting bookings.",
-      "expected_output": "Checks requireApiBusiness or equivalent, Zod validation, plan gates, P0/P1 findings, SHIP gate.",
+      "expected_output": "Checks requireAuth or equivalent, Zod validation, plan gates, P0/P1 findings, SHIP gate.",
       "assertions": ["P0", "auth", "Verdict"]
     },
     {

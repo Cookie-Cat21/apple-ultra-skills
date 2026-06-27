@@ -5,6 +5,7 @@
       "skills": [
         "ultra-component-discovery",
         "ultra-visual-system",
+        "ultra-web-quality",
         "apple-design-head",
         "ultra-brand-voice"
       ]
@@ -12,6 +13,7 @@
     "ship-ready": {
       "description": "Pre-merge engineering and security gates",
       "skills": [
+        "ultra-tdd",
         "ultra-pr-ship-review",
         "ultra-security-review",
         "ultra-content-review"
