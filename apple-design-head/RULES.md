@@ -9,6 +9,7 @@
 2. **Severity:** Critical = P0 ship blocker. High = P1. Medium = P2. Low/Cosmetic = P3.
 3. **Output:** `RULE-XXX | Location | Severity | Fix` in standard finding format.
 4. **Pair with:** [SKILL.md](./SKILL.md) weighted rounds + [references/LOOKUP.md](./references/LOOKUP.md) for HIG depth.
+5. **CI lint:** `node scripts/lint-design-rules.mjs --path src/` — 30 regex rules; Critical exits non-zero.
 
 ## Rule index
 

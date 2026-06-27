@@ -33,6 +33,7 @@ If `.ultra.md` is missing at project root, suggest **`ultra-teach`** for first-t
 | Find/install UI component (footer, carousel, chart, hero…) | `ultra-component-discovery` |
 | Colors, typography, UI tokens, logo | `ultra-visual-system` |
 | UI ship review, accessibility, Apple craft | `apple-design-head` |
+| Web quality, lighthouse, CWV, SEO audit | `ultra-web-quality` |
 | Copy, positioning, landing page text | `ultra-brand-voice` |
 | Social, blog, marketing content | `ultra-content-review` |
 

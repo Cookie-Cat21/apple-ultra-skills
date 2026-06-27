@@ -2,7 +2,7 @@
 
 **Apple-quality craft × startup discipline × engineering rigor** — a Cursor skill plugin with 25 specialized personas, shared context templates, and a design-layer component discovery workflow.
 
-**Version:** 1.2.0 · **Skills:** 25 (includes `ultra-teach` onboarding + `ultra-tdd`)
+**Version:** 1.3.0 · **Skills:** 26 (includes `ultra-teach`, `ultra-tdd`, `ultra-web-quality`)
 
 ---
 
@@ -42,6 +42,7 @@ Copy this folder into `.cursor/skills/apple-ultra-skills/` (or merge skill subfo
 
 ```bash
 python3 scripts/validate-skills.py
+node scripts/lint-design-rules.mjs --path src/
 ```
 
 ---
@@ -57,10 +58,13 @@ apple-ultra-skills/
 │   └── RULES.md              ← 160 deterministic anti-pattern rules
 ├── ultra-tdd/                ← test-first workflow (NEW v1.2)
 ├── registry/                 ← skills.json + bundles.json
+├── ultra-web-quality/        ← performance, a11y, SEO audit (NEW v1.3)
 ├── scripts/
 │   ├── sync-platforms.mjs    ← multi-platform sync
 │   ├── install.sh            ← bootstrap installer
+│   ├── lint-design-rules.mjs ← 30 regex rules (CI)
 │   └── validate-skills.py
+└── .github/workflows/validate.yml
 └── .cursor-plugin/plugin.json
 ```
 
@@ -75,13 +79,14 @@ Skills are **flat folders** (Cursor discovery-friendly). Sections below group th
 | **ultra-component-discovery** | Component sourcing | Find/install UI blocks (21st, Aceternity, Magic UI, HyperUI, Tremor, …) |
 | **ultra-visual-system** | Visual design lead | Design tokens, palette, typography, dark mode |
 | **apple-design-head** | Head of Apple Design | UI/UX ship review, 160-rule enforcement, accessibility, craft |
+| **ultra-web-quality** | Web quality engineer | Lighthouse, CWV, SEO, a11y metrics audit |
 | **ultra-brand-voice** | Brand guardian | Copy audit, positioning, banned phrases |
 | **ultra-content-review** | Content lead | Multi-channel content alignment |
 
 **Design implementation chain:**
 
 ```
-ultra-component-discovery → ultra-visual-system → apple-design-head
+ultra-component-discovery → ultra-visual-system → ultra-web-quality → apple-design-head
 ```
 
 Copy/content chain: `ultra-brand-voice` → `ultra-content-review` → `apple-design-head`
