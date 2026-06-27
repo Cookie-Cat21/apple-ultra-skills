@@ -189,6 +189,21 @@ From [_shared/STACK.md](../_shared/STACK.md) — preserve unless intentional pro
 
 See [RUBRIC.md](./RUBRIC.md) sections B, T, D. Run `apple-design-head` for UI PRs and `ultra-security-review` for API/payment PRs in parallel.
 
+### 11. Engineering principles (before SHIP verdict)
+
+Apply these named gates from `ultra-cto` — block or warn when violated:
+
+| Principle | Gate | Block if |
+|-----------|------|----------|
+| **Hyrum's Law** | Observable API/UX contracts | Response shape, error codes, or timing side effects change without migration plan or version bump |
+| **Beyoncé Rule** | Test coverage for changed behavior | Logic/API/payment/auth path changed with no regression or integration test |
+| **Chesterton's Fence** | Deletion discipline | Code removed without comment explaining why it existed or ticket reference |
+
+**PR review questions:**
+- "What external caller depends on this behavior?" (Hyrum)
+- "What test fails if this regresses?" (Beyoncé)
+- "Why was this here before we removed it?" (Chesterton)
+
 ---
 
 ## Verdict rules

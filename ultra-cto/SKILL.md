@@ -176,6 +176,37 @@ Trigger when the user says:
 **Scale:** A- (85+) ship · B iterate · D reject. See [RUBRIC.md](./RUBRIC.md).  
 **Weights:** R0 25% · R1 25% · R2 20% · R3 15% · R4 15%
 
+## Engineering principles
+
+Named rules enforced in architecture and PR review. Flag violations as P0/P1 with the principle name.
+
+### Hyrum's Law
+
+**Rule:** With enough users, every observable behavior of your implementation becomes a dependency — documented or not.
+
+| | |
+|---|---|
+| **Example (scheduling/payments/auth)** | A booking API returns `slot.available: true` even when a hold exists client-side. Mobile apps cache that field; changing semantics to mean "bookable without hold" breaks 3rd-party integrations. |
+| **PR review question** | "If we change this response shape or side effect, what external caller or cached client breaks?" |
+
+### Beyoncé Rule
+
+**Rule:** If you liked it, you should've put a test on it — untested behavior that breaks in production is the author's fault, not the user's.
+
+| | |
+|---|---|
+| **Example (scheduling/payments/auth)** | Webhook handler updates `payment_status` without a test for duplicate `payment_intent.succeeded` events — replay in prod double-credits the account. |
+| **PR review question** | "What test proves this path still works after refactor? What regression test covers the bug we fixed?" |
+
+### Chesterton's Fence
+
+**Rule:** Never remove code you don't understand — if you can't explain why it's there, find out before deleting it.
+
+| | |
+|---|---|
+| **Example (scheduling/payments/auth)** | Developer removes a 200ms `setTimeout` in slot-hold release thinking it's dead code — it was debouncing race with concurrent booking requests. |
+| **PR review question** | "What problem did the removed/changed code solve? Who added it and under what constraint?" |
+
 ## Severity definitions
 
 | Severity | CTO examples |

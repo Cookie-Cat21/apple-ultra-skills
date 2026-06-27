@@ -72,18 +72,24 @@ See [SKILL.md](SKILL.md) Section 12 and [references/agent-patterns.md](reference
 ```
 apple-ultra-skills/
 ├── README.md                 ← you are here
-├── SKILL.md                  ← meta skill (Agent-Reach Ultra-Mode, Section 12)
-├── references/               ← agent-patterns.md channel reference
+├── SKILL.md                  ← unified Ultra skill + Agent-Reach (Section 16)
+├── references/               ← 12 reference files (900+ rules)
+│   ├── frontend.md, design.md, architecture.md, testing.md
+│   ├── security.md, performance.md, accessibility.md
+│   ├── next-app-router.md, react-18-patterns.md, tailwind-v4.md
+│   └── agent-patterns.md, agent-reach.md, devops.md
+├── package.json              ← skills.sh plugin manifest
 ├── _shared/                  ← fill in before use (BRAND, VISUAL, STACK, …)
 ├── apple-hub/                ← skill router — start here
 ├── apple-design-head/
 │   └── RULES.md              ← 160 deterministic anti-pattern rules
-├── ultra-tdd/                ← test-first workflow (NEW v1.2)
+├── ultra-tdd/                ← test-first workflow
+├── ultra-web-quality/        ← performance, a11y, SEO audit
 ├── registry/                 ← skills.json + bundles.json
-├── ultra-web-quality/        ← performance, a11y, SEO audit (NEW v1.3)
 ├── scripts/
 │   ├── sync-platforms.mjs    ← multi-platform sync
 │   ├── install.sh            ← bootstrap installer
+│   ├── setup.js              ← post-install banner
 │   ├── lint-design-rules.mjs ← 30 regex rules (CI)
 │   └── validate-skills.py
 └── .github/workflows/validate.yml
