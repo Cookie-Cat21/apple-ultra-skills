@@ -2,22 +2,24 @@
 
 > Cross-reference: [SKILL.md](../SKILL.md) Section 5. Load when Testing Ultra-Mode is active.
 
+
+> **Decision-quality note:** apply [apple-principles-2026.md](./apple-principles-2026.md). Numeric thresholds not tied to a standard, current vendor documentation, or measured project data are studio defaults/starting points—not universal facts. For version-sensitive behavior, inspect the installed version and current primary docs.
 ---
 
 ## 1. TDD Workflow (15 Rules)
 
-1. ⚡ Red → Green → Refactor. Always. Write the failing test first.
+1. 🎯 For behavior-changing code, prefer a Red → Green → Refactor loop when it improves clarity and regression safety. For exploratory spikes or legacy characterization, first capture the behavior/risk with the smallest useful test.
 2. 🎯 Simplest failing test first — prove behavior doesn't exist, not comprehensive coverage.
 3. ⚡ Test behavior, not implementation — refactoring internals shouldn't break tests.
 4. 🎯 One logical assertion per test — multiple assertions obscure which behavior failed.
 5. 💡 Test the contract at module boundaries — internals are free to change.
-6. 🎯 TDD cycle time: <2 minutes per red-green-refactor iteration. Slow tests kill TDD.
+6. 🎯 Keep the inner test loop fast enough to preserve flow. Measure suite/target latency and move slow integration/E2E checks out of the tight loop rather than enforcing a universal two-minute cutoff.
 7. ⚡ If you can't write a test, the API design is wrong — redesign before implementing.
 8. 🎯 Start with integration test for new feature, then unit tests for edge cases.
 9. 💡 Characterization tests before refactoring legacy code — capture current behavior, then improve.
 10. 🎯 Test names are documentation — a new developer reads test names to understand behavior.
 11. ⚡ Delete tests that only check implementation details — they slow refactoring.
-12. 🎯 Refactor only on green — never refactor and add features in the same step.
+12. 🎯 Keep refactoring and behavior change conceptually separable so failures are diagnosable. Small structural edits can accompany a feature when tests make the behavior boundary clear.
 13. 💡 Spike first for unknown APIs, then delete spike and TDD the real implementation.
 14. 🎯 Test data builders over object literals — `buildUser({ role: 'admin' })` not `{ id: '1', name: '...', ... }`.
 15. ⚡ TDD for bug fixes: write test that reproduces bug, then fix. Test prevents regression.
@@ -125,14 +127,14 @@
 7. 🎯 Builder pattern for complex test objects: `new OrderBuilder().withItems(3).withStatus('paid').build()`.
 8. 🎯 Minimal data: create only fields the test needs — not full production objects.
 9. 💡 Shared fixtures via `test.extend()` in Playwright — inject page objects and data.
-10. ⚡ Never use production data in tests — generate synthetic data always.
+10. ⚡ Never expose live sensitive production data to unsafe test environments. Use synthetic, fixtures, or properly anonymized/sanitized production-derived data according to policy and the realism needed.
 
 ---
 
 ## 8. CI Optimization (10 Rules)
 
 1. 🎯 Parallel test runners: Vitest `pool: 'forks'`, Playwright `workers: 4`.
-2. 🎯 Test splitting: run unit tests on every PR, E2E on merge to main.
+2. 🎯 Split test execution by risk and runtime. Fast relevant tests should run before merge; critical-path E2E should run pre-merge when it protects high-consequence behavior, with broader suites scheduled as needed.
 3. 💡 Cache `node_modules` and test results in CI — GitHub Actions cache keyed on lockfile.
 4. 🎯 Fail fast: `bail: 1` in CI for unit tests — don't run 500 tests after first failure.
 5. ⚡ Flaky test detection: `--retry 2` in CI, flag tests that pass on retry.
