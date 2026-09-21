@@ -1,6 +1,6 @@
 # Apple Design Head — Deterministic Anti-Pattern Rules
 
-> 152+ rule-enforced checks for apple-design-head reviews. Each rule is scannable in Round 0–4 and blocks ship at Critical severity.
+> 180 rule-enforced checks for apple-design-head reviews. Each rule is scannable in Round 0–4 and blocks ship at Critical severity.
 > Format borrowed from ux-skill's deterministic anti-pattern catalogue; integrated with our weighted P0–P3 protocol.
 
 ## How to use
@@ -23,8 +23,9 @@
 | Copy | 20 | RULE-101–RULE-120 |
 | Layout | 20 | RULE-121–RULE-140 |
 | Dark Mode | 20 | RULE-141–RULE-160 |
+| Feeling & Interaction | 20 | RULE-161–RULE-180 |
 
-**Total rules: 160**
+**Total rules: 180**
 
 ---
 
