@@ -66,11 +66,15 @@ Ask **one section at a time**. Do not rush — good context makes every downstre
 
 **Product type:** B2B SaaS · consumer · e-commerce · internal tool · AI-native · scheduling/booking · other
 
-### Section 3 — Users
+### Section 3 — Users, agency & intended feeling
 
 - Primary user role and technical sophistication
 - Job-to-be-done (what they hired the product for)
 - Failure mode (what happens if the product lets them down)
+- **Primary intended feeling** for the core journey (control · calm · confidence · trust · momentum · relief · delight · other)
+- Up to two supporting feelings
+- Critical recovery expectations: undo · cancel · retry · edit · export · rollback · support
+- Trust-sensitive areas: money · personal data · permissions · security · AI output · destructive actions
 
 ### Section 4 — Design system
 
@@ -93,8 +97,10 @@ Confirm or fill `_shared/STACK.md` and `_shared/PATHS.md`:
 - Migrations directory and schema file paths
 - API auth patterns (cron, dashboard, public API prefixes)
 
-### Section 7 — Known weaknesses
+### Section 7 — Supported contexts, non-goals & known weaknesses
 
+- Supported contexts: viewport/device, input modes, roles/plans, locales/timezones, accessibility modes, offline/degraded dependencies where relevant
+- Explicit non-goals / things the team intentionally will not optimize for
 - Biggest known UX or engineering problem
 - Broken or incomplete flows
 - Off-limits areas for audits
@@ -120,6 +126,10 @@ Register: [Brand | Product]
 Primary user: [role + sophistication]
 Job-to-be-done: [what they hire the product for]
 Failure mode: [consequence of product failure]
+Primary feeling: [control | calm | confidence | trust | momentum | relief | delight | other]
+Supporting feelings: [0–2]
+Recovery expectations: [undo/cancel/retry/edit/export/etc.]
+Trust-sensitive areas: [money/data/permissions/security/AI/destructive/etc.]
 
 ## Design
 Creative North Star: [named metaphor]
@@ -140,6 +150,12 @@ Verify: [command]
 Migrations: [path]
 Schema: [path]
 API patterns: [see _shared/PATHS.md or inline summary]
+
+## Supported Contexts
+- [devices/viewports/input/roles/locales/timezones/accessibility/degraded states]
+
+## Non-goals
+- [intentional exclusions]
 
 ## Known Issues
 - [acknowledged problems]
