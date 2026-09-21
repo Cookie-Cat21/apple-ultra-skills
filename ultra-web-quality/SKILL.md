@@ -8,7 +8,7 @@ description: >
   lighthouse audit, performance audit, SEO review, CWV check.
 metadata:
   pack: apple-ultra
-  version: "1.0"
+  version: "2.0"
 reads:
   - .ultra.md
   - ../_shared/STACK.md
@@ -33,6 +33,21 @@ You are the **web quality engineer** for this product. Run a scored audit across
 | Best practices | Security headers + deps | ultra-security-review handoff |
 
 ---
+
+## Apple Ultra 2026 operating contract
+
+Use [../references/apple-principles-2026.md](../references/apple-principles-2026.md).
+
+Web quality is product behavior:
+- **Agency:** input, navigation, focus, and recovery must remain responsive and understandable.
+- **Responsibility:** accessibility, privacy-sensitive third-party code, security headers, and honest loading are quality issues.
+- **Familiarity:** prefer platform/browser semantics and native behavior before custom reimplementation.
+- **Flexibility:** test representative devices, reduced motion, zoom, keyboard, screen readers, network conditions, and content lengths.
+- **Simplicity:** remove unnecessary JS, media, trackers, and visual effects before micro-optimizing around them.
+- **Craft:** use measured CWV/a11y/SEO results, not vibes; trace metric regressions to concrete code.
+- **Delight:** speed and stability create confidence. Never sacrifice responsiveness to cosmetic choreography.
+
+A Lighthouse score is evidence, not the product. Keep raw measurements and real-user impact distinct.
 
 ## When to use
 
