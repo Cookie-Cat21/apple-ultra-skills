@@ -1,5 +1,7 @@
 # Agent-Reach — Apple Ultra Skills
 
+
+> **Decision-quality note:** apply [apple-principles-2026.md](./apple-principles-2026.md). Numeric thresholds not tied to a standard, current vendor documentation, or measured project data are studio defaults/starting points—not universal facts. For version-sensitive behavior, inspect the installed version and current primary docs.
 Cross-skill reference for Agent-Reach research workflows. See [SKILL.md](../SKILL.md) Section 16 for the full Agent-Reach Ultra-Mode protocol.
 
 ---

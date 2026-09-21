@@ -2,6 +2,8 @@
 
 > Cross-reference: [SKILL.md](../SKILL.md). CI/CD, deployment, infrastructure, and monitoring.
 
+
+> **Decision-quality note:** apply [apple-principles-2026.md](./apple-principles-2026.md). Numeric thresholds not tied to a standard, current vendor documentation, or measured project data are studio defaults/starting points—not universal facts. For version-sensitive behavior, inspect the installed version and current primary docs.
 ---
 
 ## 1. CI/CD — GitHub Actions
@@ -9,7 +11,7 @@
 ### Pipeline Structure
 
 1. 🎯 Pipeline stages: lint → typecheck → test → build → deploy. Fail fast at each stage.
-2. ⚡ Lint + typecheck in <2 minutes — developers wait for CI on every push.
+2. 🎯 Keep the fast CI feedback path short enough that developers use it continuously. Track actual queue/run time and optimize the slowest steps instead of enforcing a universal two-minute limit.
 3. 🎯 Parallel jobs: lint, typecheck, unit tests run simultaneously.
 4. 💡 `concurrency` group: cancel in-progress runs on same PR — save CI minutes.
 
@@ -53,13 +55,13 @@
 ### Rollback Strategies
 
 5. ⚡ One-click rollback: keep previous deployment artifact ready.
-6. 🎯 Rollback triggers: error rate >1%, P95 latency >2x baseline, failed health check.
-7. 💡 Database migrations: backward-compatible always — deploy code that works with old AND new schema.
+6. 🎯 Define rollback/hold triggers from service SLOs and baseline behavior: health-check failure, material error-rate increase, latency regression, or business-critical invariant breach. Store the actual thresholds with the service.
+7. 🎯 Prefer backward-compatible expand/migrate/contract rollouts for zero-downtime systems. Explicitly document the exception when a coordinated maintenance window makes a breaking migration safer/simpler.
 8. 🎯 Feature flags for risky deploys — deploy code dark, enable flag gradually.
 
 ### Environment Promotion
 
-9. 🎯 Local → PR preview → Staging → Production. Never skip staging.
+9. 🎯 Use the environment/promotion path that matches risk and architecture. Preview/staging is valuable for integrated changes, but tiny low-risk services may safely promote with automated canaries or production verification instead.
 10. ⚡ PR preview deployments for every pull request — test the actual artifact.
 11. 🎯 Environment variables managed per environment — Vercel, Railway, or `.env.production`.
 12. 💡 Infrastructure as code for environment config — reproducible environments.
@@ -116,10 +118,10 @@
 
 ### Alerting Thresholds
 
-10. ⚡ Error rate >1% for 5 minutes → page on-call.
-11. 🎯 P95 latency >2x baseline for 10 minutes → warning.
-12. 🎯 Disk/memory >80% → warning. >95% → page.
-13. 💡 SSL certificate expiry <14 days → warning.
+10. 🎯 Page on error-rate conditions derived from the service SLO/error budget and traffic volume; avoid a universal percentage that is noisy for one service and dangerously lax for another.
+11. 🎯 Alert on sustained latency regressions relative to SLO/baseline and user impact; define percentile/window per service.
+12. 🎯 Alert on resource exhaustion early enough to act, using workload-specific headroom, growth rate, and saturation behavior instead of universal percentages.
+13. 💡 Monitor certificate expiry with enough lead time to recover from your actual renewal process; automated renewal failures should alert well before user impact.
 14. 🎯 Failed deployments → immediate notification.
 
 ### Incident Response
@@ -148,13 +150,13 @@
 
 ### When to Use
 
-1. 🎯 IaC when: multiple environments, team >2, cloud resources beyond PaaS.
+1. 🎯 Use infrastructure as code when reproducibility, reviewability, multi-environment consistency, or recovery value outweighs its maintenance cost. Team size alone is not the trigger.
 2. 💡 Skip IaC when: single Vercel deployment, solo developer, prototype.
 
 ### Terraform Basics
 
 3. 🎯 One state file per environment — `staging.tfstate`, `production.tfstate`.
-4. ⚡ Remote state: S3 + DynamoDB lock — never local state in team projects.
+4. ⚡ Team-managed IaC state must use a supported shared backend with locking/concurrency protection. S3/DynamoDB is one Terraform option, not a universal backend.
 5. 🎯 Modules for reusable infrastructure: `modules/database/`, `modules/cdn/`.
 6. 💡 `terraform plan` in CI — review changes before apply.
 7. 🎯 Secrets via environment variables or secret manager — not in `.tf` files.

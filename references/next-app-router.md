@@ -1,6 +1,10 @@
 # Apple Ultra: Next.js App Router Reference
 
-> Cross-reference: [SKILL.md](../SKILL.md) Section 2 (Frontend Ultra) and Detection Matrix (`app/`, `page.tsx`). Load when Next.js App Router production gotchas exceed SKILL.md scope.
+> **Current compatibility (verified 2026-09-21):** Next.js **16.3.3** is Active LTS. The App Router remains the newer router and uses framework-integrated React features. Next.js 16 renamed `middleware.ts` to `proxy.ts`, and Cache Components introduce the `use cache` model.
+>
+> Primary sources: https://nextjs.org/blog · https://nextjs.org/docs · https://nextjs.org/docs/app/guides/migrating-to-cache-components
+>
+> Apply [apple-principles-2026.md](./apple-principles-2026.md). **Inspect the repo’s installed Next.js version first**: caching, request APIs, and file conventions changed materially across 14→15→16.
 
 ## How to use
 
@@ -8,6 +12,16 @@
 2. **Severity:** Critical = ship blocker or data leak. High = production bug or SEO/cache failure. Medium = perf/maintainability debt.
 3. **Output:** `NAR-XXX | Location | Severity | Fix` in standard finding format.
 4. **Pair with:** [frontend.md](./frontend.md) for general React patterns, [performance.md](./performance.md) for Core Web Vitals.
+
+## Next.js 16.3 compatibility notes
+
+- **Security first:** 16.3.3 is the current Active LTS security line as of this verification date. Check the project’s exact patch version before review.
+- **Proxy:** `middleware.ts` is deprecated in Next.js 16 and renamed to `proxy.ts`; use Proxy for request-boundary rewrites/redirects and optimistic checks, not as a full authorization/data-fetch layer.
+- **Cache Components:** when `cacheComponents: true` is enabled, caching is opt-in with `use cache`; `dynamic`, `revalidate`, and `fetchCache` segment configs are replaced by the Cache Components model.
+- **Bare fetch:** current App Router docs state `fetch` requests are not cached by default. Do not review caching from pre-15 assumptions.
+- **Version-aware reviews:** a rule that is correct for Next 16 can be wrong for a maintained Next 15 project. Read `package.json` and the matching version docs before assigning severity.
+
+---
 
 ## Rule index
 
@@ -244,37 +258,37 @@
 | **Do instead** | Reset optimistic state in action error branch; show toast and refetch |
 | **Severity** | High |
 
-### NAR-021 — Assuming `fetch` in Server Component is always dynamic
+### NAR-021 — Assuming an old implicit `fetch` caching model
 
 | Field | Value |
 |-------|-------|
 | **ID** | NAR-021 |
 | **Category** | route caching |
-| **Pattern** | No cache options on `fetch()` expecting fresh data on every request in production |
-| **Why it fails** | Default static caching may serve build-time or stale data until revalidation |
-| **Do instead** | `fetch(url, { cache: 'no-store' })` for always-fresh, or `{ next: { revalidate: 60 } }` for ISR |
+| **Pattern** | Code/review assumes bare `fetch()` is implicitly cached because older App Router versions behaved that way |
+| **Why it fails** | Since Next.js 15, `fetch` requests are not cached by default; Next.js 16 Cache Components make caching explicit with `use cache` when that model is enabled |
+| **Do instead** | Inspect the installed version and caching model. For Next 16 Cache Components, use `use cache` + `cacheLife`/tags intentionally; without Cache Components, opt individual requests into caching with documented APIs such as `cache: 'force-cache'` |
 | **Severity** | Critical |
 
-### NAR-022 — `export const dynamic = 'force-static'` on auth-gated pages
+### NAR-022 — Personalized/runtime data placed in a shared cached scope
 
 | Field | Value |
 |-------|-------|
 | **ID** | NAR-022 |
 | **Category** | route caching |
-| **Pattern** | Dashboard page statically generated and CDN-cached |
-| **Why it fails** | User A's HTML may be served to User B at the edge |
-| **Do instead** | `export const dynamic = 'force-dynamic'` or per-user `cookies()` / `headers()` access |
+| **Pattern** | Auth/session-dependent output is cached without the user/tenant boundary represented correctly |
+| **Why it fails** | A shared cache can expose or mix personalized data across users/tenants |
+| **Do instead** | Keep runtime request data outside shared cached scopes. With Cache Components, pass safe request-derived values into an appropriate cache scope or use the documented private/runtime model only when its constraints fit |
 | **Severity** | Critical |
 
-### NAR-023 — `unstable_cache` key omitting tenant or user scope
+### NAR-023 — Cached data omits tenant/user scope from identity
 
 | Field | Value |
 |-------|-------|
 | **ID** | NAR-023 |
 | **Category** | route caching |
-| **Pattern** | `unstable_cache(getOrg, ['org'], …)` without org ID in key parts |
-| **Why it fails** | Cross-tenant data leak via shared cache entry |
-| **Do instead** | Include all scope dimensions in key: `['org', orgId]` |
+| **Pattern** | A cache helper/scope returns tenant- or user-specific data without all relevant inputs participating in cache identity |
+| **Why it fails** | Cross-tenant/user data can be returned from a shared cache entry |
+| **Do instead** | Use the installed Next.js cache API correctly and make every authorization/data-scope dimension part of the cached function’s inputs/key; never rely on ambient mutable scope |
 | **Severity** | Critical |
 
 ### NAR-024 — Calling `revalidatePath` with wrong path depth after nested route change
@@ -288,26 +302,26 @@
 | **Do instead** | Revalidate specific paths and tags: `revalidatePath('/blog/' + slug)` + `revalidateTag('blog-posts')` |
 | **Severity** | High |
 
-### NAR-025 — Route Handlers cached by default with `GET` returning user-specific JSON
+### NAR-025 — Personalized GET Route Handler explicitly opted into shared caching
 
 | Field | Value |
 |-------|-------|
 | **ID** | NAR-025 |
 | **Category** | route caching |
-| **Pattern** | `export async function GET()` returns session user profile without `dynamic` or cache headers |
-| **Why it fails** | Static optimization caches personalized response |
-| **Do instead** | `export const dynamic = 'force-dynamic'` or `Cache-Control: private, no-store` |
+| **Pattern** | A user-specific `GET` Route Handler is deliberately configured for shared/static caching |
+| **Why it fails** | Route Handlers are not cached by default in current Next.js; the risk appears when personalized output is explicitly opted into a shared cache or receives unsafe downstream cache headers |
+| **Do instead** | Keep personalized handlers uncached/private and verify response/cache headers; only opt GET handlers into caching for data that is actually safe to share |
 | **Severity** | Critical |
 
-### NAR-026 — Mixing `cookies()`/`headers()` in static subtree without segment config
+### NAR-026 — Runtime request APIs mixed into a cache scope
 
 | Field | Value |
 |-------|-------|
 | **ID** | NAR-026 |
 | **Category** | route caching |
-| **Pattern** | Child layout reads `cookies()` while parent assumed static for ISR |
-| **Why it fails** | Entire segment tree becomes dynamic — ISR silently disabled |
-| **Do instead** | Isolate dynamic reads in nested layout or parallel route slot with explicit `dynamic` export |
+| **Pattern** | `cookies()`, `headers()`, or other runtime request data is read inside code intended to be shared-cached |
+| **Why it fails** | Current Next.js caching models intentionally separate runtime request data from shared cache scopes; mixing them causes build/runtime errors or incorrect cache design |
+| **Do instead** | Read runtime data outside cached scopes and pass the minimal safe value as an argument; use Suspense/request-time rendering when the value must remain request-specific |
 | **Severity** | High |
 
 ### NAR-027 — Static `metadata` object with runtime-only values

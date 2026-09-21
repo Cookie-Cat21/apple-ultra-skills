@@ -1,6 +1,10 @@
 # Apple Ultra: Tailwind CSS v4 Reference
 
-> Cross-reference: [SKILL.md](../SKILL.md) Section 2 (Frontend Ultra) and Detection Matrix (`tailwind.config`, `@theme`, `@import "tailwindcss"`). Load when Tailwind v4 CSS-first config and migration gotchas exceed SKILL.md scope.
+> **Current compatibility (verified 2026-09-21):** Tailwind CSS **v4.3** is current. v4 remains CSS-first; v4.2/v4.3 add more logical-property utilities, a first-class webpack loader, scrollbar utilities, size containers, and other additions.
+>
+> Primary source: https://tailwindcss.com/blog/tailwindcss-v4-3
+>
+> Cross-reference: [SKILL.md](../SKILL.md) Section 2. Apply [apple-principles-2026.md](./apple-principles-2026.md), and inspect the installed Tailwind minor version before recommending a utility added after 4.0.
 
 ## How to use
 
@@ -8,6 +12,15 @@
 2. **Severity:** Critical = styles missing in production build. High = visual regression or token drift. Medium = maintainability or dev/prod parity issues.
 3. **Output:** `TW4-XXX | Location | Severity | Fix` in standard finding format.
 4. **Pair with:** [design.md](./design.md) for token semantics, [frontend.md](./frontend.md) for component class composition.
+
+## Tailwind 4.3 compatibility notes
+
+- Prefer logical-property utilities for direction/writing-mode resilient layout where they express the intent clearly.
+- v4.2 introduced a first-class `@tailwindcss/webpack` loader; choose integration based on the project’s bundler rather than assuming PostCSS is always required.
+- v4.3 includes first-party scrollbar utilities and `@container-size`; do not hand-roll plugins for capabilities already present in the installed version.
+- Existing v4 migration rules remain useful, but the **installed minor version wins** when utility names or support differ.
+
+---
 
 ## Rule index
 

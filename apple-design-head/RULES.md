@@ -38,7 +38,6 @@
 | **Pattern** | Inconsistent padding on sibling cards |
 | **Why it fails** | Rhythm breaks; surfaces feel assembled not designed |
 | **Do instead** | Use one spacing scale token (4/8/12/16/24/32) per density tier |
-| **Production impact** | Touch/misclick rate increases 8–15%; mobile conversion drops when targets feel cramped or rhythm breaks — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `target-size`, CSS `min-height`/`min-width` audit, `lint-design-rules.mjs` RULE-001–020 |
 | **Severity** | High |
 
@@ -53,18 +52,17 @@
 | **Do instead** | Snap to 4px grid or design token scale |
 | **Severity** | Medium |
 
-### RULE-003 — Cramped touch targets under 44px
+### RULE-003 — Undersized or crowded pointer targets
 
 | Field | Value |
 |-------|-------|
 | **ID** | RULE-003 |
 | **Category** | spacing |
-| **Pattern** | Cramped touch targets under 44px |
-| **Why it fails** | Fails mobile usability and WCAG 2.5.5 |
-| **Do instead** | Minimum 44×44px hit area with padding |
-| **Production impact** | Mobile tap failure rate up to 30% on small targets; App Store review may flag usability — blocks ship; estimated 5–15% conversion or compliance risk |
-| **Detection** | axe-core `target-size` (WCAG 2.5.5), DevTools computed size <44px, RULE-003 in lint-design-rules.mjs |
-| **Severity** | Critical |
+| **Pattern** | Important controls are hard to activate because targets are too small or too tightly packed |
+| **Why it fails** | Reduces pointer/touch accuracy and may fail WCAG 2.2 SC 2.5.8 Target Size (Minimum) |
+| **Do instead** | For web, meet WCAG 2.2 AA 24×24 CSS px or its spacing/equivalent exceptions; aim for ~44×44 CSS px on touch-first primary controls where practical |
+| **Detection** | axe-core/DevTools target-size audit + manual spacing check; distinguish the WCAG minimum from the larger Apple touch target recommendation |
+| **Severity** | High |
 
 ### RULE-004 — Excessive whitespace with no hierarchy
 
@@ -86,7 +84,6 @@
 | **Pattern** | Uneven gutters between columns |
 | **Why it fails** | Grid feels broken on resize |
 | **Do instead** | Use consistent gap token across breakpoints |
-| **Production impact** | Touch/misclick rate increases 8–15%; mobile conversion drops when targets feel cramped or rhythm breaks — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `target-size`, CSS `min-height`/`min-width` audit, `lint-design-rules.mjs` RULE-001–020 |
 | **Severity** | High |
 
@@ -110,7 +107,6 @@
 | **Pattern** | Text flush against container edge on mobile |
 | **Why it fails** | Claustrophobic; violates safe area |
 | **Do instead** | 16px minimum horizontal inset on mobile |
-| **Production impact** | Touch/misclick rate increases 8–15%; mobile conversion drops when targets feel cramped or rhythm breaks — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `target-size`, CSS `min-height`/`min-width` audit, `lint-design-rules.mjs` RULE-001–020 |
 | **Severity** | High |
 
@@ -156,7 +152,6 @@
 | **Pattern** | Hero padding inconsistent with rest of page |
 | **Why it fails** | Landing feels like two sites stitched |
 | **Do instead** | Derive hero padding from page scale |
-| **Production impact** | Touch/misclick rate increases 8–15%; mobile conversion drops when targets feel cramped or rhythm breaks — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `target-size`, CSS `min-height`/`min-width` audit, `lint-design-rules.mjs` RULE-001–020 |
 | **Severity** | High |
 
@@ -169,7 +164,6 @@
 | **Pattern** | Form field vertical rhythm uneven |
 | **Why it fails** | Forms feel longer than they are |
 | **Do instead** | Uniform field gap; group related fields tighter |
-| **Production impact** | Touch/misclick rate increases 8–15%; mobile conversion drops when targets feel cramped or rhythm breaks — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `target-size`, CSS `min-height`/`min-width` audit, `lint-design-rules.mjs` RULE-001–020 |
 | **Severity** | High |
 
@@ -226,7 +220,6 @@
 | **Pattern** | Sticky header height changes on scroll |
 | **Why it fails** | Layout shift and disorientation |
 | **Do instead** | Fixed header height; opacity/blur only |
-| **Production impact** | Touch/misclick rate increases 8–15%; mobile conversion drops when targets feel cramped or rhythm breaks — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `target-size`, CSS `min-height`/`min-width` audit, `lint-design-rules.mjs` RULE-001–020 |
 | **Severity** | High |
 
@@ -272,7 +265,6 @@
 | **Pattern** | Accent color used on >15% of viewport |
 | **Why it fails** | Accent loses meaning; UI shouts |
 | **Do instead** | Reserve accent for CTAs, links, focus |
-| **Production impact** | Lighthouse accessibility score drops 10–20 points; fails WCAG AA 1.4.3 — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `color-contrast`, Stylelint color token rules, Lighthouse contrast audit |
 | **Severity** | High |
 
@@ -285,7 +277,6 @@
 | **Pattern** | Gray text below 4.5:1 on background |
 | **Why it fails** | WCAG AA failure; unreadable for many |
 | **Do instead** | Use token pair tested for contrast |
-| **Production impact** | Lighthouse accessibility score drops 10–20 points; fails WCAG AA 1.4.3 — blocks ship; estimated 5–15% conversion or compliance risk |
 | **Detection** | axe-core `color-contrast`, Stylelint color token rules, Lighthouse contrast audit |
 | **Severity** | Critical |
 
@@ -298,7 +289,6 @@
 | **Pattern** | Multiple competing accent hues |
 | **Why it fails** | Brand feels undefined |
 | **Do instead** | One primary accent; secondary only for charts |
-| **Production impact** | Lighthouse accessibility score drops 10–20 points; fails WCAG AA 1.4.3 — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `color-contrast`, Stylelint color token rules, Lighthouse contrast audit |
 | **Severity** | High |
 
@@ -311,7 +301,6 @@
 | **Pattern** | Status colors reused for decoration |
 | **Why it fails** | Users can't trust red/green semantics |
 | **Do instead** | Semantic colors only for state |
-| **Production impact** | Lighthouse accessibility score drops 10–20 points; fails WCAG AA 1.4.3 — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `color-contrast`, Stylelint color token rules, Lighthouse contrast audit |
 | **Severity** | High |
 
@@ -335,7 +324,6 @@
 | **Pattern** | Disabled state same as placeholder |
 | **Why it fails** | Users can't tell field state |
 | **Do instead** | Distinct disabled token with reduced contrast |
-| **Production impact** | Lighthouse accessibility score drops 10–20 points; fails WCAG AA 1.4.3 — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `color-contrast`, Stylelint color token rules, Lighthouse contrast audit |
 | **Severity** | High |
 
@@ -348,7 +336,6 @@
 | **Pattern** | Link color identical to body text |
 | **Why it fails** | Discoverability failure |
 | **Do instead** | Links must differ in color or underline |
-| **Production impact** | Lighthouse accessibility score drops 10–20 points; fails WCAG AA 1.4.3 — blocks ship; estimated 5–15% conversion or compliance risk |
 | **Detection** | axe-core `color-contrast`, Stylelint color token rules, Lighthouse contrast audit |
 | **Severity** | Critical |
 
@@ -372,7 +359,6 @@
 | **Pattern** | Random hex in component not in tokens |
 | **Why it fails** | Theme drift across pages |
 | **Do instead** | Add to token file or use nearest token |
-| **Production impact** | Lighthouse accessibility score drops 10–20 points; fails WCAG AA 1.4.3 — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `color-contrast`, Stylelint color token rules, Lighthouse contrast audit |
 | **Severity** | High |
 
@@ -385,7 +371,6 @@
 | **Pattern** | Dark mode = inverted light palette |
 | **Why it fails** | Washed out; eye strain |
 | **Do instead** | Rebuild dark palette with separate contrast pairs |
-| **Production impact** | Lighthouse accessibility score drops 10–20 points; fails WCAG AA 1.4.3 — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `color-contrast`, Stylelint color token rules, Lighthouse contrast audit |
 | **Severity** | High |
 
@@ -398,7 +383,6 @@
 | **Pattern** | Gradient text on body copy |
 | **Why it fails** | Readability and accessibility fail |
 | **Do instead** | Gradient only on display headings ≥24px |
-| **Production impact** | Lighthouse accessibility score drops 10–20 points; fails WCAG AA 1.4.3 — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `color-contrast`, Stylelint color token rules, Lighthouse contrast audit |
 | **Severity** | High |
 
@@ -411,7 +395,6 @@
 | **Pattern** | Error red used for brand accent |
 | **Why it fails** | Errors feel like marketing |
 | **Do instead** | Separate error token from brand |
-| **Production impact** | Lighthouse accessibility score drops 10–20 points; fails WCAG AA 1.4.3 — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `color-contrast`, Stylelint color token rules, Lighthouse contrast audit |
 | **Severity** | High |
 
@@ -435,7 +418,6 @@
 | **Pattern** | Chart colors not colorblind-safe |
 | **Why it fails** | Data misread by 8% of users |
 | **Do instead** | Use pattern + color; test protanopia |
-| **Production impact** | Lighthouse accessibility score drops 10–20 points; fails WCAG AA 1.4.3 — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `color-contrast`, Stylelint color token rules, Lighthouse contrast audit |
 | **Severity** | High |
 
@@ -448,7 +430,6 @@
 | **Pattern** | Focus ring color matches background |
 | **Why it fails** | Keyboard users lost |
 | **Do instead** | High-contrast focus ring token |
-| **Production impact** | Lighthouse accessibility score drops 10–20 points; fails WCAG AA 1.4.3 — blocks ship; estimated 5–15% conversion or compliance risk |
 | **Detection** | axe-core `focus-order-semantics`, tab-through manual test, eslint-plugin-jsx-a11y `click-events-have-key-events` |
 | **Severity** | Critical |
 
@@ -483,7 +464,6 @@
 | **Pattern** | Selected tab same weight as unselected |
 | **Why it fails** | Navigation state unclear |
 | **Do instead** | Selected: accent or bold + indicator |
-| **Production impact** | Lighthouse accessibility score drops 10–20 points; fails WCAG AA 1.4.3 — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `color-contrast`, Stylelint color token rules, Lighthouse contrast audit |
 | **Severity** | High |
 
@@ -507,7 +487,6 @@
 | **Pattern** | Brand gradient on form inputs |
 | **Why it fails** | Inputs look like marketing not tools |
 | **Do instead** | Neutral input surfaces; accent on focus only |
-| **Production impact** | Lighthouse accessibility score drops 10–20 points; fails WCAG AA 1.4.3 — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `color-contrast`, Stylelint color token rules, Lighthouse contrast audit |
 | **Severity** | High |
 
@@ -520,7 +499,6 @@
 | **Pattern** | Purple-to-blue hero gradient on white |
 | **Why it fails** | Strongest AI template fingerprint |
 | **Do instead** | Solid neutral canvas + single accent |
-| **Production impact** | Landing page indistinguishable from competitors; ad CTR drops when creative looks AI-generated — blocks ship; estimated 5–15% conversion or compliance risk |
 | **Detection** | axe-core `target-size`, CSS `min-height`/`min-width` audit, `lint-design-rules.mjs` RULE-001–020 |
 | **Severity** | Critical |
 
@@ -533,7 +511,6 @@
 | **Pattern** | Inter + generic sans everywhere |
 | **Why it fails** | Default AI font pairing |
 | **Do instead** | Pick distinctive display + workhorse pair |
-| **Production impact** | Touch/misclick rate increases 8–15%; mobile conversion drops when targets feel cramped or rhythm breaks — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `target-size`, CSS `min-height`/`min-width` audit, `lint-design-rules.mjs` RULE-001–020 |
 | **Severity** | High |
 
@@ -557,7 +534,6 @@
 | **Pattern** | Glassmorphism on dense dashboards |
 | **Why it fails** | Legibility suffers; trend-chasing |
 | **Do instead** | Solid surfaces in product UI |
-| **Production impact** | Touch/misclick rate increases 8–15%; mobile conversion drops when targets feel cramped or rhythm breaks — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `target-size`, CSS `min-height`/`min-width` audit, `lint-design-rules.mjs` RULE-001–020 |
 | **Severity** | High |
 
@@ -570,7 +546,6 @@
 | **Pattern** | Floating orbs/blur blobs in background |
 | **Why it fails** | Decorative noise; zero information |
 | **Do instead** | Remove or replace with subtle texture |
-| **Production impact** | Touch/misclick rate increases 8–15%; mobile conversion drops when targets feel cramped or rhythm breaks — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `target-size`, CSS `min-height`/`min-width` audit, `lint-design-rules.mjs` RULE-001–020 |
 | **Severity** | High |
 
@@ -583,7 +558,6 @@
 | **Pattern** | Hero headline 'Build something amazing' |
 | **Why it fails** | Generic AI marketing copy |
 | **Do instead** | Specific outcome tied to user job |
-| **Production impact** | Touch/misclick rate increases 8–15%; mobile conversion drops when targets feel cramped or rhythm breaks — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `target-size`, CSS `min-height`/`min-width` audit, `lint-design-rules.mjs` RULE-001–020 |
 | **Severity** | High |
 
@@ -629,7 +603,6 @@
 | **Pattern** | Animated gradient background |
 | **Why it fails** | Distracting; performance cost |
 | **Do instead** | Static background; motion on interaction only |
-| **Production impact** | Landing page indistinguishable from competitors; ad CTR drops when creative looks AI-generated — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `target-size`, CSS `min-height`/`min-width` audit, `lint-design-rules.mjs` RULE-001–020 |
 | **Severity** | High |
 
@@ -675,7 +648,6 @@
 | **Pattern** | Neumorphism on controls |
 | **Why it fails** | Low contrast; accessibility fail |
 | **Do instead** | Standard filled or outlined controls |
-| **Production impact** | Touch/misclick rate increases 8–15%; mobile conversion drops when targets feel cramped or rhythm breaks — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `target-size`, CSS `min-height`/`min-width` audit, `lint-design-rules.mjs` RULE-001–020 |
 | **Severity** | High |
 
@@ -699,7 +671,6 @@
 | **Pattern** | Lorem ipsum in shipped UI |
 | **Why it fails** | Unfinished product signal |
 | **Do instead** | Real copy or clearly marked placeholder |
-| **Production impact** | Touch/misclick rate increases 8–15%; mobile conversion drops when targets feel cramped or rhythm breaks — blocks ship; estimated 5–15% conversion or compliance risk |
 | **Detection** | axe-core `target-size`, CSS `min-height`/`min-width` audit, `lint-design-rules.mjs` RULE-001–020 |
 | **Severity** | Critical |
 
@@ -745,7 +716,6 @@
 | **Pattern** | Mesh gradient hero without brand tie |
 | **Why it fails** | Unowned visual language |
 | **Do instead** | Derive from brand palette or remove |
-| **Production impact** | Landing page indistinguishable from competitors; ad CTR drops when creative looks AI-generated — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `target-size`, CSS `min-height`/`min-width` audit, `lint-design-rules.mjs` RULE-001–020 |
 | **Severity** | High |
 
@@ -758,7 +728,6 @@
 | **Pattern** | Div with onClick, no button role |
 | **Why it fails** | Keyboard and screen reader inaccessible |
 | **Do instead** | Use button or role=button + keyboard handlers |
-| **Production impact** | ADA/WCAG lawsuit risk ($10k–$75k settlements); screen reader users abandon flow; SEO penalty for inaccessible forms — blocks ship; estimated 5–15% conversion or compliance risk |
 | **Detection** | axe-core (category-specific rule ID), eslint-plugin-jsx-a11y, Lighthouse a11y |
 | **Severity** | Critical |
 
@@ -771,7 +740,6 @@
 | **Pattern** | Missing alt on informative images |
 | **Why it fails** | Screen reader users miss content |
 | **Do instead** | Descriptive alt; decorative alt='' |
-| **Production impact** | ADA/WCAG lawsuit risk ($10k–$75k settlements); screen reader users abandon flow; SEO penalty for inaccessible forms — blocks ship; estimated 5–15% conversion or compliance risk |
 | **Detection** | axe-core (category-specific rule ID), eslint-plugin-jsx-a11y, Lighthouse a11y |
 | **Severity** | Critical |
 
@@ -784,7 +752,6 @@
 | **Pattern** | Color-only status indication |
 | **Why it fails** | Colorblind users miss state |
 | **Do instead** | Add icon, text, or pattern |
-| **Production impact** | ADA/WCAG lawsuit risk ($10k–$75k settlements); screen reader users abandon flow; SEO penalty for inaccessible forms — blocks ship; estimated 5–15% conversion or compliance risk |
 | **Detection** | axe-core (category-specific rule ID), eslint-plugin-jsx-a11y, Lighthouse a11y |
 | **Severity** | Critical |
 
@@ -797,7 +764,6 @@
 | **Pattern** | Focus outline removed globally |
 | **Why it fails** | Keyboard navigation broken |
 | **Do instead** | :focus-visible ring on all interactives |
-| **Production impact** | Keyboard-only users cannot complete booking flow; 100% task failure for assistive tech — blocks ship; estimated 5–15% conversion or compliance risk |
 | **Detection** | axe-core `focus-order-semantics`, tab-through manual test, eslint-plugin-jsx-a11y `click-events-have-key-events` |
 | **Severity** | Critical |
 
@@ -810,7 +776,6 @@
 | **Pattern** | Auto-playing video with sound |
 | **Why it fails** | Disorienting; WCAG violation |
 | **Do instead** | Muted autoplay or user-initiated play |
-| **Production impact** | ADA/WCAG lawsuit risk ($10k–$75k settlements); screen reader users abandon flow; SEO penalty for inaccessible forms — blocks ship; estimated 5–15% conversion or compliance risk |
 | **Detection** | axe-core (category-specific rule ID), eslint-plugin-jsx-a11y, Lighthouse a11y |
 | **Severity** | Critical |
 
@@ -823,7 +788,6 @@
 | **Pattern** | Form labels missing or placeholder-only |
 | **Why it fails** | SR users can't identify fields |
 | **Do instead** | Visible label linked with for/id |
-| **Production impact** | ADA/WCAG lawsuit risk ($10k–$75k settlements); screen reader users abandon flow; SEO penalty for inaccessible forms — blocks ship; estimated 5–15% conversion or compliance risk |
 | **Detection** | axe-core `label`, `aria-*` rules, eslint-plugin-jsx-a11y `label-has-associated-control` |
 | **Severity** | Critical |
 
@@ -836,7 +800,6 @@
 | **Pattern** | Heading levels skipped (h1 to h4) |
 | **Why it fails** | Document outline broken |
 | **Do instead** | Sequential heading hierarchy |
-| **Production impact** | ADA/WCAG lawsuit risk ($10k–$75k settlements); screen reader users abandon flow; SEO penalty for inaccessible forms — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core (category-specific rule ID), eslint-plugin-jsx-a11y, Lighthouse a11y |
 | **Severity** | High |
 
@@ -849,7 +812,6 @@
 | **Pattern** | Modal without focus trap |
 | **Why it fails** | Focus escapes to background |
 | **Do instead** | Trap focus; restore on close |
-| **Production impact** | Keyboard-only users cannot complete booking flow; 100% task failure for assistive tech — blocks ship; estimated 5–15% conversion or compliance risk |
 | **Detection** | axe-core `focus-order-semantics`, tab-through manual test, eslint-plugin-jsx-a11y `click-events-have-key-events` |
 | **Severity** | Critical |
 
@@ -862,7 +824,6 @@
 | **Pattern** | Insufficient link underline contrast |
 | **Why it fails** | Links invisible to low vision |
 | **Do instead** | Underline or 3:1 contrast vs surrounding |
-| **Production impact** | Lighthouse accessibility score drops 10–20 points; fails WCAG AA 1.4.3 — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `color-contrast`, Lighthouse `color-contrast`, Chrome DevTools contrast ratio panel |
 | **Severity** | High |
 
@@ -875,7 +836,6 @@
 | **Pattern** | Touch target overlap |
 | **Why it fails** | Mis-taps on mobile |
 | **Do instead** | Min 8px gap between targets |
-| **Production impact** | Mobile tap failure rate up to 30% on small targets; App Store review may flag usability — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `target-size` (WCAG 2.5.5), DevTools computed size <44px, RULE-070 in lint-design-rules.mjs |
 | **Severity** | High |
 
@@ -888,7 +848,6 @@
 | **Pattern** | aria-hidden on focusable children |
 | **Why it fails** | Focusable but invisible to SR |
 | **Do instead** | Don't hide focusable elements |
-| **Production impact** | Keyboard-only users cannot complete booking flow; 100% task failure for assistive tech — blocks ship; estimated 5–15% conversion or compliance risk |
 | **Detection** | axe-core `focus-order-semantics`, tab-through manual test, eslint-plugin-jsx-a11y `click-events-have-key-events` |
 | **Severity** | Critical |
 
@@ -912,7 +871,6 @@
 | **Pattern** | Table without th scope |
 | **Why it fails** | Table navigation confusing |
 | **Do instead** | scope=col/row on headers |
-| **Production impact** | ADA/WCAG lawsuit risk ($10k–$75k settlements); screen reader users abandon flow; SEO penalty for inaccessible forms — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core (category-specific rule ID), eslint-plugin-jsx-a11y, Lighthouse a11y |
 | **Severity** | High |
 
@@ -925,7 +883,6 @@
 | **Pattern** | Custom select without listbox pattern |
 | **Why it fails** | SR can't operate control |
 | **Do instead** | Use native select or ARIA listbox |
-| **Production impact** | ADA/WCAG lawsuit risk ($10k–$75k settlements); screen reader users abandon flow; SEO penalty for inaccessible forms — blocks ship; estimated 5–15% conversion or compliance risk |
 | **Detection** | axe-core (category-specific rule ID), eslint-plugin-jsx-a11y, Lighthouse a11y |
 | **Severity** | Critical |
 
@@ -938,7 +895,6 @@
 | **Pattern** | Error message not linked to field |
 | **Why it fails** | SR can't find error source |
 | **Do instead** | aria-describedby to error id |
-| **Production impact** | ADA/WCAG lawsuit risk ($10k–$75k settlements); screen reader users abandon flow; SEO penalty for inaccessible forms — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core (category-specific rule ID), eslint-plugin-jsx-a11y, Lighthouse a11y |
 | **Severity** | High |
 
@@ -951,7 +907,6 @@
 | **Pattern** | Motion without prefers-reduced-motion |
 | **Why it fails** | Vestibular disorder trigger |
 | **Do instead** | Respect PRM; provide instant alternative |
-| **Production impact** | ADA/WCAG lawsuit risk ($10k–$75k settlements); screen reader users abandon flow; SEO penalty for inaccessible forms — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | CSS scan: `animation` without `prefers-reduced-motion`, Lighthouse best-practices |
 | **Severity** | High |
 
@@ -964,7 +919,6 @@
 | **Pattern** | Icon-only button without aria-label |
 | **Why it fails** | Purpose unknown to SR |
 | **Do instead** | aria-label describing action |
-| **Production impact** | ADA/WCAG lawsuit risk ($10k–$75k settlements); screen reader users abandon flow; SEO penalty for inaccessible forms — blocks ship; estimated 5–15% conversion or compliance risk |
 | **Detection** | axe-core `label`, `aria-*` rules, eslint-plugin-jsx-a11y `label-has-associated-control` |
 | **Severity** | Critical |
 
@@ -988,7 +942,6 @@
 | **Pattern** | Skip link missing on long pages |
 | **Why it fails** | Keyboard users tab through entire nav |
 | **Do instead** | Skip to main content link |
-| **Production impact** | ADA/WCAG lawsuit risk ($10k–$75k settlements); screen reader users abandon flow; SEO penalty for inaccessible forms — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core (category-specific rule ID), eslint-plugin-jsx-a11y, Lighthouse a11y |
 | **Severity** | High |
 
@@ -1001,7 +954,6 @@
 | **Pattern** | Language attribute missing on html |
 | **Why it fails** | SR wrong pronunciation |
 | **Do instead** | lang attribute on html element |
-| **Production impact** | ADA/WCAG lawsuit risk ($10k–$75k settlements); screen reader users abandon flow; SEO penalty for inaccessible forms — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core (category-specific rule ID), eslint-plugin-jsx-a11y, Lighthouse a11y |
 | **Severity** | High |
 
@@ -1014,7 +966,6 @@
 | **Pattern** | Page-load stagger on every element |
 | **Why it fails** | Feels slow; annoys return visitors |
 | **Do instead** | Animate hero only or first paint |
-| **Production impact** | Users with vestibular disorders abandon session; WCAG 2.3.3 violation — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | CSS `@media (prefers-reduced-motion)` scan, `animation-duration` >200ms without reduced variant |
 | **Severity** | High |
 
@@ -1027,7 +978,6 @@
 | **Pattern** | Duration >500ms on micro-interactions |
 | **Why it fails** | UI feels sluggish |
 | **Do instead** | 150-250ms for hovers; 300ms max modals |
-| **Production impact** | Users with vestibular disorders abandon session; WCAG 2.3.3 violation — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | CSS `@media (prefers-reduced-motion)` scan, `animation-duration` >200ms without reduced variant |
 | **Severity** | High |
 
@@ -1062,7 +1012,6 @@
 | **Pattern** | Animating width/height of layout |
 | **Why it fails** | Janky reflow; CLS risk |
 | **Do instead** | Animate transform/opacity only |
-| **Production impact** | Users with vestibular disorders abandon session; WCAG 2.3.3 violation — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | CSS `@media (prefers-reduced-motion)` scan, `animation-duration` >200ms without reduced variant |
 | **Severity** | High |
 
@@ -1075,7 +1024,6 @@
 | **Pattern** | Infinite pulse on non-loading elements |
 | **Why it fails** | False loading signal |
 | **Do instead** | Pulse only on skeleton/spinner |
-| **Production impact** | Users with vestibular disorders abandon session; WCAG 2.3.3 violation — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | CSS `@media (prefers-reduced-motion)` scan, `animation-duration` >200ms without reduced variant |
 | **Severity** | High |
 
@@ -1110,7 +1058,6 @@
 | **Pattern** | Scroll-jacking on marketing page |
 | **Why it fails** | User agency violation |
 | **Do instead** | Let user control scroll |
-| **Production impact** | Users with vestibular disorders abandon session; WCAG 2.3.3 violation — blocks ship; estimated 5–15% conversion or compliance risk |
 | **Detection** | CSS `@media (prefers-reduced-motion)` scan, `animation-duration` >200ms without reduced variant |
 | **Severity** | Critical |
 
@@ -1145,7 +1092,6 @@
 | **Pattern** | Carousel auto-advance without pause |
 | **Why it fails** | WCAG 2.2.2 violation |
 | **Do instead** | Pause control; 5s+ interval |
-| **Production impact** | Users with vestibular disorders abandon session; WCAG 2.3.3 violation — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | CSS `@media (prefers-reduced-motion)` scan, `animation-duration` >200ms without reduced variant |
 | **Severity** | High |
 
@@ -1180,7 +1126,6 @@
 | **Pattern** | Route transition blocks interaction |
 | **Why it fails** | App feels frozen |
 | **Do instead** | Non-blocking transitions |
-| **Production impact** | Users with vestibular disorders abandon session; WCAG 2.3.3 violation — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | CSS `@media (prefers-reduced-motion)` scan, `animation-duration` >200ms without reduced variant |
 | **Severity** | High |
 
@@ -1215,7 +1160,6 @@
 | **Pattern** | Stagger delay compounds on long lists |
 | **Why it fails** | List takes seconds to appear |
 | **Do instead** | Cap stagger; batch reveal |
-| **Production impact** | Users with vestibular disorders abandon session; WCAG 2.3.3 violation — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | CSS `@media (prefers-reduced-motion)` scan, `animation-duration` >200ms without reduced variant |
 | **Severity** | High |
 
@@ -1228,7 +1172,6 @@
 | **Pattern** | Transform on parent breaks fixed children |
 | **Why it fails** | Sticky/fixed positioning breaks |
 | **Do instead** | Animate child not positioned ancestor |
-| **Production impact** | Users with vestibular disorders abandon session; WCAG 2.3.3 violation — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | CSS `@media (prefers-reduced-motion)` scan, `animation-duration` >200ms without reduced variant |
 | **Severity** | High |
 
@@ -1241,7 +1184,6 @@
 | **Pattern** | Reduced motion ignored in JS animations |
 | **Why it fails** | Accessibility gap |
 | **Do instead** | Check matchMedia in JS anim paths |
-| **Production impact** | Users with vestibular disorders abandon session; WCAG 2.3.3 violation — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | CSS scan: `animation` without `prefers-reduced-motion`, Lighthouse best-practices |
 | **Severity** | High |
 
@@ -1254,7 +1196,6 @@
 | **Pattern** | Welcome to our platform! |
 | **Why it fails** | Generic; no user benefit |
 | **Do instead** | Lead with outcome user gets today |
-| **Production impact** | Task completion drops 12–25% when labels are vague; support tickets spike on ambiguous CTAs — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | Content lint for banned phrases, heading hierarchy audit (h1→h2) |
 | **Severity** | High |
 
@@ -1267,7 +1208,6 @@
 | **Pattern** | Click here links |
 | **Why it fails** | Non-descriptive for SR and scan |
 | **Do instead** | Verb + destination: View invoice |
-| **Production impact** | Task completion drops 12–25% when labels are vague; support tickets spike on ambiguous CTAs — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | Content lint for banned phrases, heading hierarchy audit (h1→h2) |
 | **Severity** | High |
 
@@ -1291,7 +1231,6 @@
 | **Pattern** | Jargon in consumer-facing UI |
 | **Why it fails** | Cognitive load; exclusion |
 | **Do instead** | Plain language; define terms once |
-| **Production impact** | Task completion drops 12–25% when labels are vague; support tickets spike on ambiguous CTAs — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | Content lint for banned phrases, heading hierarchy audit (h1→h2) |
 | **Severity** | High |
 
@@ -1315,7 +1254,6 @@
 | **Pattern** | Duplicate CTA labels (Learn more ×3) |
 | **Why it fails** | User can't distinguish actions |
 | **Do instead** | Unique label per destination |
-| **Production impact** | Task completion drops 12–25% when labels are vague; support tickets spike on ambiguous CTAs — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `label`, `aria-*` rules, eslint-plugin-jsx-a11y `label-has-associated-control` |
 | **Severity** | High |
 
@@ -1328,7 +1266,6 @@
 | **Pattern** | Empty state with no next step |
 | **Why it fails** | Dead end; user leaves |
 | **Do instead** | One clear action in empty state |
-| **Production impact** | Task completion drops 12–25% when labels are vague; support tickets spike on ambiguous CTAs — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | Content lint for banned phrases, heading hierarchy audit (h1→h2) |
 | **Severity** | High |
 
@@ -1341,7 +1278,6 @@
 | **Pattern** | Confirmation without consequence |
 | **Why it fails** | Accidental destructive actions |
 | **Do instead** | Name what will be deleted |
-| **Production impact** | Task completion drops 12–25% when labels are vague; support tickets spike on ambiguous CTAs — blocks ship; estimated 5–15% conversion or compliance risk |
 | **Detection** | Content lint for banned phrases, heading hierarchy audit (h1→h2) |
 | **Severity** | Critical |
 
@@ -1354,7 +1290,6 @@
 | **Pattern** | Truncated button text on mobile |
 | **Why it fails** | Action unclear |
 | **Do instead** | Shorter copy or icon+label |
-| **Production impact** | Task completion drops 12–25% when labels are vague; support tickets spike on ambiguous CTAs — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | Content lint for banned phrases, heading hierarchy audit (h1→h2) |
 | **Severity** | High |
 
@@ -1389,7 +1324,6 @@
 | **Pattern** | Feature name != user mental model |
 | **Why it fails** | Discovery failure |
 | **Do instead** | Use user's words from research |
-| **Production impact** | Task completion drops 12–25% when labels are vague; support tickets spike on ambiguous CTAs — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | Content lint for banned phrases, heading hierarchy audit (h1→h2) |
 | **Severity** | High |
 
@@ -1435,7 +1369,6 @@
 | **Pattern** | Number formatting inconsistent |
 | **Why it fails** | Trust erosion in financial UI |
 | **Do instead** | Locale-aware formatting everywhere |
-| **Production impact** | Task completion drops 12–25% when labels are vague; support tickets spike on ambiguous CTAs — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | Content lint for banned phrases, heading hierarchy audit (h1→h2) |
 | **Severity** | High |
 
@@ -1448,7 +1381,6 @@
 | **Pattern** | Date without timezone context |
 | **Why it fails** | Scheduling confusion |
 | **Do instead** | Show timezone or relative time |
-| **Production impact** | Task completion drops 12–25% when labels are vague; support tickets spike on ambiguous CTAs — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | Content lint for banned phrases, heading hierarchy audit (h1→h2) |
 | **Severity** | High |
 
@@ -1494,7 +1426,6 @@
 | **Pattern** | No clear primary action per screen |
 | **Why it fails** | Decision paralysis |
 | **Do instead** | One dominant CTA; secondary de-emphasized |
-| **Production impact** | Mobile horizontal scroll increases bounce 15%; broken responsive grid hides primary CTA below fold — blocks ship; estimated 5–15% conversion or compliance risk |
 | **Detection** | Lighthouse CLS/mobile, CSS Grid/Flexbox overflow inspection |
 | **Severity** | Critical |
 
@@ -1507,7 +1438,6 @@
 | **Pattern** | Sidebar and content same visual weight |
 | **Why it fails** | Navigation competes with work |
 | **Do instead** | De-emphasize chrome; content leads |
-| **Production impact** | Mobile horizontal scroll increases bounce 15%; broken responsive grid hides primary CTA below fold — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | Lighthouse CLS/mobile, CSS Grid/Flexbox overflow inspection |
 | **Severity** | High |
 
@@ -1520,7 +1450,6 @@
 | **Pattern** | Z-pattern broken by random alignment |
 | **Why it fails** | Scan path lost |
 | **Do instead** | Align to grid; F or Z for marketing |
-| **Production impact** | Mobile horizontal scroll increases bounce 15%; broken responsive grid hides primary CTA below fold — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | Lighthouse CLS/mobile, CSS Grid/Flexbox overflow inspection |
 | **Severity** | High |
 
@@ -1533,7 +1462,6 @@
 | **Pattern** | Critical info below fold on mobile |
 | **Why it fails** | Users miss primary task |
 | **Do instead** | Primary action visible without scroll |
-| **Production impact** | Mobile horizontal scroll increases bounce 15%; broken responsive grid hides primary CTA below fold — blocks ship; estimated 5–15% conversion or compliance risk |
 | **Detection** | Lighthouse CLS/mobile, CSS Grid/Flexbox overflow inspection |
 | **Severity** | Critical |
 
@@ -1546,7 +1474,6 @@
 | **Pattern** | Tables on mobile without responsive pattern |
 | **Why it fails** | Horizontal scroll hell |
 | **Do instead** | Card stack or priority columns |
-| **Production impact** | Mobile horizontal scroll increases bounce 15%; broken responsive grid hides primary CTA below fold — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | Lighthouse CLS/mobile, CSS Grid/Flexbox overflow inspection |
 | **Severity** | High |
 
@@ -1559,7 +1486,6 @@
 | **Pattern** | Modal wider than viewport |
 | **Why it fails** | Broken on small screens |
 | **Do instead** | Max-width 100vw - margin |
-| **Production impact** | Mobile horizontal scroll increases bounce 15%; broken responsive grid hides primary CTA below fold — blocks ship; estimated 5–15% conversion or compliance risk |
 | **Detection** | Lighthouse CLS/mobile, CSS Grid/Flexbox overflow inspection |
 | **Severity** | Critical |
 
@@ -1572,7 +1498,6 @@
 | **Pattern** | Fixed bottom bar covers content |
 | **Why it fails** | Content inaccessible |
 | **Do instead** | Padding-bottom on main = bar height |
-| **Production impact** | Mobile horizontal scroll increases bounce 15%; broken responsive grid hides primary CTA below fold — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | Lighthouse CLS/mobile, CSS Grid/Flexbox overflow inspection |
 | **Severity** | High |
 
@@ -1585,7 +1510,6 @@
 | **Pattern** | Two-column form on narrow mobile |
 | **Why it fails** | Fields too narrow |
 | **Do instead** | Single column <768px |
-| **Production impact** | Mobile horizontal scroll increases bounce 15%; broken responsive grid hides primary CTA below fold — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | Lighthouse CLS/mobile, CSS Grid/Flexbox overflow inspection |
 | **Severity** | High |
 
@@ -1631,7 +1555,6 @@
 | **Pattern** | Search hidden in menu on search-heavy app |
 | **Why it fails** | Core task buried |
 | **Do instead** | Persistent search in header |
-| **Production impact** | Mobile horizontal scroll increases bounce 15%; broken responsive grid hides primary CTA below fold — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | Lighthouse CLS/mobile, CSS Grid/Flexbox overflow inspection |
 | **Severity** | High |
 
@@ -1644,7 +1567,6 @@
 | **Pattern** | Inconsistent max-width across pages |
 | **Why it fails** | Site feels stitched |
 | **Do instead** | One content max-width token |
-| **Production impact** | Mobile horizontal scroll increases bounce 15%; broken responsive grid hides primary CTA below fold — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | Lighthouse CLS/mobile, CSS Grid/Flexbox overflow inspection |
 | **Severity** | High |
 
@@ -1657,7 +1579,6 @@
 | **Pattern** | Floating action button overlaps content |
 | **Why it fails** | Blocks taps and reading |
 | **Do instead** | FAB offset with safe padding |
-| **Production impact** | Mobile horizontal scroll increases bounce 15%; broken responsive grid hides primary CTA below fold — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | Lighthouse CLS/mobile, CSS Grid/Flexbox overflow inspection |
 | **Severity** | High |
 
@@ -1681,7 +1602,6 @@
 | **Pattern** | Dashboard widgets random order |
 | **Why it fails** | No information priority |
 | **Do instead** | Rank by user task frequency |
-| **Production impact** | Mobile horizontal scroll increases bounce 15%; broken responsive grid hides primary CTA below fold — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | Lighthouse CLS/mobile, CSS Grid/Flexbox overflow inspection |
 | **Severity** | High |
 
@@ -1694,7 +1614,6 @@
 | **Pattern** | Marketing nav in app shell |
 | **Why it fails** | Context switch confusion |
 | **Do instead** | Separate app nav pattern |
-| **Production impact** | Mobile horizontal scroll increases bounce 15%; broken responsive grid hides primary CTA below fold — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | Lighthouse CLS/mobile, CSS Grid/Flexbox overflow inspection |
 | **Severity** | High |
 
@@ -1707,7 +1626,6 @@
 | **Pattern** | Inline edit without save affordance |
 | **Why it fails** | Users unsure if saved |
 | **Do instead** | Explicit save or autosave indicator |
-| **Production impact** | Mobile horizontal scroll increases bounce 15%; broken responsive grid hides primary CTA below fold — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | Lighthouse CLS/mobile, CSS Grid/Flexbox overflow inspection |
 | **Severity** | High |
 
@@ -1742,7 +1660,6 @@
 | **Pattern** | Pure black #000 background |
 | **Why it fails** | Halation on OLED; harsh |
 | **Do instead** | Use dark gray (#0a0a0a - #121212) |
-| **Production impact** | Dark mode users see invisible text; 40% of evening sessions affected — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `target-size`, CSS `min-height`/`min-width` audit, `lint-design-rules.mjs` RULE-001–020 |
 | **Severity** | High |
 
@@ -1755,7 +1672,6 @@
 | **Pattern** | White text on dark without dimming |
 | **Why it fails** | Eye strain; too bright |
 | **Do instead** | Use zinc-100/200 not pure white |
-| **Production impact** | Dark mode users see invisible text; 40% of evening sessions affected — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `target-size`, CSS `min-height`/`min-width` audit, `lint-design-rules.mjs` RULE-001–020 |
 | **Severity** | High |
 
@@ -1768,7 +1684,6 @@
 | **Pattern** | Shadows invisible in dark mode |
 | **Why it fails** | Elevation lost |
 | **Do instead** | Use border or lighter surface step |
-| **Production impact** | Dark mode users see invisible text; 40% of evening sessions affected — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `target-size`, CSS `min-height`/`min-width` audit, `lint-design-rules.mjs` RULE-001–020 |
 | **Severity** | High |
 
@@ -1792,7 +1707,6 @@
 | **Pattern** | Same border token as light mode |
 | **Why it fails** | Borders disappear or glare |
 | **Do instead** | Separate dark border token |
-| **Production impact** | Dark mode users see invisible text; 40% of evening sessions affected — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `target-size`, CSS `min-height`/`min-width` audit, `lint-design-rules.mjs` RULE-001–020 |
 | **Severity** | High |
 
@@ -1805,7 +1719,6 @@
 | **Pattern** | Charts use light-mode palette |
 | **Why it fails** | Illegible on dark bg |
 | **Do instead** | Dark-mode chart token set |
-| **Production impact** | Dark mode users see invisible text; 40% of evening sessions affected — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `target-size`, CSS `min-height`/`min-width` audit, `lint-design-rules.mjs` RULE-001–020 |
 | **Severity** | High |
 
@@ -1818,7 +1731,6 @@
 | **Pattern** | Code blocks unchanged in dark |
 | **Why it fails** | Blinding white boxes |
 | **Do instead** | Dark syntax theme in dark mode |
-| **Production impact** | Dark mode users see invisible text; 40% of evening sessions affected — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `target-size`, CSS `min-height`/`min-width` audit, `lint-design-rules.mjs` RULE-001–020 |
 | **Severity** | High |
 
@@ -1831,7 +1743,6 @@
 | **Pattern** | Toggle doesn't persist preference |
 | **Why it fails** | User re-selects every visit |
 | **Do instead** | localStorage or system + override |
-| **Production impact** | Dark mode users see invisible text; 40% of evening sessions affected — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `target-size`, CSS `min-height`/`min-width` audit, `lint-design-rules.mjs` RULE-001–020 |
 | **Severity** | High |
 
@@ -1844,7 +1755,6 @@
 | **Pattern** | Flash of light theme on load |
 | **Why it fails** | Jarring FOUC |
 | **Do instead** | Inline script or CSS default dark |
-| **Production impact** | Dark mode users see invisible text; 40% of evening sessions affected — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `target-size`, CSS `min-height`/`min-width` audit, `lint-design-rules.mjs` RULE-001–020 |
 | **Severity** | High |
 
@@ -1857,7 +1767,6 @@
 | **Pattern** | Icons designed for light only |
 | **Why it fails** | Icons vanish on dark |
 | **Do instead** | SVG currentColor or dual assets |
-| **Production impact** | Dark mode users see invisible text; 40% of evening sessions affected — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `target-size`, CSS `min-height`/`min-width` audit, `lint-design-rules.mjs` RULE-001–020 |
 | **Severity** | High |
 
@@ -1892,7 +1801,6 @@
 | **Pattern** | Form inputs same as page bg |
 | **Why it fails** | Fields invisible |
 | **Do instead** | Input surface one step lighter |
-| **Production impact** | Dark mode users see invisible text; 40% of evening sessions affected — blocks ship; estimated 5–15% conversion or compliance risk |
 | **Detection** | axe-core `target-size`, CSS `min-height`/`min-width` audit, `lint-design-rules.mjs` RULE-001–020 |
 | **Severity** | Critical |
 
@@ -1927,7 +1835,6 @@
 | **Pattern** | Placeholder contrast fails in dark |
 | **Why it fails** | Fields look empty/broken |
 | **Do instead** | Test placeholder pairs in dark |
-| **Production impact** | Lighthouse accessibility score drops 10–20 points; fails WCAG AA 1.4.3 — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `color-contrast`, Lighthouse `color-contrast`, Chrome DevTools contrast ratio panel |
 | **Severity** | High |
 
@@ -1940,7 +1847,6 @@
 | **Pattern** | Status badges light-mode only |
 | **Why it fails** | Semantic colors wrong on dark |
 | **Do instead** | Dark variants for success/warn/error |
-| **Production impact** | Dark mode users see invisible text; 40% of evening sessions affected — P1 iterate; measurable UX degradation within 2 weeks of launch |
 | **Detection** | axe-core `target-size`, CSS `min-height`/`min-width` audit, `lint-design-rules.mjs` RULE-001–020 |
 | **Severity** | High |
 

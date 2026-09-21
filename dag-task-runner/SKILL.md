@@ -11,6 +11,20 @@ Decomposes a user-described task into a JSON DAG, then runs each node as a Curso
 
 This skill can run from either a project skill (`.cursor/skills/dag-task-runner`) or a personal skill (`~/.cursor/skills/dag-task-runner`). The installed runner entry point is `scripts/run_dag.ts` inside the skill directory. Set `DAG_RUNNER_DIR` to override the auto-detected `scripts` directory.
 
+## Apple Ultra 2026 operating contract
+
+Use [../references/apple-principles-2026.md](../references/apple-principles-2026.md) as the orchestration contract.
+
+- **Purpose:** every node must contribute to the requested outcome; no speculative side quests.
+- **Agency:** preserve user constraints verbatim, make mutating/destructive nodes explicit, and define cancel/stop boundaries.
+- **Responsibility:** separate read/research nodes from write/mutation nodes; minimize credentials and data shared between nodes.
+- **Familiarity:** reuse repo-native skills and known workflows before inventing new agent roles.
+- **Flexibility:** model retries, partial failure, dependency failure, and resumability.
+- **Simplicity:** parallelize independent work, not tightly coupled steps that require constant reconciliation.
+- **Craft:** every terminal path needs verification and provenance; a DAG that “completed” without validating outputs is not done.
+
+**Evidence rule:** downstream summaries must distinguish observed tool results from assumptions and estimates. Do not let one agent’s guess become another agent’s fact.
+
 ## When to use
 
 Trigger when the user says any of:

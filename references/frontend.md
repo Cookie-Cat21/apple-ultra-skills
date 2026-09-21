@@ -1,22 +1,24 @@
 # Apple Ultra: Frontend Reference (150+ Rules)
 
 > Cross-reference: [SKILL.md](../SKILL.md) Section 2. Load when Frontend Ultra-Mode is active.
+>
+> **Current compatibility (verified 2026-09-21):** React 19.3 · Next.js 16.3.3 Active LTS · Tailwind CSS 4.3. Always inspect the project’s installed versions. Apply [apple-principles-2026.md](./apple-principles-2026.md); numeric thresholds not tied to a standard or measured project data are studio defaults, not universal facts.
 
 ---
 
 ## 1. React Component Patterns (30 Rules)
 
-1. ⚡ One component per file. File name matches default export name (`Button.tsx` exports `Button`).
-2. 🎯 Components under 150 lines. If longer, extract sub-components or hooks.
+1. 🎯 Keep component/module boundaries easy to locate and own. One main component per file is a useful default, but colocated private helpers/subcomponents are fine when they remain cohesive.
+2. 🎯 Split a component when it mixes responsibilities, becomes hard to test/review, or hides the primary render path. Line count is a smell, not a correctness threshold.
 3. ⚡ Never call hooks conditionally or inside loops — Rules of Hooks are not suggestions.
-4. 🎯 Custom hooks for any logic reused across 2+ components. Prefix with `use`.
+4. 🎯 Extract a custom Hook when it creates a coherent reusable stateful behavior or clarifies a component. Reuse count alone does not require abstraction.
 5. 💡 `useRef` for values that persist across renders without triggering re-renders (timers, previous values, DOM refs).
-6. ⚡ `useRef` for DOM access — never `document.querySelector` in React components.
-7. 🎯 Forward refs with `React.forwardRef` on any component that wraps a native element.
+6. 🎯 Prefer refs/Fragment Refs for component-owned DOM access. Direct DOM queries are acceptable at explicit integration boundaries when scope and lifecycle are controlled.
+7. 🎯 In React 19+, function components can receive `ref` as a prop; use that for new code. Keep `forwardRef` for compatibility with older React/library patterns where required.
 8. 💡 `useImperativeHandle` sparingly — it breaks encapsulation. Prefer declarative props.
 9. ⚡ Error boundaries catch render errors only — not event handler errors, async errors, or SSR errors.
 10. 🎯 Place error boundaries at route level + around risky third-party widgets.
-11. 🎯 `React.Suspense` fallback must match layout dimensions of loaded content — no layout shift on resolve.
+11. 🎯 Design Suspense fallbacks to preserve meaningful layout/continuity where feasible; exact geometry is not required when the final content genuinely changes size.
 12. 💡 `use()` hook (React 19) for reading promises and context in render — replaces some `useEffect` patterns.
 13. ⚡ Server Components (RSC): no hooks, no event handlers, no browser APIs. Default in Next.js App Router.
 14. 🎯 Client Components: mark with `'use client'` at top of file — not per-function.
@@ -28,13 +30,13 @@
 20. 🎯 Controlled vs uncontrolled: pick one per input. Controlled = `value` + `onChange`. Uncontrolled = `defaultValue` + ref.
 21. ⚡ Never mix controlled and uncontrolled on the same input — React warns, then breaks silently.
 22. 🎯 `key` on component remount resets all internal state — use intentionally for "reset form" patterns.
-23. 💡 `React.memo` with custom comparator only when props are objects/arrays that are referentially unstable but semantically equal.
-24. 🎯 `useCallback` deps must include every value referenced inside — exhaustive-deps ESLint rule is correct.
-25. ⚡ `useEffect` cleanup functions for subscriptions, timers, and abort controllers — always.
+23. 💡 Use `React.memo`/custom comparison only after identifying a meaningful render cost or stable component boundary. React Compiler/framework tooling may make manual memoization unnecessary.
+24. 🎯 Follow the Rules of Hooks and current hook-lint guidance. Do not suppress dependencies to force stability; use `useEffectEvent`, refactoring, or different state ownership when that better expresses the behavior.
+25. ⚡ Effects that acquire external resources (subscriptions, timers, sockets, listeners, in-flight work that must be canceled) need the corresponding cleanup. Pure synchronization that acquires nothing may not.
 26. 🎯 `useLayoutEffect` only when you need to measure/mutate DOM before paint — causes synchronous layout, use sparingly.
 27. 💡 Portals for modals, tooltips, dropdowns: `createPortal(child, document.body)`.
 28. 🎯 Strict Mode double-invokes effects in dev — if your effect breaks on double-run, it has a bug.
-29. ⚡ No `dangerouslySetInnerHTML` without DOMPurify sanitization.
+29. ⚡ Never inject untrusted HTML without a deliberate sanitization/trust boundary. DOMPurify is one option; server-side trusted sanitization, Trusted Types, or framework/CMS guarantees may define the project’s strategy.
 30. 💡 Fragment shorthand `<>...</>` for grouping without DOM node — use `<Fragment key={id}>` when key is needed.
 
 ---
@@ -49,23 +51,23 @@
 6. ⚡ Route handlers (`route.ts`): export named functions `GET`, `POST`, etc. Return `NextResponse`.
 7. 🎯 Validate request body in route handlers with Zod — same schema as client form validation.
 8. 💡 `NextRequest` gives you `request.nextUrl.searchParams` — prefer over manual URL parsing.
-9. ⚡ Middleware (`middleware.ts`): keep fast — no database calls. Auth check + redirect only.
-10. 🎯 Middleware matcher config: be specific — `matcher: ['/dashboard/:path*']` not `matcher: '/:path*'`.
+9. ⚡ Next.js 16: `middleware.ts` is deprecated in favor of `proxy.ts`. Keep Proxy focused on the request boundary; avoid slow data fetching and do not treat it as the sole authorization layer.
+10. 🎯 Proxy matcher config should cover only the paths that need request-boundary logic; broad matchers require an explicit reason and performance/security review.
 11. 🎯 Metadata API: export `metadata` object or `generateMetadata` function from `page.tsx`/`layout.tsx`.
 12. 💡 `generateStaticParams` for dynamic routes at build time — return array of `{ slug: string }`.
-13. ⚡ `revalidatePath('/blog')` after mutation — or `revalidateTag('posts')` for granular cache invalidation.
-14. 🎯 `fetch(url, { next: { revalidate: 3600 } })` for ISR — seconds until revalidation.
-15. 🎯 `fetch(url, { cache: 'no-store' })` for always-fresh data in Server Components.
+13. 🎯 Invalidate/update cached data according to the installed Next.js caching model. With Next 16 Cache Components, prefer `cacheTag` plus `updateTag`/profiled `revalidateTag` where appropriate; do not cargo-cult legacy calls.
+14. 🎯 Treat caching as an explicit product/data-freshness decision. Current bare `fetch` is not cached by default; use the caching API that matches the project’s Next.js version and Cache Components configuration.
+15. 🎯 For fresh request-time data, use the current version’s default/explicit uncached model and Suspense where streaming helps. Avoid redundant cache flags when the framework already provides the intended behavior.
 16. 💡 Parallel routes (`@modal`): render modals as parallel route slots — URL-driven modal state.
 17. 🎯 Intercepting routes (`(.)photo`): show modal over current page while updating URL.
 18. ⚡ `redirect('/login')` in Server Components throws — don't wrap in try/catch.
-19. 🎯 `cookies()` and `headers()` are async in Next.js 15 — await them.
+19. 🎯 `cookies()` and `headers()` are async in current Next.js. Keep request-specific values outside shared cache scopes and follow the installed version’s migration guidance.
 20. 💡 `draftMode()` for previewing unpublished CMS content — enable via API route with secret.
 21. 🎯 `next.config.ts`: `images.remotePatterns` for external image domains — not `domains` (deprecated).
 22. ⚡ `next.config.ts`: set `headers()` for security headers on all routes.
 23. 🎯 Route groups `(marketing)` don't affect URL — use for layout organization only.
 24. 💡 `instrumentation.ts` for OpenTelemetry setup — runs once on server start.
-25. 🎯 `serverActions` in `'use server'` files — validate input, revalidate cache, return typed result.
+25. 🎯 Server Actions are server endpoints: authenticate/authorize, validate input, model errors, and update/invalidate cache using the installed version’s APIs. A dedicated `'use server'` module is useful for reusable actions but not a universal requirement.
 
 ---
 
@@ -74,19 +76,19 @@
 1. 🎯 Default: `useState` for local UI state. Don't reach for global state until proven necessary.
 2. 💡 Lift state only when 2+ siblings need it — parent holds state, passes down via props.
 3. 🎯 Context for theme, auth, locale — low-frequency updates shared across deep tree.
-4. ⚡ Never put frequently-updating state in Context — it re-renders all consumers.
+4. 🎯 Avoid placing high-frequency shared state in a broad Context when it causes costly fan-out. Measure/select/split context or use an external store when the actual render behavior warrants it.
 5. 🎯 Zustand for client global state: simple API, no Provider wrapper, works outside React.
 6. 💡 Zustand slices: `create((set) => ({ ...authSlice(set), ...cartSlice(set) }))` for large stores.
 7. 🎯 TanStack Query for server state: fetching, caching, invalidation, optimistic updates.
-8. ⚡ TanStack Query: `staleTime` defaults to 0 — set explicitly (e.g., 5min for stable data).
+8. 🎯 Configure server-state freshness from product semantics. Know the library defaults, but don’t invent a universal `staleTime` such as five minutes.
 9. 🎯 Optimistic updates: `onMutate` → update cache → `onError` → rollback → `onSettled` → refetch.
-10. 💡 `queryClient.prefetchQuery` on hover for instant navigation data.
-11. 🎯 `react-hook-form` + Zod resolver for forms — uncontrolled inputs, minimal re-renders.
-12. ⚡ `react-hook-form`: `mode: 'onBlur'` for validation — not `onChange` (too aggressive).
+10. 💡 Prefetch when intent likelihood, payload cost, cache lifetime, and network conditions justify it; hover alone is not a universal signal.
+11. 🎯 Use the repo’s form/validation stack and keep authoritative validation consistent across client/server. React Hook Form + Zod is one strong option, not a requirement.
+12. 🎯 Choose validation timing per field and consequence. Validate early enough to help, but avoid noisy validation that punishes normal typing.
 13. 🎯 Form state vs URL state: filters/pagination in URL (`useSearchParams`), form drafts in local state.
 14. 💡 `useSyncExternalStore` for subscribing to external stores (localStorage, WebSocket) in React 18+.
-15. 🎯 Redux Toolkit only when you need: time-travel debugging, middleware chains, or team already uses it.
-16. ⚡ Normalized state shape for relational data — `{ byId: {}, allIds: [] }` not nested arrays.
+15. 🎯 Choose a global-state tool from the project’s needs and existing conventions; Redux Toolkit remains valid beyond a fixed checklist of use cases.
+16. 🎯 Normalize relational client state when updates/lookups benefit from stable identity; simple nested data can stay simple when it is not causing correctness/performance problems.
 17. 🎯 Selectors memoized with `reselect` or Zustand derived state — compute once, read many times.
 18. 💡 Persist critical client state to `localStorage` with Zustand `persist` middleware — not all state.
 19. 🎯 Hydration mismatch: server and client must render same initial state — use `useEffect` for client-only data.
@@ -96,31 +98,31 @@
 
 ## 4. Styling Patterns (25 Rules)
 
-1. ⚡ Design tokens as CSS custom properties on `:root` — components reference tokens, never primitives.
+1. 🎯 Keep product semantics in shared design tokens. CSS custom properties are a strong web implementation, but token storage and scope should follow the project’s theming architecture.
 2. 🎯 Tailwind: use `@apply` only in component-level CSS files, not in JSX class strings.
 3. 🎯 Tailwind: `cn()` utility (clsx + tailwind-merge) for conditional classes — prevents conflicts.
-4. 💡 Tailwind arbitrary values `[23px]` are code smell — add to theme config instead.
+4. 💡 Repeated semantic values belong in theme tokens. A one-off arbitrary value can be appropriate for optical correction or external constraints when its intent is clear.
 5. ⚡ CSS Modules: `import styles from './Button.module.css'` — scoped by default, no naming collisions.
 6. 🎯 CSS Modules: compose classes with `composes: btn from './base.module.css'`.
-7. 🎯 Responsive: mobile-first `sm:` `md:` `lg:` `xl:` `2xl:` — base styles are mobile.
+7. 🎯 Use a consistent responsive strategy driven by content. Tailwind’s min-width variants make mobile-first convenient, but component/container needs can justify other structure.
 8. 💡 Container queries (`@container`) for component-responsive design — better than viewport breakpoints for reusable components.
-9. ⚡ Dark mode via `[data-theme="dark"]` selector on `<html>` — toggle attribute, not class.
+9. 🎯 Implement theme selection through the project’s documented token/theme mechanism (`data-*`, class, media query, etc.); no single selector convention is universally required.
 10. 🎯 `color-scheme: dark` on dark theme root — fixes native form controls and scrollbars.
 11. 🎯 Print styles: `@media print { .no-print { display: none; } }` — hide nav, show URLs.
 12. 💡 `aspect-ratio: 16/9` on media containers — prevents CLS before image loads.
-13. 🎯 `object-fit: cover` for thumbnails, `contain` for product images — never stretch.
+13. 🎯 Choose `cover`, `contain`, intrinsic sizing, or art direction from the content’s cropping requirements; never distort media unintentionally.
 14. ⚡ `outline-offset: 2px` on focus rings — prevents clipping by `overflow: hidden` parents.
 15. 🎯 `scroll-margin-top` on anchor targets — accounts for sticky header height.
 16. 💡 `scrollbar-gutter: stable` on body — prevents layout shift when scrollbar appears/disappears.
-17. 🎯 Grid for 2D layouts, Flexbox for 1D — don't fight the wrong tool.
+17. 🎯 Choose Grid, Flexbox, normal flow, or container queries based on the layout relationship. Grid often excels at two-dimensional alignment and Flexbox at one-dimensional distribution, but this is a heuristic.
 18. 🎯 `gap` over margin for spacing between siblings — no last-child margin hacks.
-19. ⚡ `min-h-dvh` not `min-h-screen` — accounts for mobile browser chrome.
+19. 🎯 Prefer dynamic/small/large viewport units where mobile browser chrome matters; use `vh`/Tailwind viewport utilities according to the actual layout and browser support target.
 20. 💡 `clamp(1rem, 2.5vw, 1.5rem)` for fluid spacing and typography.
 21. 🎯 Layer order: `@layer base, components, utilities` — predictable specificity.
-22. 🎯 Avoid `!important` — if you need it, your specificity architecture is broken.
+22. 🎯 Treat `!important` as an escalation tool. Prefer layers/specificity architecture, but allow intentional use for utilities, third-party overrides, or accessibility fixes when documented.
 23. 💡 `@starting-style` for entry animations on newly displayed elements (CSS 2024).
-24. 🎯 Skeleton screens: `animate-pulse` on placeholder shapes matching content layout.
-25. ⚡ No inline styles for values available as tokens — inline styles don't respond to theme changes.
+24. 🎯 Use skeletons only when they improve perceived continuity and approximate final structure; prefer static placeholders/status when animation or prediction adds no value.
+25. 🎯 Use tokens/classes for shared semantic values. Inline styles remain appropriate for runtime-computed values when they intentionally consume tokens or cannot be represented statically.
 
 ---
 

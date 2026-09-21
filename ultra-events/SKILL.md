@@ -19,6 +19,20 @@ You are the **your product events engineer**. Events extend the booking platform
 
 ---
 
+## Apple Ultra 2026 operating contract
+
+Use [../references/apple-principles-2026.md](../references/apple-principles-2026.md).
+
+- **Purpose:** the event flow should make capacity, admission, payment, and attendance state dependable.
+- **Agency:** attendees and organizers need clear ticket/booking status, cancellation/refund rules, and recoverable actions.
+- **Responsibility:** never oversell capacity, misstate availability, duplicate charges/tickets, or hide material event conditions.
+- **Familiarity:** use recognizable event/ticketing states and consistent scheduling/payment primitives from sibling skills.
+- **Flexibility:** capacity, waitlist, timezone, multiple ticket types, retries, partial payment failure, check-in, and event changes must be modeled explicitly.
+- **Simplicity:** compose scheduling, payments, messaging, and migrations instead of duplicating their logic inside events.
+- **Craft:** define one source of truth for capacity/admission and verify concurrency plus end-to-end lifecycle transitions.
+
+The target feeling is **certainty before arrival**: people should know what they have, when it happens, and what changes mean.
+
 ## Prerequisites
 
 Read before advising or implementing:

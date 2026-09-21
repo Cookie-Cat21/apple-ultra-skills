@@ -1,6 +1,12 @@
-# Apple Ultra: React 18 Patterns Reference
+# Apple Ultra: React Concurrent & Hydration Patterns Reference
 
-> Cross-reference: [SKILL.md](../SKILL.md) Section 2 (Frontend Ultra) and Detection Matrix (`useTransition`, `useId`, concurrent features). Load when React 18 concurrent/hydration gotchas exceed SKILL.md scope.
+> **Legacy filename:** `react-18-patterns.md` is retained so existing skill links do not break. The guidance is maintained for modern React.
+>
+> **Current compatibility (verified 2026-09-21):** React **19.3** is current stable. React 19.3 makes View Transitions and Fragment Refs stable; React 19 also supports `ref` as a prop for function components, so new code generally does not need `forwardRef`.
+>
+> Primary sources: https://react.dev/blog/2026/09/09/react-19-3 · https://react.dev/reference/react/forwardRef
+>
+> Apply [apple-principles-2026.md](./apple-principles-2026.md). The installed React/framework version wins over this reference; verify current official docs before relying on version-sensitive behavior.
 
 ## How to use
 
@@ -8,6 +14,16 @@
 2. **Severity:** Critical = user-visible corruption or broken interactivity. High = flaky production behavior. Medium = perf or dev-only confusion.
 3. **Output:** `R18-XXX | Location | Severity | Fix` in standard finding format.
 4. **Pair with:** [frontend.md](./frontend.md) for component structure, [next-app-router.md](./next-app-router.md) for RSC + Suspense integration.
+
+## React 19.3 additions that change review behavior
+
+- **Refs:** new function components can receive `ref` as a prop. Do not require `forwardRef` in new React 19 code merely from habit.
+- **View Transitions:** `<ViewTransition>` is stable in 19.3. Use it only when spatial continuity explains a real state/navigation relationship; respect the motion contract in [apple-feel.md](./apple-feel.md).
+- **Fragment Refs:** explicit `<Fragment ref={...}>` can expose grouped DOM behavior without adding a wrapper element; use the narrowest imperative surface necessary.
+- **Effect Events:** `useEffectEvent` can separate non-reactive event logic from Effects. It is not a loophole for hiding real Effect dependencies.
+- **Framework React versions:** Next.js App Router can use framework-integrated React releases. Inspect the project’s installed/framework-supported version before applying standalone React assumptions.
+
+---
 
 ## Rule index
 
@@ -46,15 +62,15 @@
 | **Do instead** | `useId` for accessibility wiring (`htmlFor` + `id`); list keys come from data |
 | **Severity** | Critical |
 
-### R18-003 — `useId()` concatenated without `replace` for invalid CSS selectors
+### R18-003 — Raw `useId()` used as an unescaped CSS selector
 
 | Field | Value |
 |-------|-------|
 | **ID** | R18-003 |
 | **Category** | keys & useId |
-| **Pattern** | `id={useId()}` producing `:r1:` passed to `querySelector` or CSS modules |
-| **Why it fails** | Colons are invalid in HTML id attributes in some contexts and break selector queries |
-| **Do instead** | `const id = useId().replace(/:/g, '')` or use `react-aria` id helpers |
+| **Pattern** | A `useId()` value is interpolated directly into a CSS selector such as `querySelector('#' + id)` |
+| **Why it fails** | React IDs are valid HTML IDs but can contain characters with special meaning in CSS selector syntax |
+| **Do instead** | Prefer refs for DOM access; when a selector is genuinely required, escape the ID with `CSS.escape(id)` instead of rewriting React’s identifier |
 | **Severity** | Medium |
 
 ### R18-004 — Remounting list by changing parent `key` to "reset" children

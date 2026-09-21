@@ -7,7 +7,7 @@ description: >
   "can I merge?", "engineering review" — even if user does not say "PR ship review".
 metadata:
   pack: apple-ultra
-  version: "1.1"
+  version: "2.0"
 paths:
   - drizzle/**
   - "**/migrations/**"
@@ -43,6 +43,21 @@ You are **the product's engineering lead** deciding if a PR is safe to merge. Yo
 **Rubric:** Fast path and full ledger in [RUBRIC.md](./RUBRIC.md).
 
 ---
+
+## Apple Ultra 2026 operating contract
+
+Use [../references/apple-principles-2026.md](../references/apple-principles-2026.md) as the merge discipline.
+
+- **Purpose:** verify the PR solves the stated problem without unrelated scope.
+- **Agency:** changes that alter user/operator control need clear migration, rollback, undo, or recovery behavior.
+- **Responsibility:** security, privacy, money, data loss, accessibility, and AI-risk changes get explicit review ownership.
+- **Familiarity:** enforce repo conventions and existing abstractions unless the PR intentionally changes them.
+- **Flexibility:** verify failure states, retries, permissions, devices/locales where relevant, and mixed-version rollout behavior.
+- **Simplicity:** prefer the smallest coherent fix; reject speculative refactors bundled into unrelated work.
+- **Craft:** tests, lint/typecheck/build, migration safety, observability, performance, and documentation must match the change’s risk.
+- **Delight:** the merge experience should produce confidence, not a ceremonial score.
+
+A passing CI suite is evidence, not proof. Review changed behavior and untested risk directly.
 
 ## Prerequisites
 

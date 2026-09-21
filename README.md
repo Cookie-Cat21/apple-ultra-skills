@@ -1,8 +1,22 @@
 # Apple Ultra Skills
 
-**Apple-quality craft × startup discipline × engineering rigor** — a Cursor skill plugin with 25 specialized personas, shared context templates, and a design-layer component discovery workflow.
+**Purpose × agency × responsibility × familiarity × flexibility × simplicity × craft × delight** — a 2026 Apple-inspired skill pack for product, design, engineering, GTM, security, and agent workflows.
 
-**Version:** 1.4.0 · **Skills:** 28 (includes `ultra-skill-discovery`, `ultra-teach`, `ultra-tdd`, `ultra-web-quality`)
+Every skill shares one decision-quality contract: preserve user agency, make consequential behavior transparent, follow familiar conventions, design for real failure contexts, remove unnecessary complexity, verify craft, and never manufacture evidence.
+
+**Version:** 2.0.0 · **Skills:** 28 (includes `ultra-skill-discovery`, `ultra-teach`, `ultra-tdd`, `ultra-web-quality`)
+
+---
+
+## Apple Ultra 2.0 principles
+
+The pack is grounded in Apple’s current 2026 HIG principles: **Purpose, Agency, Responsibility, Familiarity, Flexibility, Simplicity, Craft, and Delight**.
+
+- [Repo-wide decision contract](references/apple-principles-2026.md)
+- [UI/UX feelings-first standard](references/apple-feel.md)
+- [Deterministic design rules](apple-design-head/RULES.md)
+
+The contract applies beyond UI: engineering emphasizes reversible state and safe failure; GTM preserves informed choice; finance makes uncertainty explicit; security distinguishes verified findings from hypothetical risk; orchestration preserves intent and provenance.
 
 ---
 
@@ -74,7 +88,7 @@ apple-ultra-skills/
 ├── README.md                 ← you are here
 ├── SKILL.md                  ← unified Ultra skill + Agent-Reach (Section 16)
 ├── references/               ← deep reference library (including Apple-feel standard)
-│   ├── apple-feel.md, frontend.md, design.md, architecture.md, testing.md
+│   ├── apple-principles-2026.md, apple-feel.md, frontend.md, design.md, architecture.md, testing.md
 │   ├── security.md, performance.md, accessibility.md
 │   ├── next-app-router.md, react-18-patterns.md, tailwind-v4.md
 │   └── agent-patterns.md, agent-reach.md, devops.md

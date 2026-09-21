@@ -1,5 +1,5 @@
 {
-  "version": "1.0",
+  "version": "2.0",
   "description": "Intent keywords → npx skills find queries → ultra specialist + companions",
   "protocol": [
     "1. Match user intent to row below",
@@ -16,8 +16,8 @@
       "fallback_chain": ["apple-hub"]
     },
     {
-      "intents": ["design", "ui", "ux", "frontend", "polish", "apple design"],
-      "queries": ["design", "frontend design", "web design guidelines"],
+      "intents": ["design", "ui", "ux", "frontend", "polish", "apple design", "apple feel", "apple quality", "motion", "liquid glass"],
+      "queries": ["design", "frontend design", "web design guidelines", "interaction design motion"],
       "ultra_skill": "apple-design-head",
       "companions": ["anthropics/skills@frontend-design", "vercel-labs/agent-skills@web-design-guidelines"]
     },

@@ -2,6 +2,8 @@
 
 > Cross-reference: [SKILL.md](../SKILL.md) Section 6. Full OWASP Top 10 2025 applied to React/Next.js/Node.js.
 
+
+> **Decision-quality note:** apply [apple-principles-2026.md](./apple-principles-2026.md). Numeric thresholds not tied to a standard, current vendor documentation, or measured project data are studio defaults/starting points—not universal facts. For version-sensitive behavior, inspect the installed version and current primary docs.
 ---
 
 ## A01: Broken Access Control
@@ -22,7 +24,7 @@
 ## A02: Cryptographic Failures
 
 1. ⚡ HTTPS everywhere — HSTS header with `max-age=31536000; includeSubDomains`.
-2. 🎯 Password hashing: bcrypt cost 12+ or argon2id — never MD5, SHA-1, SHA-256 alone.
+2. ⚡ Password hashing: use a password-hashing KDF such as Argon2id, scrypt, or bcrypt with parameters calibrated to current hardware and your threat/performance budget. Never use fast general-purpose hashes alone.
 3. ⚡ Never store passwords in plaintext — even in logs or error reports.
 4. 🎯 TLS 1.2+ only — disable TLS 1.0/1.1 in server config.
 5. 💡 Encrypt sensitive data at rest (PII, payment info) — AES-256 with managed keys.
@@ -106,7 +108,7 @@
 
 1. ⚡ Session management: regenerate session ID on login — prevent session fixation.
 2. 🎯 HttpOnly, Secure, SameSite=Strict cookies for session tokens.
-3. ⚡ Never store JWTs in localStorage — httpOnly cookies only.
+3. ⚡ Treat browser token storage as a threat-model decision. For first-party web sessions, prefer secure HttpOnly/SameSite cookies when the architecture supports them; if bearer tokens must be client-accessible, minimize lifetime/scope and harden against XSS. Do not claim any storage mechanism is universally safe.
 4. 🎯 Password requirements: 12+ characters, check against breached password lists (HaveIBeenPwned API).
 5. 💡 MFA for admin accounts — TOTP (authenticator app) or WebAuthn (security key).
 6. 🎯 Account lockout after failed attempts — with notification to account owner.
@@ -134,7 +136,7 @@
 
 ## A09: Logging & Monitoring Failures
 
-1. ⚡ Never log: passwords, tokens, API keys, credit card numbers, SSN, full email addresses.
+1. ⚡ Never log secrets or authentication/payment credentials. Treat PII such as email addresses according to the product’s privacy/observability policy: redact, hash, tokenize, or restrict access when full values are not necessary.
 2. 🎯 Log: authentication events, authorization failures, input validation failures, admin actions.
 3. 🎯 Structured logging (JSON) with correlation IDs — trace requests across services.
 4. 💡 Log levels: ERROR for failures, WARN for suspicious, INFO for business events, DEBUG for development only.
@@ -153,7 +155,7 @@
 2. 🎯 Block: `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`, `127.0.0.0/8`, `169.254.0.0/16`, `0.0.0.0`.
 3. 💡 DNS rebinding protection: resolve hostname, check IP, then connect — not just validate URL string.
 4. 🎯 Disable HTTP redirects in server-side fetch — or re-validate redirect target.
-5. ⚡ Never pass user-supplied URLs directly to `fetch()` — webhook URLs, image imports, RSS feeds.
+5. ⚡ User-controlled outbound URLs require SSRF controls appropriate to the feature: parse/normalize, restrict schemes/hosts or resolve through an allowlist/proxy, block internal/private destinations, and validate redirects.
 6. 🎯 Egress firewall: server can only reach known external services — not arbitrary internet.
 7. 💡 Cloud metadata endpoint protection: block `169.254.169.254` (AWS/GCP metadata).
 8. 🎯 URL scheme allowlist: `https` only — block `file://`, `gopher://`, `dict://`.
@@ -169,7 +171,7 @@
 3. ⚡ Subresource integrity for third-party scripts loaded via `<script>`.
 4. 🎯 Client-side routing: don't expose admin routes in client bundle — server enforces access.
 5. 💡 Service Worker scope: limit to app's origin — don't cache sensitive API responses.
-6. 🎯 Web Storage: never store auth tokens in localStorage/sessionStorage.
+6. 🎯 Avoid long-lived high-value auth tokens in Web Storage for first-party web apps. If client-accessible tokens are required by the architecture, document the XSS tradeoff and minimize scope/lifetime.
 7. ⚡ PostMessage: validate `event.origin` before processing cross-frame messages.
 8. 🎯 Clipboard API: only copy what user explicitly requested — no auto-copy of sensitive data.
 9. 💡 Feature Policy/Permissions Policy: disable camera, microphone, geolocation unless needed.

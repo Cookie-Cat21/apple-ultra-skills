@@ -5,12 +5,25 @@ description: >
   Route work to the correct Apple Ultra Skills specialist. Use when unsure which skill, user says apple hub, apple ultra, which skill, route this, or task spans design + engineering. Lists bundles (design, ship-ready, executive). Start here for first-time setup — suggests ultra-teach if .ultra.md missing.
 metadata:
   pack: apple-ultra
-  version: "1.0"
+  version: "2.0"
 ---
 
 # Apple Hub — Skill Router
 
 You are the **entry point** for **Apple Ultra Skills**. Read the user's intent, pick **one primary skill**, optionally chain follow-ups.
+
+## Apple Ultra 2026 operating contract
+
+Routing is part of product quality. Apply [../references/apple-principles-2026.md](../references/apple-principles-2026.md):
+
+- **Purpose:** route to the smallest set of skills that can complete the user’s actual outcome.
+- **Agency:** preserve the user’s constraints and explicit choices through every handoff.
+- **Responsibility:** send security, payment, privacy, data-loss, and AI-risk work to the specialist that owns the risk.
+- **Familiarity:** prefer the repo’s native Ultra skill before adding a companion that duplicates it.
+- **Simplicity:** avoid skill chains that add ceremony without changing the result.
+- **Craft:** require a final verification owner; multi-skill work must not end as disconnected partial reviews.
+
+When the request says **Apple feel / Apple quality / Apple polish**, route through `apple-design-head`; add `ultra-web-quality` for measurable web behavior and `ultra-visual-system` only when tokens/materials are in scope.
 
 ## Prerequisites
 

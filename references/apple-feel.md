@@ -1,6 +1,19 @@
 # Apple Feel on the Web — 2026 Design Standard
 
 > Derived from the studio research brief “How Apple Designs for Feeling.” This is an operational design standard, not an Apple imitation guide.
+>
+> Repo-wide principles live in [apple-principles-2026.md](./apple-principles-2026.md). This file specializes them for UI/UX.
+
+## 0A. Verified 2026 Apple backbone
+
+Apple reintroduced eight HIG design principles on June 8, 2026: **Purpose, Agency, Responsibility, Familiarity, Flexibility, Simplicity, Craft, and Delight**. Apple’s current top-level HIG also emphasizes **Hierarchy, Harmony, and Consistency**.
+
+Primary sources:
+- https://developer.apple.com/design/human-interface-guidelines/design-principles
+- https://developer.apple.com/videos/play/wwdc2026/250/
+- https://developer.apple.com/design/human-interface-guidelines/
+
+Treat the feelings map below as a studio translation of these principles, not as a list Apple claims every interface must evoke. In particular, Apple’s 2026 guidance explicitly says to identify the emotion appropriate to the product and not mistake delight for decoration.
 
 ## 0. Evidence discipline
 

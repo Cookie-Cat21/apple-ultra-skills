@@ -2,22 +2,24 @@
 
 > Cross-reference: [SKILL.md](../SKILL.md) Section 3. Load when Design Ultra-Mode is active.
 
+
+> **Decision-quality note:** apply [apple-principles-2026.md](./apple-principles-2026.md). Numeric thresholds not tied to a standard, current vendor documentation, or measured project data are studio defaults/starting points—not universal facts. For version-sensitive behavior, inspect the installed version and current primary docs.
 ---
 
 ## 1. Design System Architecture (30 Rules)
 
-1. ⚡ Three-layer token hierarchy: primitive → semantic → component. Never skip semantic.
+1. 🎯 Prefer primitive → semantic → component token layers when the system is large enough to benefit. Small products can stop at semantic tokens; the key rule is that components consume meaning rather than scattered raw values.
 2. 🎯 Primitive tokens: `--blue-500: oklch(60% 0.15 250)`. Raw values, no meaning.
 3. 🎯 Semantic tokens: `--color-action: var(--blue-500)`. Meaning, swappable per theme.
 4. 🎯 Component tokens: `--button-bg: var(--color-action)`. Component-specific overrides.
 5. 💡 Version design tokens independently from components — breaking token change ≠ breaking component API.
 6. 🎯 Component API: max 3 variant props, rest via composition or children.
-7. ⚡ Document every component: purpose, props, states, accessibility notes, do/don't examples.
+7. 🎯 Document reusable/public components to the depth needed for correct use: purpose, API, meaningful states, accessibility behavior, and constraints. Private/simple primitives need less ceremony.
 8. 🎯 Figma-to-code: 1:1 token mapping — Figma variables map to CSS custom properties.
 9. 💡 Design system changelog: breaking changes require migration guide.
 10. 🎯 Component status labels: experimental → stable → deprecated → removed.
-11. 🎯 Storybook (or equivalent) as living documentation — every component, every state, every theme.
-12. ⚡ Accessibility notes in every component doc: keyboard behavior, ARIA roles, screen reader text.
+11. 🎯 Maintain a living component workbench/catalog when the product has enough reusable UI to justify it. Cover critical states/themes rather than chasing exhaustive stories for trivial internals.
+12. 🎯 Accessibility behavior belongs in component documentation when the component is interactive or has non-obvious semantics. Native static primitives need only their relevant constraints.
 13. 🎯 Icon system: single library (Lucide, Phosphor), consistent 24px grid, 1.5px stroke.
 14. 💡 Illustration style guide: flat vs 3D, color palette, character proportions — one style per product.
 15. 🎯 Spacing scale: 4pt grid — 0, 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96px.
@@ -31,7 +33,7 @@
 23. 🎯 Max content width: 1280px for dashboards, 720px for prose, 1440px for marketing.
 24. 💡 Component composition over configuration: `<Card><Card.Header/><Card.Body/></Card>`.
 25. 🎯 Slot-based APIs for flexible content areas — header, body, footer, actions.
-26. ⚡ No component should require >5 props for basic usage — sensible defaults for everything.
+26. 🎯 If basic usage requires many interdependent props, reconsider composition or API design. Prop count alone is not a quality metric.
 27. 🎯 Error state design for every input component — inline message, icon, border color change.
 28. 💡 Empty state design for every list/collection component — illustration, message, CTA.
 29. 🎯 Loading state for every async component — skeleton matching final layout.
@@ -50,7 +52,7 @@
 7. 🎯 Rule of thirds for hero images and marketing layouts — key content at intersection points.
 8. 💡 Golden ratio (1.618) for aspect ratios: 16:10 displays, card proportions, image crops.
 9. 🎯 Icon size matches text size: 16px icon with 16px text, 20px with 20px, 24px with 24px+.
-10. ⚡ Icons always paired with text labels for primary actions — icon-only for secondary/tertiary with tooltip.
+10. 🎯 Important actions need a discoverable accessible name. Visible text is usually clearest; familiar icon-only controls can work when meaning is well established and an accessible name/tooltip or equivalent aid is present.
 11. 🎯 Icon consistency: filled for active/selected, outlined for inactive/default.
 12. 💡 Custom icons only when stock doesn't communicate the concept — custom ≠ better.
 13. 🎯 Illustration style: one per product. Mixing flat icons with 3D illustrations looks amateur.
@@ -61,32 +63,32 @@
 18. 🎯 Card design: consistent padding (16-24px), consistent border-radius, consistent shadow level.
 19. 💡 Card density: compact (12px padding) for data tables, comfortable (24px) for content cards.
 20. 🎯 List items: 48-56px height minimum for touch, 40px acceptable for desktop-only dense lists.
-21. 🎯 Avatar sizes on consistent scale: 24, 32, 40, 48, 64px — never arbitrary.
+21. 🎯 Use a small consistent avatar size scale derived from density and layout; exact values belong to project tokens.
 22. 💡 Badge/chip design: pill shape for counts, rounded rectangle for status labels.
 23. 🎯 Divider usage: sparingly. Whitespace separates better than lines in most layouts.
 24. 🎯 When dividers needed: 1px, semantic color token `--color-border-subtle`, full-width or inset.
 25. 💡 Inset dividers (with left margin) for nested list items — full-width for section breaks.
 26. 🎯 Toolbar/action bar: primary action right-aligned (F-pattern endpoint), destructive left or hidden in menu.
-27. ⚡ Destructive actions: red text/button, confirmation dialog, never one-click delete.
-28. 🎯 Breadcrumbs for navigation depth >2 — not needed for flat IA.
+27. ⚡ Destructive actions must communicate consequence and provide appropriate recovery. Prefer undo for reversible deletion; use explicit confirmation for irreversible/high-cost deletion. Color is supporting semantics, not the safety mechanism.
+28. 🎯 Use breadcrumbs when users benefit from seeing/using hierarchy, especially in deep information architectures. Route depth alone does not mandate them.
 29. 💡 Progress indicators: determinate (percentage) when duration known, indeterminate (spinner) when unknown.
 30. 🎯 Step indicators: numbered for sequential flows, checkmarks for completed steps.
 31. 🎯 Notification hierarchy: toast (auto-dismiss) < banner (dismissible) < modal (requires action).
 32. 💡 Toast position: bottom-right for confirmations, top-center for errors — consistent per product.
 33. 🎯 Search UI: magnifying glass icon left, clear button right, keyboard shortcut hint (⌘K).
-34. 🎯 Filter UI: chips for active filters with × to remove, "Clear all" when >2 active.
+34. 🎯 Make active filters visible and individually reversible; provide a clear-all action when multiple filters make recovery cumbersome. Chips are one pattern, not a requirement.
 35. 💡 Sidebar navigation: icons + labels expanded, icons-only collapsed with tooltips.
 36. 🎯 Tab design: underline for primary tabs, pill/chip for secondary/filter tabs.
 37. ⚡ Active tab must be visually distinct by more than color alone — weight, underline, or background.
 38. 🎯 Table design: left-align text, right-align numbers, consistent row height, zebra optional.
-39. 💡 Sticky table headers for scrollable data — user always knows column context.
+39. 💡 Sticky headers can preserve column context in long tables; use them when they do not create cramped layouts, nested-scroll problems, or accessibility issues.
 40. 🎯 Responsive tables: card layout on mobile, horizontal scroll as last resort with scroll indicator.
 
 ---
 
 ## 3. Typography (30 Rules)
 
-1. 🎯 Base font size: 16px. Never below 14px for body text.
+1. 🎯 Treat ~16px body text as a strong web starting point, then tune for the typeface, density, viewport, zoom, and audience. Do not present a studio minimum as a WCAG rule.
 2. ⚡ Line height: 1.5 for body, 1.2-1.3 for headings, 1.6-1.75 for long-form prose.
 3. 🎯 Max line length: 60-75 characters (≈45-65rem at 16px). Use `max-width: 65ch`.
 4. 💡 Optimal line length for code: 80-100 characters — match editor config.
@@ -94,13 +96,13 @@
 6. 🎯 Limit to 3 heading sizes per page section — more creates hierarchy confusion.
 7. 💡 Display/hero text: 48-64px, tight line-height (1.1), letter-spacing -0.02em.
 8. 🎯 Font weight scale: 400 (regular), 500 (medium), 600 (semibold), 700 (bold). Skip 300 and 800.
-9. ⚡ Never use font weight below 400 for text on screens — thin weights fail on low-DPI displays.
+9. 🎯 Avoid weights/styles that reduce legibility at the rendered size/device. Test the actual font; a numeric weight threshold is not universal across type families.
 10. 🎯 `font-feature-settings: 'tnum' 1` for tabular numbers in tables and prices.
 11. 💡 `font-variant-numeric: proportional-nums` for body text — tabular only in data contexts.
 12. 🎯 Letter-spacing: 0 for body, -0.01 to -0.03em for large headings, +0.05em for uppercase labels.
-13. 🎯 Uppercase text: only for labels/badges <3 words. Never for body text or headings.
+13. 🎯 Use uppercase sparingly where the brand/semantic role supports it; avoid long uppercase passages because they can reduce readability. No fixed word-count rule is required.
 14. 💡 Small caps (`font-variant-caps: all-small-caps`) for elegant label treatment.
-15. 🎯 Font loading: `font-display: swap` always. Preload only critical weight.
+15. 🎯 Choose font-display and preloading from layout-shift/readability/performance goals. `swap` is a strong default for many products, but metric-compatible fallbacks or other strategies can be better.
 16. ⚡ Subset fonts to used character ranges — WOFF2 format only.
 17. 🎯 Self-host fonts — no Google Fonts CDN in production (privacy + performance).
 18. 💡 System font stack fallback: `-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif`.
@@ -113,7 +115,7 @@
 25. 🎯 `text-wrap: pretty` on body paragraphs — better line breaking (CSS 2024).
 26. 🎯 Paragraph spacing: 1em between paragraphs, 0.5em between list items.
 27. 💡 Drop caps or first-line styling for editorial/marketing long-form content only.
-28. 🎯 Link styling: underline by default, color change on hover. Never underline + color-only distinction.
+28. 🎯 Links must be identifiable from surrounding text without relying on color alone when context requires it. Underlines are the strongest default in prose; navigation/toolbars can use other persistent affordances.
 29. 🎯 Blockquote: left border 3px, padding-left 16px, italic or muted color — not both.
 30. ⚡ `user-select: none` only on UI chrome (buttons, nav) — never on content text.
 
@@ -129,7 +131,7 @@
 6. 🎯 Test contrast in both light and dark mode — a combo that passes in light may fail in dark.
 7. 💡 Don't trust your eyes — use [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/) or DevTools.
 8. 🎯 Semantic color mapping: success=green, warning=amber, error=red, info=blue — universal conventions.
-9. ⚡ Error red must not be the brand red — users confuse brand with error states.
+9. 🎯 Error treatment needs a stable semantic role distinguishable from ordinary brand emphasis. A brand can use red, but error state must remain unambiguous through context, icon/text, and tokens.
 10. 🎯 Background layers: base → surface-1 → surface-2 → surface-3 (increasing elevation/lightness).
 11. 💡 Tinted neutrals: add 2-3% of brand hue to gray palette — feels cohesive vs pure gray.
 12. 🎯 Text hierarchy: primary (high contrast), secondary (medium), tertiary (low), disabled (lowest).
@@ -146,7 +148,7 @@
 23. 🎯 Selection color: `::selection { background: var(--color-selection) }` — brand-tinted.
 24. 💡 Gradient usage: one per page maximum. Subtle (5-10% lightness shift), not rainbow.
 25. 🎯 Overlay/scrim: `oklch(0% 0 0 / 0.5)` for modals — 50% black, not 80%.
-26. 🎯 Status dot colors: 8px circle, paired with text label — never color-only status.
+26. 🎯 Status indicators need non-color semantics (text/icon/shape/context). Dot size and form belong to the product’s density/token system.
 27. 💡 Heat maps: sequential palette (light→dark single hue) for magnitude, diverging for +/- data.
 28. 🎯 Transparent colors: `oklch(60% 0.15 250 / 0.1)` — alpha in oklch, not separate opacity.
 29. ⚡ Print styles: force high contrast, remove background colors, ensure text is black.
@@ -218,8 +220,8 @@
 ## 7. Component States (20 Rules)
 
 1. ⚡ Every interactive component defines: default, hover, focus, active, disabled — all five.
-2. 🎯 Loading state: skeleton or spinner matching final dimensions — never blank space.
-3. 🎯 Error state: red border + icon + message below — never color-only indication.
+2. 🎯 Loading state should preserve context and communicate ongoing work. Choose skeleton, progress, inline status, optimistic state, or no placeholder based on expected latency and layout.
+3. ⚡ Error state must be perceivable and actionable without color alone. Border/icon/message placement follows the component and accessibility semantics; associate messages programmatically.
 4. 🎯 Empty state: illustration + message + primary CTA — "No items yet. Create one."
 5. 🎯 Success state: brief confirmation (toast or inline checkmark) — auto-dismiss after 3s.
 6. 💡 Partial success: "3 of 5 items imported" with expandable error details.
@@ -233,7 +235,7 @@
 14. 🎯 Rate limited: show retry countdown — "Try again in 30 seconds."
 15. 💡 Maintenance mode: branded page with estimated return time — not raw error.
 16. 🎯 First-use/onboarding: highlight key features with coach marks — dismissible, don't repeat.
-17. 🎯 Overflow state: "Show more" or scroll with fade indicator — never silently clip content.
+17. 🎯 Make meaningful overflow discoverable and accessible. Use expansion, scroll affordance, pagination, truncation with disclosure, or another pattern that fits the content.
 18. 💡 Stale data: "Last updated 5 minutes ago" with refresh button — transparent freshness.
 19. 🎯 Validation: inline on blur, summary on submit — field-level + form-level errors.
 20. ⚡ Focus state must be visible in every other state — hover + focus, disabled + focus-visible.

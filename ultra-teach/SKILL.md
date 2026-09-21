@@ -8,7 +8,7 @@ description: >
   say ultra-teach.
 metadata:
   pack: apple-ultra
-  version: "1.0"
+  version: "2.0"
 user-invocable: true
 ---
 
@@ -19,6 +19,22 @@ Run **once per project**. Interview the user, write `.ultra.md` to the project r
 **Downstream consumers:** `apple-design-head`, `ultra-visual-system`, `ultra-component-discovery`, `ultra-brand-voice`, `ultra-pr-ship-review`, executive skills.
 
 ---
+
+## Apple Ultra 2026 operating contract
+
+Use [../references/apple-principles-2026.md](../references/apple-principles-2026.md) to teach the project, not just its stack.
+
+The onboarding brief must capture:
+- **Purpose:** primary users, core job, and the few outcomes that matter.
+- **Agency:** important undo/cancel/export/recovery expectations.
+- **Responsibility:** privacy, safety, billing, compliance, destructive actions, AI, and trust-sensitive areas.
+- **Familiarity:** platform conventions, product terminology, repo conventions, and existing design/architecture patterns.
+- **Flexibility:** supported devices, roles, locales, timezones, themes, accessibility needs, and failure contexts.
+- **Simplicity:** explicit non-goals and things the team intentionally refuses to add.
+- **Craft:** verification commands, quality bars, observability, performance expectations, and review cadence.
+- **Delight:** primary intended feeling for each critical user journey.
+
+Do not fill missing project facts with guesses. Mark unknowns in `.ultra.md` and let later work verify them.
 
 ## When to use
 
@@ -50,11 +66,15 @@ Ask **one section at a time**. Do not rush — good context makes every downstre
 
 **Product type:** B2B SaaS · consumer · e-commerce · internal tool · AI-native · scheduling/booking · other
 
-### Section 3 — Users
+### Section 3 — Users, agency & intended feeling
 
 - Primary user role and technical sophistication
 - Job-to-be-done (what they hired the product for)
 - Failure mode (what happens if the product lets them down)
+- **Primary intended feeling** for the core journey (control · calm · confidence · trust · momentum · relief · delight · other)
+- Up to two supporting feelings
+- Critical recovery expectations: undo · cancel · retry · edit · export · rollback · support
+- Trust-sensitive areas: money · personal data · permissions · security · AI output · destructive actions
 
 ### Section 4 — Design system
 
@@ -77,8 +97,10 @@ Confirm or fill `_shared/STACK.md` and `_shared/PATHS.md`:
 - Migrations directory and schema file paths
 - API auth patterns (cron, dashboard, public API prefixes)
 
-### Section 7 — Known weaknesses
+### Section 7 — Supported contexts, non-goals & known weaknesses
 
+- Supported contexts: viewport/device, input modes, roles/plans, locales/timezones, accessibility modes, offline/degraded dependencies where relevant
+- Explicit non-goals / things the team intentionally will not optimize for
 - Biggest known UX or engineering problem
 - Broken or incomplete flows
 - Off-limits areas for audits
@@ -104,6 +126,10 @@ Register: [Brand | Product]
 Primary user: [role + sophistication]
 Job-to-be-done: [what they hire the product for]
 Failure mode: [consequence of product failure]
+Primary feeling: [control | calm | confidence | trust | momentum | relief | delight | other]
+Supporting feelings: [0–2]
+Recovery expectations: [undo/cancel/retry/edit/export/etc.]
+Trust-sensitive areas: [money/data/permissions/security/AI/destructive/etc.]
 
 ## Design
 Creative North Star: [named metaphor]
@@ -124,6 +150,12 @@ Verify: [command]
 Migrations: [path]
 Schema: [path]
 API patterns: [see _shared/PATHS.md or inline summary]
+
+## Supported Contexts
+- [devices/viewports/input/roles/locales/timezones/accessibility/degraded states]
+
+## Non-goals
+- [intentional exclusions]
 
 ## Known Issues
 - [acknowledged problems]

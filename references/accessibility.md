@@ -1,6 +1,8 @@
 # Apple Ultra: Accessibility Reference (Full WCAG 2.2 AA)
 
 > Cross-reference: [SKILL.md](../SKILL.md) Section 8. Complete audit checklist.
+>
+> **Decision-quality note:** apply [apple-principles-2026.md](./apple-principles-2026.md). WCAG success criteria are standards; larger touch targets, audit scores, and implementation conventions must be labeled as platform guidance or studio targets rather than misrepresented as WCAG requirements.
 
 ---
 
@@ -59,7 +61,7 @@
 
 ### Enough Time (2.2)
 
-8. 🎯 Session timeout warning: alert user 2 minutes before expiry with extend option.
+8. 🎯 Time limits (WCAG 2.2 SC 2.2.1): let people turn off, adjust, or extend the limit where applicable; when using the warning/extend path, provide at least 20 seconds to extend with a simple action (subject to WCAG exceptions).
 9. 💡 Auto-advancing content (carousels): pause button, respects `prefers-reduced-motion`.
 
 ### Seizures (2.3)
@@ -79,11 +81,11 @@
 
 ### Input Modalities (2.5)
 
-19. ⚡ Touch targets: 44×44px minimum (WCAG 2.5.8) — add padding, not just visual size.
+19. ⚡ Target size: WCAG 2.2 SC 2.5.8 (AA) requires at least 24×24 CSS px or a documented spacing/equivalent/inline/user-agent/essential exception. For touch-first primary controls, aim for a larger comfortable target such as ~44×44 CSS px where layout permits.
 20. 🎯 Pointer gestures have single-pointer alternative — no path-based gestures required.
-21. 💡 `touch-action: manipulation` — prevents double-tap zoom delay on buttons.
+21. 💡 Use `touch-action` only when the gesture model requires it; never disable browser gestures or zoom merely to make controls feel faster.
 22. 🎯 Label in name (2.5.3): visible label text appears in accessible name.
-23. 🎯 Target size (2.5.8): 24×24px minimum with spacing, 44×44px recommended.
+23. 🎯 Distinguish standards: WCAG 2.5.8 is the web AA minimum (24×24 CSS px with exceptions); Apple’s platform guidance commonly recommends a 44×44 pt hit region for buttons. Don’t cite one as the other.
 
 ---
 
@@ -161,7 +163,7 @@
 
 1. 🎯 `@axe-core/playwright` in E2E suite — zero violations on critical pages.
 2. ⚡ `eslint-plugin-jsx-a11y` in development — catch issues before commit.
-3. 🎯 Lighthouse accessibility score >95 in CI.
+3. 🎯 Track Lighthouse/axe results in CI as regression signals, but never treat a numeric score as proof of WCAG conformance; require zero known critical violations on the tested path plus manual checks.
 
 ### Manual Keyboard Test Script
 
@@ -186,7 +188,7 @@
 - [ ] Not color-only state indication
 - [ ] ARIA roles/states correct
 - [ ] Screen reader announces purpose and state
-- [ ] Touch target ≥44×44px
+- [ ] Pointer targets meet WCAG 2.5.8 AA (24×24 CSS px or valid exception); touch-first primary controls use a larger comfortable hit area where practical
 - [ ] `prefers-reduced-motion` respected
 - [ ] Error states announced
 - [ ] All 5 interactive states defined (default, hover, focus, active, disabled)
