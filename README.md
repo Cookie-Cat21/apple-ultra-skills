@@ -73,8 +73,8 @@ See [SKILL.md](SKILL.md) Section 12 and [references/agent-patterns.md](reference
 apple-ultra-skills/
 ├── README.md                 ← you are here
 ├── SKILL.md                  ← unified Ultra skill + Agent-Reach (Section 16)
-├── references/               ← 12 reference files (900+ rules)
-│   ├── frontend.md, design.md, architecture.md, testing.md
+├── references/               ← deep reference library (including Apple-feel standard)
+│   ├── apple-feel.md, frontend.md, design.md, architecture.md, testing.md
 │   ├── security.md, performance.md, accessibility.md
 │   ├── next-app-router.md, react-18-patterns.md, tailwind-v4.md
 │   └── agent-patterns.md, agent-reach.md, devops.md
@@ -82,7 +82,7 @@ apple-ultra-skills/
 ├── _shared/                  ← fill in before use (BRAND, VISUAL, STACK, …)
 ├── apple-hub/                ← skill router — start here
 ├── apple-design-head/
-│   └── RULES.md              ← 160 deterministic anti-pattern rules
+│   └── RULES.md              ← 180 deterministic anti-pattern rules
 ├── ultra-tdd/                ← test-first workflow
 ├── ultra-web-quality/        ← performance, a11y, SEO audit
 ├── registry/                 ← skills.json + bundles.json
@@ -106,7 +106,7 @@ Skills are **flat folders** (Cursor discovery-friendly). Sections below group th
 |-------|------|-----------|
 | **ultra-component-discovery** | Component sourcing | Find/install UI blocks (21st, Aceternity, Magic UI, HyperUI, Tremor, …) |
 | **ultra-visual-system** | Visual design lead | Design tokens, palette, typography, dark mode |
-| **apple-design-head** | Head of Apple Design | UI/UX ship review, 160-rule enforcement, accessibility, craft |
+| **apple-design-head** | Head of Apple Design | feelings-first UI/UX ship review, 180-rule enforcement, accessibility, craft |
 | **ultra-web-quality** | Web quality engineer | Lighthouse, CWV, SEO, a11y metrics audit |
 | **ultra-brand-voice** | Brand guardian | Copy audit, positioning, banned phrases |
 | **ultra-content-review** | Content lead | Multi-channel content alignment |
@@ -194,7 +194,8 @@ Example entries use fictional **Acme Scheduling** — not any real product.
 - **Grades:** A (93+) · A- (85+) · B (75+) · C (60+) · D (<60)
 - **Verdicts:** SHIP (≥85, 0 P0, ≤2 P1) · ITERATE · REJECT
 - **Finding format:** Severity → Location → Principle → Measure → Fix → Effort
-- **Design rules:** [apple-design-head/RULES.md](apple-design-head/RULES.md) — 160 deterministic anti-patterns
+- **Design rules:** [apple-design-head/RULES.md](apple-design-head/RULES.md) — 180 deterministic anti-patterns, including feeling/interaction integrity
+- **Apple-feel standard:** [references/apple-feel.md](references/apple-feel.md) — Intent → Mechanism → Feeling → Evidence → Application; motion, feedback, materials, component contracts, anti-cosplay
 
 ---
 

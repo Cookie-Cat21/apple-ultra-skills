@@ -1,6 +1,6 @@
 # Apple Design Head — Deterministic Anti-Pattern Rules
 
-> 152+ rule-enforced checks for apple-design-head reviews. Each rule is scannable in Round 0–4 and blocks ship at Critical severity.
+> 180 rule-enforced checks for apple-design-head reviews. Each rule is scannable in Round 0–4 and blocks ship at Critical severity.
 > Format borrowed from ux-skill's deterministic anti-pattern catalogue; integrated with our weighted P0–P3 protocol.
 
 ## How to use
@@ -23,8 +23,9 @@
 | Copy | 20 | RULE-101–RULE-120 |
 | Layout | 20 | RULE-121–RULE-140 |
 | Dark Mode | 20 | RULE-141–RULE-160 |
+| Feeling & Interaction | 20 | RULE-161–RULE-180 |
 
-**Total rules: 160**
+**Total rules: 180**
 
 ---
 
@@ -1975,3 +1976,210 @@
 | **Why it fails** | Bright rectangles in dark UI |
 | **Do instead** | Dark map style or container mask |
 | **Severity** | Medium |
+
+
+---
+
+## Feeling & Interaction Integrity
+
+These rules operationalize [../references/apple-feel.md](../references/apple-feel.md). They focus on causality, control, continuity, feedback, trust, and performance rather than visual resemblance.
+
+### RULE-161 — Mechanism with no user intent
+| Field | Value |
+|---|---|
+| **ID** | RULE-161 |
+| **Category** | feeling-interaction |
+| **Pattern** | Blur, motion, depth, shape, or novelty added with no stated user intent |
+| **Why it fails** | Surface style becomes the goal; the treatment cannot explain what it helps the user understand or do |
+| **Do instead** | Name Intent → Mechanism → Feeling before keeping the treatment |
+| **Severity** | Medium |
+
+### RULE-162 — Non-interruptible spatial transition
+| Field | Value |
+|---|---|
+| **ID** | RULE-162 |
+| **Category** | feeling-interaction |
+| **Pattern** | User input is ignored while a sheet, route, panel, or shared-element animation finishes |
+| **Why it fails** | Breaks perceived control and makes animation feel like latency |
+| **Do instead** | Allow cancellation/retargeting or never let visual completion block the next valid action |
+| **Severity** | High |
+
+### RULE-163 — Important action exists only as hidden gesture
+| Field | Value |
+|---|---|
+| **ID** | RULE-163 |
+| **Category** | feeling-interaction |
+| **Pattern** | Swipe, drag, long-press, hover, or keyboard shortcut is the only route to an important action |
+| **Why it fails** | Hidden grammar damages discoverability and excludes input modes |
+| **Do instead** | Keep the gesture as acceleration but provide a visible operable alternative |
+| **Severity** | High |
+
+### RULE-164 — Drag does not preserve directness
+| Field | Value |
+|---|---|
+| **ID** | RULE-164 |
+| **Category** | feeling-interaction |
+| **Pattern** | Dragged object visibly lags, jumps away from the pointer, or moves by a disconnected canned animation |
+| **Why it fails** | Breaks direct manipulation and perceived causality |
+| **Do instead** | Track input directly unless resistance communicates a real constraint |
+| **Severity** | High |
+
+### RULE-165 — Release motion ignores meaningful gesture velocity
+| Field | Value |
+|---|---|
+| **ID** | RULE-165 |
+| **Category** | feeling-interaction |
+| **Pattern** | Gesture-driven object always settles identically regardless of release velocity |
+| **Why it fails** | Physical response feels disconnected from user input |
+| **Do instead** | Hand release velocity into settling or projection when the destination model supports momentum |
+| **Severity** | Medium |
+
+### RULE-166 — Spring applied to every transition
+| Field | Value |
+|---|---|
+| **ID** | RULE-166 |
+| **Category** | feeling-interaction |
+| **Pattern** | Color, opacity, layout, hover, tooltips, and routes all use the same spring |
+| **Why it fails** | Physics becomes decoration rather than a model of mass or continuity |
+| **Do instead** | Use springs for spatial, mass, and gesture behavior; use timing curves or instant state for simple changes |
+| **Severity** | Medium |
+
+### RULE-167 — Reduced motion destroys state comprehension
+| Field | Value |
+|---|---|
+| **ID** | RULE-167 |
+| **Category** | feeling-interaction |
+| **Pattern** | Reduced-motion mode removes the only cue that state, focus, hierarchy, or completion changed |
+| **Why it fails** | Accessibility fallback removes information instead of reducing motion |
+| **Do instead** | Replace large movement with instant, opacity, or static cues that preserve meaning |
+| **Severity** | Critical |
+
+### RULE-168 — Translucent foreground has backdrop-dependent contrast
+| Field | Value |
+|---|---|
+| **ID** | RULE-168 |
+| **Category** | feeling-interaction |
+| **Pattern** | Text or icons on glass can pass or fail contrast depending on content scrolling behind |
+| **Why it fails** | Legibility becomes nondeterministic |
+| **Do instead** | Add tint, scrim, or opaque material strong enough to guarantee readable foreground |
+| **Severity** | Critical |
+
+### RULE-169 — Backdrop blur has no opaque fallback
+| Field | Value |
+|---|---|
+| **ID** | RULE-169 |
+| **Category** | feeling-interaction |
+| **Pattern** | Component depends on backdrop-filter with no supported fallback |
+| **Why it fails** | Unsupported or expensive environments lose hierarchy or legibility |
+| **Do instead** | Define an opaque semantic surface first; enhance with translucency conditionally |
+| **Severity** | High |
+
+### RULE-170 — Glass stacked on glass
+| Field | Value |
+|---|---|
+| **ID** | RULE-170 |
+| **Category** | feeling-interaction |
+| **Pattern** | Multiple translucent materials overlap inside the same local hierarchy |
+| **Why it fails** | Depth becomes ambiguous; contrast and GPU cost become unpredictable |
+| **Do instead** | Keep one material layer and use solid subordinate surfaces |
+| **Severity** | High |
+
+### RULE-171 — Animation blocks useful input
+| Field | Value |
+|---|---|
+| **ID** | RULE-171 |
+| **Category** | feeling-interaction |
+| **Pattern** | Controls, pointer events, or navigation are disabled only to protect an animation |
+| **Why it fails** | Visual polish takes precedence over agency |
+| **Do instead** | Make the animation interruptible or decouple interaction availability from visual completion |
+| **Severity** | High |
+
+### RULE-172 — Fake determinate progress
+| Field | Value |
+|---|---|
+| **ID** | RULE-172 |
+| **Category** | feeling-interaction |
+| **Pattern** | UI shows invented percentages or progress unrelated to measurable work |
+| **Why it fails** | Simulated certainty damages trust when timing diverges |
+| **Do instead** | Use honest indeterminate status or derive progress from real units |
+| **Severity** | High |
+
+### RULE-173 — Loading state changes final geometry
+| Field | Value |
+|---|---|
+| **ID** | RULE-173 |
+| **Category** | feeling-interaction |
+| **Pattern** | Skeleton or spinner collapses, expands, or materially shifts the final content region |
+| **Why it fails** | Spatial instability hurts confidence and perceived performance |
+| **Do instead** | Reserve final geometry or use a loading representation that predicts it |
+| **Severity** | High |
+
+### RULE-174 — Irreversible action has no consequence framing
+| Field | Value |
+|---|---|
+| **ID** | RULE-174 |
+| **Category** | feeling-interaction |
+| **Pattern** | Destructive or high-cost action executes without undo or explicit confirmation of object and consequence |
+| **Why it fails** | Removes control and safety |
+| **Do instead** | Prefer undo when reversible; otherwise confirm with specific consequence language |
+| **Severity** | Critical |
+
+### RULE-175 — Complex workflow trapped in oversized modal
+| Field | Value |
+|---|---|
+| **ID** | RULE-175 |
+| **Category** | feeling-interaction |
+| **Pattern** | Multi-step or navigational workflow is forced into a modal solely to preserve the underlying page |
+| **Why it fails** | Modality becomes architecture; history, focus, and recovery get fragile |
+| **Do instead** | Use a dedicated route when the task has its own navigation or state model |
+| **Severity** | High |
+
+### RULE-176 — Actionable error exists only in transient toast
+| Field | Value |
+|---|---|
+| **ID** | RULE-176 |
+| **Category** | feeling-interaction |
+| **Pattern** | Error requiring action disappears automatically with no persistent recovery affordance |
+| **Why it fails** | Users can miss the only explanation and recovery path |
+| **Do instead** | Keep actionable error inline or persistent until resolved or dismissed |
+| **Severity** | Critical |
+
+### RULE-177 — Cancel, dismiss, skip, and Not now treated as synonyms
+| Field | Value |
+|---|---|
+| **ID** | RULE-177 |
+| **Category** | feeling-interaction |
+| **Pattern** | Secondary action label hides whether work is discarded, a prompt deferred, or an optional step skipped |
+| **Why it fails** | Ambiguous consequence undermines confidence |
+| **Do instead** | Use the verb that matches the actual state transition |
+| **Severity** | Medium |
+
+### RULE-178 — Celebration on routine action
+| Field | Value |
+|---|---|
+| **ID** | RULE-178 |
+| **Category** | feeling-interaction |
+| **Pattern** | Confetti, glow, sound, or elaborate success motion appears on ordinary repeated actions |
+| **Why it fails** | Delight becomes noise and slows habitual work |
+| **Do instead** | Reserve signature moments for meaningful milestones; routine success gets quiet confirmation |
+| **Severity** | Medium |
+
+### RULE-179 — Apple surface imitation overrides web convention
+| Field | Value |
+|---|---|
+| **ID** | RULE-179 |
+| **Category** | feeling-interaction |
+| **Pattern** | UI copies Apple-specific visual or control forms where familiar web behavior would be clearer |
+| **Why it fails** | Apple cosplay substitutes resemblance for usability |
+| **Do instead** | Transfer the intent—clarity, continuity, control, feedback—not proprietary-looking surface treatment |
+| **Severity** | High |
+
+### RULE-180 — Performance regression dismissed as polish cost
+| Field | Value |
+|---|---|
+| **ID** | RULE-180 |
+| **Category** | feeling-interaction |
+| **Pattern** | Blur, scroll choreography, motion, or media measurably degrades responsiveness on target hardware |
+| **Why it fails** | Perceived control and premium craft collapse when the interface stalls |
+| **Do instead** | Reduce effect cost or provide a cheaper fallback; treat performance as a design requirement |
+| **Severity** | Critical |
