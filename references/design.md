@@ -156,37 +156,38 @@
 
 ## 5. Motion (30 Rules)
 
-1. ⚡ Never `linear` easing for UI — use `ease-out` for enter, `ease-in` for exit.
-2. 🎯 Standard easing: `cubic-bezier(0.4, 0, 0.2, 1)` (Material standard) as default.
-3. 💡 Emphasized easing: `cubic-bezier(0.2, 0, 0, 1)` for important transitions.
-4. 🎯 Duration scale: 100ms (micro), 200ms (state), 300ms (component), 500ms (page).
-5. ⚡ `@media (prefers-reduced-motion: reduce)` — disable all non-essential animation globally.
-6. 🎯 Hover transitions: 150ms ease-out on color, background, transform — not all properties at once.
-7. 💡 Scale on hover: `transform: scale(1.02)` max — more feels gimmicky. Cards and buttons only.
-8. 🎯 Press/active state: `transform: scale(0.98)` with 100ms — tactile feedback.
-9. 🎯 Modal enter: fade + scale from 0.95 (200ms ease-out). Exit: fade only (150ms ease-in).
-10. 💡 Drawer enter: slide from edge (300ms ease-out). Exit: slide back (200ms ease-in).
-11. 🎯 Toast enter: slide up + fade (200ms). Exit: fade out (150ms). Auto-dismiss after 5s.
-12. 🎯 Page transition: crossfade 300ms or slide 400ms — never both simultaneously.
-13. 💡 Stagger children: 30-50ms delay per item in lists/grids — `animation-delay: calc(var(--i) * 40ms)`.
-14. 🎯 Skeleton shimmer: 1.5s infinite linear gradient sweep — respects reduced motion (static gray).
-15. 🎯 Loading spinner: 0.8-1s rotation, ease-in-out — not frantic 0.3s spins.
-16. 💡 Progress bar: indeterminate animation 1.5s, determinate uses CSS transition on width.
-15. 🎯 Accordion: height transition with `overflow: hidden` — or use `grid-template-rows: 0fr → 1fr` trick.
-18. 💡 Number counter animation: count up over 500ms for stats/metrics — delight without distraction.
-19. 🎯 Parallax: max 20% speed difference — more causes motion sickness.
-20. ⚡ No autoplay video animations — user controls or intersection-observer triggered only.
-21. 🎯 Scroll-triggered animations: `IntersectionObserver` threshold 0.2 — animate once, not on every scroll.
-22. 💡 Spring animations (framer-motion): stiffness 300, damping 30 for UI elements.
-23. 🎯 Drag interactions: follow cursor at 1:1, snap with 200ms spring on release.
-24. 🎯 Tooltip delay: 300ms show, 0ms hide — prevents tooltip spam on mouse movement.
-25. 💡 Focus ring animation: instant appearance, no transition — accessibility requires immediate feedback.
-26. 🎯 Collapse/expand icon rotation: 200ms ease-out, 90° or 180° — consistent direction per product.
-27. 🎯 Tab indicator slide: 200ms ease-out following active tab — underline or background pill.
-28. 💡 Celebration animations (confetti, checkmark draw): 1-2s max, once per action — not on every click.
-29. 🎯 Error shake: 3px horizontal, 3 cycles, 300ms — signals invalid input without being aggressive.
-30. ⚡ Performance: animate only `transform` and `opacity` — never `width`, `height`, `top`, `left`.
+> Apply with [apple-feel.md](./apple-feel.md). These are web implementation rules, not claims about undocumented Apple constants.
 
+1. ⚡ Every animation must explain state, continuity, hierarchy, causality, or feedback. If it does none, remove it.
+2. 🎯 Write Intent → Mechanism → Feeling before tuning motion on a primary interaction.
+3. 🎯 Use springs for gesture-driven, snapping, spatial, or mass-like movement; do not spring simple color/opacity by default.
+4. 🎯 Use timing curves for simple property transitions where physics adds no information.
+5. ⚡ Never use a single global spring preset for every component.
+6. 🎯 Name spring presets by purpose (control, spatial, soft), not by arbitrary “fast/slow” alone.
+7. 💡 Starting point for Motion control spring: stiffness 520, damping 40, mass 1; tune per interaction.
+8. 💡 Starting point for Motion spatial spring: stiffness 360, damping 32, mass 1; tune per travel and scale.
+9. 💡 Starting point for Motion soft spring: stiffness 240, damping 28, mass 1; reserve for low-urgency adaptation.
+10. ⚡ These spring values are studio defaults, not claimed Apple parameters.
+11. 🎯 Gesture-driven objects track pointer/touch directly unless resistance communicates a real boundary.
+12. 🎯 Preserve release velocity into settling motion when momentum is meaningful.
+13. ⚡ A running animation must not block the next valid user action.
+14. 🎯 Retarget or cancel motion when the user reverses intent.
+15. 🎯 Shared-element transitions only connect the same conceptual object across states/routes.
+16. 💡 Preserve origin and destination in sheets, expanding cards, media, and selected-item transitions where it improves orientation.
+17. ⚡ Hidden page/route transitions must never disguise blocked main-thread work.
+18. 🎯 Press feedback is immediate; visual acknowledgement precedes network completion.
+19. 🎯 Hover motion is optional enhancement; primary understanding must not depend on hover.
+20. ⚡ Focus appearance is immediate and must not wait for decorative animation.
+21. 🎯 Scroll-linked motion needs a narrative or spatial reason; do not animate merely because the page scrolls.
+22. ⚡ Parallax, zoom, and large spatial travel require a reduced-motion alternative.
+23. 🎯 In reduced motion, preserve status and hierarchy with instant changes or restrained opacity—not information loss.
+24. 🎯 Repeated ambient animation should stop or remain sufficiently quiet during task-focused use.
+25. 🎯 Skeletons preserve the geometry of the content they predict.
+26. ⚡ Never display fake determinate progress unrelated to measurable work.
+27. 🎯 Loading indicators should communicate uncertainty honestly; determinate progress only when work units are known.
+28. 💡 Signature animation belongs at meaningful milestones, not routine repeated actions.
+29. ⚡ Test interaction motion on target mobile hardware; blur/filter/large compositing cost is a design regression.
+30. 🎯 Judge motion by the resulting feeling—control, calm, confidence, delight—not by how noticeable the animation is.
 ---
 
 ## 6. Responsive & Adaptive (20 Rules)
