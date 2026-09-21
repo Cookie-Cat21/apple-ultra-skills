@@ -2,6 +2,8 @@
 
 > Cross-reference: [SKILL.md](../SKILL.md) Section 9. MCP, browser automation, and agent loop design.
 
+
+> **Decision-quality note:** apply [apple-principles-2026.md](./apple-principles-2026.md). Numeric thresholds not tied to a standard, current vendor documentation, or measured project data are studio defaults/starting points—not universal facts. For version-sensitive behavior, inspect the installed version and current primary docs.
 ---
 
 ## 1. MCP Server Architecture
@@ -49,13 +51,13 @@
 1. ⚡ Semantic selectors only: `getByRole`, `getByLabel`, `getByText`, `getByPlaceholder`.
 2. 🎯 `getByRole('button', { name: 'Submit' })` — accessible name, not CSS class.
 3. 💡 `getByTestId` as last resort — when no semantic selector exists.
-4. ⚡ Never CSS selectors (`#id`, `.class`) — break on redesign.
-5. 🎯 Never XPath — fragile, unreadable, breaks on DOM changes.
+4. 🎯 Prefer user-facing semantic locators (role, name, label, test ID) for browser automation. CSS selectors are acceptable for stable technical surfaces or when semantics are unavailable; avoid coupling to cosmetic classes.
+5. 🎯 Avoid brittle XPath tied to DOM shape. Use it only when it is the clearest stable locator available and semantic/test locators cannot express the target.
 
 ### Waiting Strategies
 
 6. 🎯 `await expect(locator).toBeVisible()` — auto-waits up to timeout.
-7. ⚡ Never `await page.waitForTimeout(5000)` — arbitrary sleeps are flaky.
+7. ⚡ Avoid arbitrary fixed sleeps as synchronization. Wait for observable state, network/event completion, or a bounded condition; a deliberate delay is acceptable only when the delay itself is the behavior under test.
 8. 🎯 `page.waitForURL('/dashboard')` after navigation.
 9. 💡 `page.waitForResponse('**/api/users')` for API-dependent UI.
 10. 🎯 `locator.waitFor({ state: 'attached' })` before interacting with dynamic elements.
@@ -134,7 +136,7 @@
 
 1. 🎯 Frontmatter: `name`, `description`, `triggers` — description is the activation prompt.
 2. ⚡ Triggers: specific keywords the user would say — not generic terms.
-3. 🎯 SKILL.md body: principles + rules + reference links — under 1000 lines.
+3. 🎯 Keep SKILL.md concise enough for reliable activation and context use; move deep catalogs into references. Use repository validation/token budgets rather than an arbitrary universal line limit.
 4. 💡 Reference files for depth — SKILL.md is the index, references are the encyclopedia.
 
 ### Trigger Optimization
