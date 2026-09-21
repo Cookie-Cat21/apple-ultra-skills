@@ -1,6 +1,8 @@
 # Apple Ultra: Accessibility Reference (Full WCAG 2.2 AA)
 
 > Cross-reference: [SKILL.md](../SKILL.md) Section 8. Complete audit checklist.
+>
+> **Decision-quality note:** apply [apple-principles-2026.md](./apple-principles-2026.md). WCAG success criteria are standards; larger touch targets, audit scores, and implementation conventions must be labeled as platform guidance or studio targets rather than misrepresented as WCAG requirements.
 
 ---
 
