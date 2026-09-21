@@ -26,6 +26,7 @@ Read before scoring:
 - [_shared/VISUAL.md](../_shared/VISUAL.md) — palette, type, logo, scans
 - [_shared/STACK.md](../_shared/STACK.md) — booking UI non-negotiables
 - [TOKENS.md](./TOKENS.md) — grep patterns and token reference
+- [../references/apple-feel.md](../references/apple-feel.md) — feelings-first visual, motion, material, and anti-cosplay standard
 
 ---
 
@@ -93,7 +94,9 @@ Run the full grep suite in [TOKENS.md](./TOKENS.md) — hardcoded hex, pink/rose
 
 ### Round 0 — Palette discipline (weight 30%)
 
-**Question:** Are semantic colors used correctly?
+**Question:** Are semantic colors used correctly, and do they support the intended feeling rather than substitute for it?
+
+Before palette scoring, state the surface's **primary intended feeling** and at most two supporting feelings. A token-perfect screen can still fail if its hierarchy or material treatment fights that target.
 
 | Role | Token | Hex | Use |
 |------|-------|-----|-----|
@@ -130,8 +133,8 @@ Run the full grep suite in [TOKENS.md](./TOKENS.md) — hardcoded hex, pink/rose
 | ID | Inspect | Pass |
 |----|---------|------|
 | H1 | Card structure | One unified card; single hero image |
-| H2 | Motion | Interaction-only; no decorative marquee/beam/glow stacks |
-| H3 | Materials | Solid fills on content; blur on chrome only |
+| H2 | Motion | Serves state/continuity/feedback; spatial motion interruptible; reduced-motion alternative exists |
+| H3 | Materials | Translucency communicates hierarchy, guarantees foreground contrast, has opaque fallback, and avoids glass-on-glass |
 | H4 | Footer branding | "Powered by your product.lk" — Growth can remove |
 | H5 | Touch targets | ≥44×44px on booking flows |
 | H6 | Spacing | 8pt grid; 16px mobile margin |
@@ -235,7 +238,7 @@ See [TOKENS.md](./TOKENS.md) for full token ledger.
 ## Do not
 
 - Approve pink/rose on booking surfaces
-- Allow `backdrop-blur` on content cards
+- Allow `backdrop-blur` on content cards without a real hierarchy/spatial reason, contrast guarantee, and opaque fallback
 - Accept random blues instead of cobalt `your primary color token (see _shared/VISUAL.md)`
 - Praise decorative motion (marquee, border-beam, glow stacks) on hub
 - Recommend global competitor/global competitor visual clones
