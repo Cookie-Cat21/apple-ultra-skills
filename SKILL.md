@@ -97,14 +97,14 @@ Synthesized from: frontend-design, react-best-practices, web-design-guidelines, 
 
 ### COMPONENT DESIGN
 
-1. ⚡ Never pass more than 5 props to a leaf component; extract compound components or use context instead.
-2. ⚡ Every interactive element must have all 5 states defined: default, hover, focus, active, disabled. Missing any state is an incomplete component.
+1. 🎯 Keep component APIs small enough to understand at the call site. When prop combinations create invalid states or repeated conditionals, prefer composition, slots, or a clearer abstraction.
+2. ⚡ Every interactive control must define the states relevant to its behavior — at minimum default, keyboard focus, activation/pressed feedback, and disabled when disablement exists; add hover, loading, error, selected, or empty only when semantically applicable.
 3. 🎯 Use composition (children, render props, slots) before adding a new prop. Ask: "Could the caller decide this instead of the component?"
-4. 🎯 Co-locate state with the component that needs it. Only lift state when 2+ siblings need the same value.
-5. 💡 Compound components (`Menu` + `Menu.Item` + `Menu.Trigger`) are better than a single component with 8 config props — they stay composable as requirements grow.
+4. 🎯 Co-locate state with the smallest owner that can preserve the required behavior; lift it when multiple parts of the flow genuinely coordinate around the same source of truth.
+5. 💡 Compound components (`Menu` + `Menu.Item` + `Menu.Trigger`) are useful when composition makes valid structure clearer than a large configuration object; don’t introduce them merely to reduce a prop count.
 6. ⚡ Never use index as a React key for lists that can reorder or filter. Use a stable, unique ID from the data.
 7. 🎯 Avoid `useEffect` for derived state — compute it directly in render. Only `useEffect` for synchronizing with external systems (timers, subscriptions, DOM APIs).
-8. 🎯 Extract event handlers that exceed 3 lines into named functions — inline lambdas in JSX obscure component structure.
+8. 🎯 Extract handlers when a name clarifies intent, logic is reused/tested, or inline code obscures the rendered structure. Line count alone is not a design rule.
 9. 💡 Prefer `useReducer` over multiple `useState` when state transitions are coupled (form wizards, multi-step flows).
 10. ⚡ Wrap route-level components in error boundaries — an unhandled render error must not white-screen the entire app.
 11. 🎯 Use `React.Suspense` with meaningful fallbacks at route boundaries, not spinners on every micro-component.
@@ -112,42 +112,42 @@ Synthesized from: frontend-design, react-best-practices, web-design-guidelines, 
 
 ### STYLING
 
-13. ⚡ Never use raw color values in component styles. Always use semantic design tokens (`--color-primary`, not `#3B82F6`). This is what makes dark mode work without extra work.
-14. 🎯 Use fluid type scales (`clamp()`) instead of breakpoint-based font sizes. Typography should scale continuously, not in steps.
-15. 🎯 Use a 4pt spacing grid (4, 8, 12, 16, 24, 32, 48, 64, 96px). Arbitrary spacing values (23px, 37px) are always wrong.
+13. 🎯 Use semantic tokens for product meaning and repeated component roles. Raw values are acceptable for isolated artwork or truly local one-offs, but not as parallel sources of product color truth.
+14. 🎯 Use fluid type (`clamp()`) when continuous scaling improves the layout; use discrete responsive steps when the information hierarchy genuinely changes at a breakpoint.
+15. 🎯 Define a compact spacing scale (often 4/8-based) and use it consistently. Optical corrections and layout-specific values are allowed when intentional and documented.
 16. ⚡ Images MUST have explicit width and height attributes or CSS `aspect-ratio` to prevent layout shift (CLS). Undimensioned images are a Core Web Vitals failure.
 17. 💡 Use CSS logical properties (`padding-inline`, `margin-block`) instead of left/right/top/bottom for automatic RTL support.
 18. 🎯 Prefer CSS custom properties + data attributes for variant styles over conditional class logic. `data-variant="primary"` scales better than 8 `className` conditionals.
-19. ⚡ Always include `prefers-reduced-motion` media query for any animation over 200ms. Vestibular disorders affect 35% of adults over 40.
-20. 🎯 Co-locate component styles: CSS Modules or Tailwind in the same file as the component — not a global stylesheet per component.
+19. ⚡ Respect `prefers-reduced-motion` for nonessential or potentially uncomfortable motion. Replace large travel, zoom, parallax, and repeated motion with an alternative that preserves state meaning.
+20. 🎯 Follow the repo’s styling architecture. Keep component-specific styles near the component when that improves ownership, and keep shared tokens/primitives centralized.
 21. 💡 Use `@layer` in Tailwind to control specificity: `base` → `components` → `utilities`. Custom overrides belong in `components`, not `utilities`.
-22. 🎯 Mobile-first media queries: write base styles for mobile, add `min-width` breakpoints for larger screens — never `max-width` desktop-first.
+22. 🎯 Prefer a consistent responsive strategy. Mobile-first is a strong default for web products, but choose breakpoints and query direction from content behavior rather than dogma.
 
 ### PERFORMANCE
 
-23. ⚡ Lazy-load every non-above-the-fold route with dynamic import / `React.lazy`.
+23. 🎯 Use framework-native route/code splitting and lazy loading where it reduces initial work without harming navigation reliability. Measure the bundle and loading behavior before adding manual splits everywhere.
 24. 🎯 Memoize (`useMemo`, `useCallback`, `React.memo`) ONLY after measuring with React DevTools Profiler. Premature memoization adds allocation cost with no benefit.
-25. ⚡ Never import an entire library when you need one function: `import debounce from 'lodash/debounce'`, not `import { debounce } from 'lodash'`.
+25. 🎯 Prefer tree-shakeable or narrow imports when they materially reduce shipped code; verify the package/bundler behavior instead of assuming import syntax alone determines bundle size.
 26. 🎯 In Next.js App Router: prefer Server Components by default; only add `'use client'` when you need browser APIs, event handlers, or hooks.
-27. 🎯 Use `startTransition` for non-urgent state updates (filtering large lists, tab switches) to keep INP under 200ms.
-28. 💡 Virtualize lists over 50 items (`@tanstack/react-virtual`) — rendering 1000 DOM nodes kills scroll performance.
-29. ⚡ Debounce search inputs (300ms) and throttle scroll handlers (16ms) — unthrottled handlers cause INP failures.
-30. 🎯 Prefetch links on hover (`<Link prefetch>`) for perceived instant navigation in Next.js.
+27. 🎯 Use `startTransition` for genuinely non-urgent React updates when it improves responsiveness; measure the interaction instead of adding it mechanically.
+28. 💡 Virtualize when measured/rendered DOM cost, data size, or scroll performance warrants it. Item count alone is not the threshold.
+29. 🎯 Rate-limit expensive input/scroll work according to the interaction and measured cost. Prefer event-driven CSS/observers/requestAnimationFrame where appropriate; don’t copy one debounce/throttle duration into every flow.
+30. 🎯 Use framework prefetching intentionally based on likelihood, payload cost, cache behavior, and network conditions; avoid aggressive prefetch that wastes bandwidth.
 
 ### ZERO GENERIC AI AESTHETIC RULE
 
-31. ⚡ Distinctive design only. No generic gradient cards, no default Tailwind blue buttons, no cookie-cutter hero sections with centered headline + subtitle + CTA. Every component must have a design decision that makes it specific to this product.
+31. 🎯 Avoid unowned template aesthetics. Familiar primitives are fine; the product’s hierarchy, content, brand, and interaction details should make the result specific without forcing novelty into every component.
 32. 🎯 Before generating any UI, ask: "Would I see this exact design on a generic SaaS landing page?" If yes, redesign it.
-33. 💡 Pick ONE bold design choice per screen: asymmetric layout, distinctive typeface, unexpected color accent, or editorial whitespace — not all at once.
+33. 💡 Prefer a small number of coherent expressive choices per surface. There is no required count; restraint matters more than novelty.
 34. 🎯 Reference real products for inspiration (Linear, Raycast, Stripe) — not other AI-generated UIs.
 
 ### FORM & DATA PATTERNS
 
-35. ⚡ Form validation: Zod schema shared between client (react-hook-form) and server (API route) — one source of truth.
-36. 🎯 Optimistic UI updates with rollback on error — TanStack Query `onMutate` + `onError` pattern.
-37. 💡 Debounce search inputs 300ms, throttle scroll handlers 16ms — unthrottled handlers cause INP failures.
-38. 🎯 Empty states designed for every list — illustration, message, primary CTA. Not blank space.
-39. ⚡ Loading skeletons match final content dimensions — shape and size, not generic gray boxes.
+35. ⚡ Validate authoritative constraints on the server and avoid divergent client/server rules. Share schemas when the stack supports it cleanly; Zod/react-hook-form are implementation options, not requirements.
+36. 🎯 Use optimistic UI only when success is likely, rollback semantics are safe, and temporary divergence won’t mislead people about consequential state.
+37. 💡 For search and scroll, choose cancellation, request dedupe, debouncing, throttling, observers, or transitions from the actual workload and latency—not a universal timing constant.
+38. 🎯 Empty states explain the actual condition (first use, filtered, permission, offline, true zero data) and offer the next useful action when one exists. Illustration is optional.
+39. 🎯 Preserve layout and status while loading. Use a skeleton only when predicting final structure helps; otherwise prefer an honest progress/status treatment.
 
 ### VUE / SVELTE PATTERNS
 
@@ -167,30 +167,30 @@ Synthesized from: canvas-design, brand-guidelines, interface-design, design-lab,
 
 ### VISUAL HIERARCHY
 
-1. 🎯 Maximum 3 levels of visual hierarchy per screen section: primary (one element), secondary (2-4 elements), tertiary (everything else). More levels = visual chaos.
+1. 🎯 Keep hierarchy legible enough that people can identify the primary content/action and supporting levels at a glance. Avoid unnecessary competing emphasis; there is no universal fixed number of hierarchy levels.
 2. ⚡ Never use color as the ONLY differentiator between two states. Always pair with shape, label, or icon. (WCAG 1.4.1)
-3. 💡 Whitespace is not empty space — it is an active design element. Double the whitespace you think you need; halve it if it feels disconnected.
-4. 🎯 Group related elements with proximity (Gestalt) — if two items are within 8px, they are perceived as one unit.
+3. 💡 Whitespace is an active grouping and emphasis tool. Tune it from content relationships and density needs; don’t apply a universal multiplier.
+4. 🎯 Use proximity consistently to communicate grouping. The exact distance comes from the product’s spacing scale, density, and surrounding context—not a universal 8px law.
 5. 🎯 Use size + weight + color together for hierarchy — never rely on a single axis.
-6. 💡 F-pattern for text-heavy pages, Z-pattern for marketing hero sections — place CTAs at scan-line endpoints.
+6. 💡 Use reading order, alignment, and content priority to guide scanning. F/Z patterns can be references, not mandatory layout templates.
 
 ### TYPOGRAPHY
 
-7. 🎯 Type scale: use a ratio-based scale (1.25 Major Third or 1.333 Perfect Fourth). The exact values: 12, 14, 16, 20, 24, 32, 40, 48, 64px (base-16 × 1.25 ratio).
-8. ⚡ Body text: minimum 16px, 1.5 line-height, 60-75 characters per line max. Anything narrower is uncomfortable to read; anything wider loses the reader's place.
-9. 🎯 Use variable fonts when available — they give you weight, width, and optical size in one file. Set `font-optical-sizing: auto` always.
-10. 💡 Headline fonts and body fonts should contrast in personality (geometric sans + humanist serif, slab serif + grotesque) not just in size.
-11. 🎯 Limit to 2 font families per product: one display, one body. Three families is the absolute maximum.
+7. 🎯 Define a small role-based type scale. Modular ratios can help generate candidates, but optical hierarchy, content density, viewport, and brand determine the final values.
+8. 🎯 Treat ~16px body text and readable line lengths/line heights as web studio starting points, then test the actual typeface, viewport, zoom, language, and content. Do not present these as WCAG constants.
+9. 🎯 Use variable-font axes and optical sizing when the chosen font supports them and they improve rendering; test fallbacks and loading cost.
+10. 💡 Typeface pairing is optional. A single family can create excellent hierarchy; when mixing families, give each a clear role and compatible metrics/personality.
+11. 🎯 Minimize type families to preserve coherence and performance. Two is a useful studio default, not an absolute ceiling.
 12. 🎯 Tabular figures (`font-variant-numeric: tabular-nums`) for all data tables and price displays — proportional figures cause column jitter.
 
 ### COLOR
 
-13. ⚡ Use `oklch()` for color definitions in 2024+. It produces perceptually uniform lightness and enables P3 wide-gamut displays. `oklch(60% 0.15 250)` beats `hsl()`.
+13. 🎯 Prefer perceptual color spaces such as `oklch()` for token generation when browser/tooling support fits the project; provide compatible fallbacks where required. Format alone does not create a good palette.
 14. 🎯 Every color decision needs a contrast ratio check. Minimum 4.5:1 for body text, 3:1 for large text (18px+ or 14px+ bold), 3:1 for UI components. (WCAG 1.4.3)
 15. 🎯 Build semantic color tokens in layers: primitive (`blue-500`) → semantic (`color-action`) → component (`button-background`). Never skip the semantic layer.
 16. ⚡ Dark mode: define it at the token layer, not with `dark:` utility classes per component. One token change should update every component.
-17. 💡 Limit accent colors to 1-2 per screen. More accents = no accent hierarchy.
-18. 🎯 Status colors: success (green), warning (amber), error (red), info (blue) — never invent new hues for system feedback.
+17. 💡 Keep accent usage restrained enough that semantic and interactive hierarchy remains obvious. The right count depends on the product and data needs.
+18. 🎯 Use stable semantic status tokens and pair color with text/icon/shape. Common conventions can improve familiarity, but test brand/cultural context and never rely on hue alone.
 
 ### MOTION & INTERACTION
 
@@ -205,16 +205,16 @@ Synthesized from: canvas-design, brand-guidelines, interface-design, design-lab,
 
 ### ELEVATION & DEPTH
 
-25. 🎯 Define an explicit elevation scale (0-5 levels) with corresponding shadow values. Never use ad-hoc `box-shadow` values. Each elevation level signals a z-axis layer.
+25. 🎯 If the product uses elevation, define a small semantic layer model and reuse it. Not every interface needs five shadow levels.
 26. 💡 In dark mode: elevation is expressed by lightness increase, not shadow intensity. A dark card at elevation 2 is lighter than the background, not more shadowed.
 27. 🎯 Z-index scale: define tokens (`--z-dropdown: 100`, `--z-modal: 200`, `--z-toast: 300`) — never arbitrary `z-index: 9999`.
 28. 🎯 Borders over shadows for subtle separation in dense UIs — shadows compete with content in data-heavy interfaces.
 
 ### BRAND & IDENTITY
 
-29. 🎯 Every product needs a distinctive visual signature — one element users recognize instantly (color, shape, motion).
+29. 🎯 Brand-facing surfaces benefit from a recognizable visual or interaction signature; task-heavy product UI can earn distinctiveness through content, behavior, and craft without forcing a decorative motif.
 30. 💡 Brand consistency: same spacing, typography, and color tokens across marketing and product — not two design systems.
-31. 🎯 Logo clear space: minimum padding equal to logo height on all sides — never crowd the mark.
+31. 🎯 Follow the actual brand’s logo clear-space specification. If none exists, define and test a consistent minimum rather than inventing a universal ratio.
 32. ⚡ Favicon, OG image, and app icon from same source asset — consistent across touchpoints.
 
 → Deep dive: [references/design.md](./references/design.md)
