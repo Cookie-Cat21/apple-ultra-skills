@@ -8,10 +8,11 @@ description: >
   say "apple ultra". Pairs with Agent-Reach for live docs research.
 metadata:
   pack: apple-ultra
-  version: "1.3.0"
+  version: "2.0.0"
 reads:
   - references/frontend.md
   - references/design.md
+  - references/apple-principles-2026.md
   - references/apple-feel.md
   - references/architecture.md
   - references/testing.md
@@ -43,6 +44,14 @@ Mark 🎯 for high-impact rules (significant quality improvement).
 Mark 💡 for insight rules (non-obvious, expert-level patterns).
 
 ---
+
+## Apple Ultra 2026 operating contract
+
+This pack is grounded in Apple’s current HIG principles: **Purpose · Agency · Responsibility · Familiarity · Flexibility · Simplicity · Craft · Delight**. Load [references/apple-principles-2026.md](./references/apple-principles-2026.md) for the repo-wide contract and [references/apple-feel.md](./references/apple-feel.md) for UI/UX depth.
+
+Before substantial work, identify the **person/actor, purpose, state change, recovery path, risk, evidence, and verification**. Preserve agency through reversibility and clear state; preserve responsibility through safe defaults and transparency; preserve familiarity by following existing platform/repo conventions; preserve craft by verifying the result.
+
+**Evidence rule:** distinguish project facts, standards/external facts, assumptions, estimates, interpretations, and recommendations. Never invent conversion lifts, risk percentages, user findings, performance gains, or “industry-standard” numbers.
 
 ## Section 1: Context Detection Engine
 
