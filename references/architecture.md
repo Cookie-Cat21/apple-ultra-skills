@@ -2,6 +2,8 @@
 
 > Cross-reference: [SKILL.md](../SKILL.md) Section 4. Load when Architecture Ultra-Mode is active.
 
+
+> **Decision-quality note:** apply [apple-principles-2026.md](./apple-principles-2026.md). Numeric thresholds not tied to a standard, current vendor documentation, or measured project data are studio defaults/starting points—not universal facts. For version-sensitive behavior, inspect the installed version and current primary docs.
 ---
 
 ## 1. SOLID Principles (20 Rules)
@@ -58,7 +60,7 @@
    ```
 
 7. 🎯 Inject dependencies via constructor or function parameter — not module-level imports.
-8. 💡 DI container (or manual wiring) at app entry point — business logic never imports infrastructure.
+8. 💡 Keep business/domain logic decoupled from replaceable infrastructure through dependency boundaries. A DI container is optional; manual composition or framework-native injection can be sufficient.
 9. 🎯 Test doubles implement same interface as production — swap without changing business logic.
 10. ⚡ No `new DatabaseClient()` inside business functions — pass it in.
 
@@ -68,7 +70,7 @@
 12. 💡 Custom hooks extract logic (SRP), components handle rendering.
 13. 🎯 API routes: thin handlers that validate input, call service, return response. Business logic in services.
 14. ⚡ Services don't import `NextRequest`/`NextResponse` — framework-agnostic business logic.
-15. 🎯 Event handlers in UI call service functions — never business logic inline in JSX.
+15. 🎯 Keep nontrivial domain/business logic out of render markup. Small UI-local state transitions can stay close to the handler; domain operations belong behind a clear boundary.
 16. 💡 Middleware chain pattern: auth → validation → rate limit → handler. Each middleware one concern.
 17. 🎯 Plugin architecture for extensibility: define interface, register implementations at startup.
 18. ⚡ Configuration via environment variables, not hardcoded constants in business logic.
@@ -83,7 +85,7 @@
 2. ⚡ Feature folder contains: components, hooks, services, types, tests — everything for that feature.
 3. 🎯 `src/shared/` for cross-feature utilities — UI primitives, hooks, types used by 2+ features.
 4. 💡 `src/app/` (Next.js) for routing only — thin pages that import from features.
-5. 🎯 Feature boundaries: a feature never imports from another feature's internals — only from its public API (`index.ts`).
+5. 🎯 Define explicit feature boundaries and stable import paths. Cross-feature internals should not become accidental public APIs; whether that uses `index.ts`, package exports, or lint boundaries depends on the repo.
 6. ⚡ Shared UI components in `src/shared/ui/` — Button, Input, Modal. Feature-specific in feature folder.
 7. 🎯 Feature flags: `src/features/auth/flags.ts` — enable/disable features without deleting code.
 8. 💡 A/B test variants as feature subfolders: `src/features/checkout/variants/a/`, `variants/b/`.
@@ -103,7 +105,7 @@
 2. ⚡ `GET` idempotent and safe. `POST` creates. `PUT` replaces. `PATCH` partial update. `DELETE` removes.
 3. 🎯 Status codes: 200 OK, 201 Created, 204 No Content, 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 409 Conflict, 422 Unprocessable, 429 Too Many Requests, 500 Internal Error.
 4. 💡 Error response format: `{ error: { code: "VALIDATION_ERROR", message: "...", details: [...] } }`.
-5. 🎯 Pagination: cursor-based for real-time data, offset for static lists. Always include `hasMore` and `nextCursor`.
+5. 🎯 Choose cursor, offset, keyset, or page-number pagination from data stability, UX, query cost, and API compatibility. Return enough metadata for the client to know whether/how to continue.
 6. ⚡ Rate limiting headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`.
 7. 🎯 API versioning: `/v1/users` in URL path — not headers. Version when breaking, not for every change.
 8. 💡 tRPC: end-to-end type safety. Define router with Zod input, TypeScript output — client gets types automatically.
@@ -114,7 +116,7 @@
 13. 💡 Webhook design: POST with signature verification, retry with exponential backoff, idempotent processing.
 14. 🎯 Bulk operations: `POST /users/bulk` with array — return partial success with per-item errors.
 15. 🎯 Filtering: `?status=active&sort=-createdAt&limit=20` — consistent query param conventions.
-16. ⚡ Never expose internal IDs that leak information — use UUIDs or opaque tokens.
+16. 🎯 Do not expose identifiers when doing so leaks sensitive sequence/tenant/business information or creates an authorization assumption. Ordinary stable IDs can be safe when access control is enforced independently.
 17. 🎯 HATEOAS links in responses for discoverable APIs: `{ data: {...}, links: { self, next, prev } }`.
 18. 💡 OpenAPI/Swagger spec generated from code — not maintained separately.
 19. 🎯 Request/response logging: log method, path, status, duration — never log bodies with PII.
@@ -150,7 +152,7 @@
 4. 💡 `package.json` `exports` field for monorepo packages — explicit public API surface.
 5. 🎯 Circular dependency detection: `madge --circular src/` in CI — zero tolerance.
 6. ⚡ Fix circular deps by extracting shared code to a third module — not by merging modules.
-7. 🎯 Import direction: `app → features → shared → lib` — never upstream.
+7. 🎯 Define and enforce a dependency direction appropriate to the repo. `app → features → shared/lib` is one useful model, not a universal folder law.
 8. 💡 Type-only imports (`import type`) don't create runtime circular dependencies — but still a design smell.
 9. 🎯 Absolute imports via path aliases: `@/features/auth` — not `../../../features/auth`.
 10. 🎯 `tsconfig paths` match bundler aliases — keep them in sync.
