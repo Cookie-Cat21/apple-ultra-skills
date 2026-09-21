@@ -12,6 +12,7 @@ metadata:
 reads:
   - references/frontend.md
   - references/design.md
+  - references/apple-feel.md
   - references/architecture.md
   - references/testing.md
   - references/security.md
@@ -70,6 +71,7 @@ Multiple modes activate simultaneously — this is expected and correct.
 | `useTransition` / `useId` imports | react-18-patterns, Frontend |
 | `tailwind.config` or `@theme` | tailwind-v4, Design, Frontend |
 | User says "research" or "docs" | Agent-Reach, Agent & Workflow |
+| User says "Apple quality", "Apple feel", or "Apple polish" | Design, Accessibility, Performance, apple-feel |
 
 ### Activation Protocol
 
@@ -150,6 +152,8 @@ Synthesized from: frontend-design, react-best-practices, web-design-guidelines, 
 
 ## Section 3: Design Ultra-Mode
 
+**Feelings-first requirement:** for a primary flow, name one primary feeling (control, calm, confidence, trust, delight, premium craft, wonder, belonging, self-expression, or respect) and at most two supporting feelings. Evaluate mechanisms against that target before scoring visual resemblance. Use [references/apple-feel.md](./references/apple-feel.md).
+
 Synthesized from: canvas-design, brand-guidelines, interface-design, design-lab, theme-factory, fixing-accessibility, high-end-visual-design, algorithmic-art, wcag-audit-patterns.
 
 ### VISUAL HIERARCHY
@@ -181,12 +185,14 @@ Synthesized from: canvas-design, brand-guidelines, interface-design, design-lab,
 
 ### MOTION & INTERACTION
 
-19. ⚡ Every CSS transition: use cubic-bezier easing, never linear. For enter: ease-out (things decelerate into place). For exit: ease-in (things accelerate away).
-20. 🎯 Duration rules: micro-interactions (hover, focus) 100-150ms. State changes 200-300ms. Page transitions 300-500ms. Never over 500ms for UI feedback.
-21. 💡 Spring physics (CSS `linear()` or framer-motion spring) feels more natural than cubic-bezier for elements that have mass (modals, drawers, cards).
-22. ⚡ `@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }` must be in your global CSS. Always.
-23. 🎯 Stagger list item animations by 30-50ms — simultaneous entrance feels mechanical.
-24. 💡 Loading skeletons should match the exact dimensions of the content they replace — shape, not just a gray rectangle.
+19. ⚡ Start with **Intent → Mechanism → Feeling**. If motion does not explain state, continuity, hierarchy, causality, or feedback, remove it.
+20. 🎯 Use springs for apparent mass, gesture handoff, snapping, and spatial continuity; use timing curves for simple opacity/color changes. Never apply one motion model globally.
+21. ⚡ Gesture-driven elements follow input directly and preserve release velocity when momentum is meaningful. A running animation must not block the next valid user action.
+22. ⚡ Design an intentional `prefers-reduced-motion` alternative: remove large travel/zoom/parallax while preserving focus, hierarchy, state, and completion cues.
+23. 🎯 Use shared/layout transitions only when source and destination are the same conceptual object. Do not match unrelated elements for spectacle.
+24. 💡 Loading states preserve final geometry and perceived continuity. Never use fake determinate progress to manufacture certainty.
+
+→ Feelings, motion presets, feedback stack, component contract, and anti-cosplay gate: [references/apple-feel.md](./references/apple-feel.md).
 
 ### ELEVATION & DEPTH
 
