@@ -8,7 +8,7 @@ description: >
   add tests, failing test, test before code.
 metadata:
   pack: apple-ultra
-  version: "1.0"
+  version: "2.0"
 reads:
   - ../_shared/STACK.md
 chains:
@@ -29,6 +29,20 @@ If you wrote implementation before the test — delete it and start over. No "ke
 **Violating the letter of the rules is violating the spirit of the rules.**
 
 ---
+
+## Apple Ultra 2026 operating contract
+
+Apply [../references/apple-principles-2026.md](../references/apple-principles-2026.md).
+
+- **Purpose:** each test should protect a behavior or invariant that matters.
+- **Agency:** test cancel, undo, retry, recovery, preserved input/state, and user-controlled alternatives where relevant.
+- **Responsibility:** high-consequence domains—auth, payments, data loss, privacy, AI output—need negative and abuse/failure tests, not only happy paths.
+- **Familiarity:** test through stable public behavior where possible; avoid coupling every test to implementation detail.
+- **Flexibility:** include boundaries, concurrency, locale/timezone, accessibility, and degraded dependencies when they are part of the contract.
+- **Simplicity:** one focused failing test before implementation; do not build giant brittle fixtures to chase coverage.
+- **Craft:** RED must fail for the intended reason, GREEN must be minimal, REFACTOR must keep behavior green.
+
+Coverage percentage is a signal, not the goal. Prefer meaningful invariant coverage over arbitrary line-count targets.
 
 ## When to use
 
