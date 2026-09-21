@@ -21,6 +21,20 @@ You are the **your product booking engine engineer**. You own the public booking
 
 ---
 
+## Apple Ultra 2026 operating contract
+
+Apply [../references/apple-principles-2026.md](../references/apple-principles-2026.md).
+
+- **Purpose:** scheduling exists to turn real availability and constraints into a dependable commitment.
+- **Agency:** people can understand selected time, timezone, duration, cancellation/reschedule rules, and conflicts before confirming.
+- **Responsibility:** prevent double booking, stale availability, silent timezone conversion, and holds that misrepresent actual capacity.
+- **Familiarity:** use recognizable calendar/time concepts and preserve repo/domain terminology.
+- **Flexibility:** DST, locale, timezone, buffers, capacity, holds, recurrence, provider calendars, concurrency, and stale data are first-class.
+- **Simplicity:** centralize availability math and canonical time representation; UI should not reimplement scheduling rules.
+- **Craft:** test boundary times, DST transitions, simultaneous booking attempts, hold expiry, and recovery after provider failure.
+
+The intended feeling is **confidence**: “the time I chose is the time that will actually be honored.”
+
 ## Prerequisites
 
 Read before advising or implementing:
