@@ -8,7 +8,7 @@ description: >
   say ultra-teach.
 metadata:
   pack: apple-ultra
-  version: "1.0"
+  version: "2.0"
 user-invocable: true
 ---
 
@@ -19,6 +19,22 @@ Run **once per project**. Interview the user, write `.ultra.md` to the project r
 **Downstream consumers:** `apple-design-head`, `ultra-visual-system`, `ultra-component-discovery`, `ultra-brand-voice`, `ultra-pr-ship-review`, executive skills.
 
 ---
+
+## Apple Ultra 2026 operating contract
+
+Use [../references/apple-principles-2026.md](../references/apple-principles-2026.md) to teach the project, not just its stack.
+
+The onboarding brief must capture:
+- **Purpose:** primary users, core job, and the few outcomes that matter.
+- **Agency:** important undo/cancel/export/recovery expectations.
+- **Responsibility:** privacy, safety, billing, compliance, destructive actions, AI, and trust-sensitive areas.
+- **Familiarity:** platform conventions, product terminology, repo conventions, and existing design/architecture patterns.
+- **Flexibility:** supported devices, roles, locales, timezones, themes, accessibility needs, and failure contexts.
+- **Simplicity:** explicit non-goals and things the team intentionally refuses to add.
+- **Craft:** verification commands, quality bars, observability, performance expectations, and review cadence.
+- **Delight:** primary intended feeling for each critical user journey.
+
+Do not fill missing project facts with guesses. Mark unknowns in `.ultra.md` and let later work verify them.
 
 ## When to use
 
