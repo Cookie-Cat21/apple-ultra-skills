@@ -12,7 +12,7 @@
 
 1. **Review trigger:** Hydration warnings, list keys, transitions, Suspense data fetching, Strict Mode surprises, or concurrent rendering bugs.
 2. **Severity:** Critical = user-visible corruption or broken interactivity. High = flaky production behavior. Medium = perf or dev-only confusion.
-3. **Output:** `REACT-XXX | Location | Severity | Fix` in standard finding format.
+3. **Output:** `R18-XXX | Location | Severity | Fix` in standard finding format.
 4. **Pair with:** [frontend.md](./frontend.md) for component structure, [next-app-router.md](./next-app-router.md) for RSC + Suspense integration.
 
 ## React 19.3 additions that change review behavior
